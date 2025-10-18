@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
-import heroImg from "../assets/images/hero.png";
+import heroImg from "../assets/images/hero2.jpg";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 export default function Blogs() {
