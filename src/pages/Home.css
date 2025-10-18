@@ -1,0 +1,74 @@
+.orbit-container {
+  width: 500px;
+  height: 500px;
+  margin: auto;
+  position: relative;
+}
+
+.orbit-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.orbit-path {
+  fill: none;
+  stroke: rgba(100, 100, 150, 0.4);
+  stroke-width: 2;
+  stroke-dasharray: 10 20; /* علشان المسار مايبقاش كامل */
+  stroke-linecap: round;
+}
+
+.orbit-path.inner {
+  r: 110;
+}
+
+.orbit-path.outer {
+  r: 180;
+}
+
+/* النص في المنتصف */
+.center-text {
+  fill: #2a2164;
+  font-size: 32px;
+  font-weight: 700;
+  font-family: "Roboto", sans-serif;
+}
+
+/* الصور */
+.orbit-item img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+}
+
+/* الدوران */
+.inner-orbit {
+  transform-origin: 250px 250px;
+  animation: spinInner 10s linear infinite;
+}
+
+.outer-orbit {
+  transform-origin: 250px 250px;
+  animation: spinOuter 20s linear infinite;
+}
+
+@keyframes spinInner {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spinOuter {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+ 

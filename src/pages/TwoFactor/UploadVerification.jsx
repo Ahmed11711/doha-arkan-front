@@ -11,17 +11,20 @@ export default function UploadVerification() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ text: "", type: "" });
   const [files, setFiles] = useState({
-    front: null,
-    back: null,
-    selfie: null,
+    front_id: null,
+    back_id: null,
+    face: null,
   });
 
   const user_id = localStorage.getItem("user_id");
 
   const handleFileChange = (e) => {
     const { name, files: selectedFiles } = e.target;
-    setFiles((prev) => ({ ...prev, [name]: selectedFiles[0] }));
-    setMessage({ text: "", type: "" });
+    if (selectedFiles && selectedFiles.length > 0) {
+      setFiles((prev) => ({ ...prev, [name]: selectedFiles[0] }));
+      setMessage({ text: "", type: "" });
+      console.log("File selected:", name, selectedFiles[0]);
+    }
   };
 
   const handleNext = async (e) => {
@@ -29,7 +32,7 @@ export default function UploadVerification() {
     setMessage({ text: "", type: "" });
 
     const currentStepName =
-      step === 1 ? "front" : step === 2 ? "back" : "selfie";
+      step === 1 ? "front_id" : step === 2 ? "back_id" : "face";
 
     if (!files[currentStepName]) {
       setMessage({
@@ -63,15 +66,22 @@ export default function UploadVerification() {
     try {
       setLoading(true);
       setMessage({ text: "Uploading verification data...", type: "info" });
+      console.log(
+        "Files to upload:",
+        files.front_id,
+        files.back_id,
+        files.face
+      );
 
       const formData = new FormData();
       formData.append("user_id", user_id);
-      formData.append("front_id", files.front);
-      formData.append("back_id", files.back);
-      formData.append("face", files.selfie);
+      formData.append("front_id", files.front_id);
+      formData.append("back_id", files.back_id);
+      formData.append("face", files.face);
 
-      const response = await ApiClient.post("/kyc", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
+      const response = await ApiClient.post("kyc", formData,{
+        headers: {          
+        },
       });
 
       console.log("✅ KYC Response:", response.data);
@@ -126,22 +136,22 @@ export default function UploadVerification() {
       case 1:
         title = "Upload Front of ID";
         desc = "Please upload a clear image of the front side of your ID card.";
-        name = "front";
-        file = files.front;
+        name = "front_id";
+        file = files.front_id;
         imageExample = idFrontImg;
         break;
       case 2:
         title = "Upload Back of ID";
         desc = "Now upload the back side of your ID card.";
-        name = "back";
-        file = files.back;
+        name = "back_id";
+        file = files.back_id;
         imageExample = idBackImg;
         break;
       case 3:
         title = "Upload Selfie";
         desc = "Finally, please upload a selfie to confirm your identity.";
-        name = "selfie";
-        file = files.selfie;
+        name = "face";
+        file = files.face;
         imageExample = selfieImg;
         break;
       default:

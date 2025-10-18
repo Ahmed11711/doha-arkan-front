@@ -60,7 +60,6 @@ class ApiClient {
     try {
       const res = await axiosInstance[method](endpoint, data, {
         headers: {
-          "Content-Type": "application/json",
           ...(auth && { Authorization: `Bearer ${auth}` }),
         },
       });

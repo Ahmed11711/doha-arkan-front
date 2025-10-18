@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSnackbar } from "notistack";
@@ -33,6 +34,7 @@ export default function GoogleAuth() {
 
   useEffect(() => {
     setup();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleCopy = () => {

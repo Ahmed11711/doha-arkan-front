@@ -33,5 +33,30 @@
   "invalid_email": "Invalid email address",
   "invalid_phone": "Phone must start with + and contain only numbers",
   "password_min": "Password must be at least 6 characters",
-  "password_match": "Passwords must match"
+  "password_match": "Passwords must match",
+  "forgotPassword": {
+  "title": "Forgot Password",
+  "emailLabel": "Email Address",
+  "emailPlaceholder": "example@email.com",
+  "sendCode": "Send Code",
+  "sending": "Sending...",
+  "success": "Verification code sent to your email ✅",
+  "fail": "Failed to send verification code ⚠️",
+  "enterEmail": "Please enter your email address"
+},
+"resetPassword": {
+  "title": "Reset Password",
+  "codeLabel": "Verification Code",
+  "codePlaceholder": "Enter the code sent to your email",
+  "passwordLabel": "New Password",
+  "confirmPasswordLabel": "Confirm Password",
+  "passwordPlaceholder": "********",
+  "changePassword": "Change Password",
+  "updating": "Updating...",
+  "success": "Password updated successfully ✅",
+  "fail": "Failed to update password ⚠️",
+  "noEmail": "An error occurred, please start again.",
+  "mismatch": "Passwords do not match ⚠️"
+}
+
 }

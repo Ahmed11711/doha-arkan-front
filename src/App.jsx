@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, Router } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import LoginRegister from "./pages/LoginRegister";
@@ -10,7 +10,15 @@ import SMSAuth from "./pages/TwoFactor/SMSAuth";
 import GoogleAuth from "./pages/TwoFactor/GoogleAuth";
 import Done from "./pages/TwoFactor/Done";
 import UploadVerification from "./pages/TwoFactor/UploadVerification";
-
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import Home from "./pages/Home";
+import Services from "./pages/Services";
+import Blogs from "./pages/Blogs";
+import BlogDetails from "./pages/BlogDetails";
+import ScrollToTop from "./components/ScrollToTop";
+import About from "./pages/About";
+import Contact from "./pages/Contact";
 function App() {
   const { i18n } = useTranslation();
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
@@ -51,14 +59,14 @@ function App() {
         toggleTheme={toggleTheme}
         toggleLanguage={toggleLanguage}
       />
-
+      <ScrollToTop />
       <main className="flex-grow">
         <Routes>
           <Route
             path="/"
             element={
               isAuthenticated ? (
-                <h1 className="text-center pt-20 text-3xl">Home Page</h1>
+                <Navigate to="/home" replace />
               ) : (
                 <Navigate to="/auth" replace />
               )
@@ -68,12 +76,21 @@ function App() {
             path="/auth"
             element={<LoginRegister onLoginSuccess={handleLoginSuccess} />}
           />
+          <Route path="/home" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/blogs" element={<Blogs />} />
+            <Route path="/blogs/:id" element={<BlogDetails />} />
+
           <Route path="/twofactor" element={<TwoFactor />} />
           <Route path="/twofactor/email" element={<EmailAuth />} />
           <Route path="/twofactor/sms" element={<SMSAuth />} />
           <Route path="/twofactor/google" element={<GoogleAuth />} />
           <Route path="/twofactor/done" element={<Done />} />
           <Route path="/twofactor/uploadVerification" element={<UploadVerification />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
       </main>
 

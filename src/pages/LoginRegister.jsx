@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+// eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -11,9 +12,11 @@ import { useSnackbar } from "notistack";
 import "react-phone-input-2/lib/style.css";
 import PhoneInput from "react-phone-input-2";
 import { Snackbar, Alert } from "@mui/material";
+import { GoogleLogin } from "@react-oauth/google";
+import { jwtDecode } from "jwt-decode";
 
-const LoginRegister = ({ onLoginSuccess }) => {
-  const { t, i18n } = useTranslation();
+const LoginRegister = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -45,7 +48,10 @@ const LoginRegister = ({ onLoginSuccess }) => {
       .required(t("required") || "Required"),
     confirmPassword: yup
       .string()
-      .oneOf([yup.ref("password"), null], t("password_match") || "Passwords must match")
+      .oneOf(
+        [yup.ref("password"), null],
+        t("password_match") || "Passwords must match"
+      )
       .required(t("required") || "Required"),
     affiliate: yup.string().required(t("required") || "Required"),
   });
@@ -180,7 +186,11 @@ const LoginRegister = ({ onLoginSuccess }) => {
                     placeholder={t("Your Email") || "Your Email"}
                     className="w-full border-b border-gray-400 bg-transparent focus:border-[#1B1664FC] outline-none py-2"
                   />
-                  {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+                  {errors.email && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.email.message}
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -193,7 +203,20 @@ const LoginRegister = ({ onLoginSuccess }) => {
                     placeholder="********"
                     className="w-full border-b border-gray-400 bg-transparent focus:border-[#1B1664FC] outline-none py-2"
                   />
-                  {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
+                  {errors.password && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.password.message}
+                    </p>
+                  )}
+                </div>
+                <div className="text-right">
+                  <button
+                    type="button"
+                    onClick={() => navigate("/forgot-password")}
+                    className="text-sm text-[#1B1664FC] hover:underline"
+                  >
+                    نسيت كلمة المرور؟
+                  </button>
                 </div>
 
                 <button
@@ -202,6 +225,46 @@ const LoginRegister = ({ onLoginSuccess }) => {
                 >
                   {t("Log In") || "Log In"}
                 </button>
+                <div className="text-center">
+                  <GoogleLogin
+                    onSuccess={async (credentialResponse) => {
+                      try {
+                        const decoded = jwtDecode(
+                          credentialResponse.credential
+                        );
+                        console.log("🟢 Google User:", decoded);
+
+                        // هنا تقدرِ تبعتي البيانات للسيرفر لو بتسجلي المستخدم الجديد
+                        // أو تسجليه مباشرة محليًا لو عندك API مخصص:
+                        const res = await ApiClient.post("Auth/google-login", {
+                          email: decoded.email,
+                          name: decoded.name,
+                          googleId: decoded.sub,
+                        });
+
+                        localStorage.setItem("Auth_Token", res.data.token);
+                        localStorage.setItem("user_id", res.data.user.id);
+                        localStorage.setItem("email", res.data.user.email);
+
+                        enqueueSnackbar("تم تسجيل الدخول بواسطة Google ✅", {
+                          variant: "success",
+                        });
+                        navigate("/twofactor/uploadVerification");
+                      } catch (error) {
+                        console.error("❌ Google login error:", error);
+                        enqueueSnackbar("فشل تسجيل الدخول عبر Google ⚠️", {
+                          variant: "error",
+                        });
+                      }
+                    }}
+                    onError={() => {
+                      enqueueSnackbar(
+                        "حدث خطأ أثناء تسجيل الدخول بـ Google ⚠️",
+                        { variant: "error" }
+                      );
+                    }}
+                  />
+                </div>
               </motion.form>
             ) : (
               // 🔹 Register Form
@@ -215,29 +278,43 @@ const LoginRegister = ({ onLoginSuccess }) => {
                 className="space-y-6"
               >
                 <div>
-                  <label className="block text-sm mb-1">{t("Full Name") || "Full Name"}</label>
+                  <label className="block text-sm mb-1">
+                    {t("Full Name") || "Full Name"}
+                  </label>
                   <input
                     {...register("fullName")}
                     type="text"
                     placeholder={t("Your Name") || "Your Name"}
                     className="w-full border-b border-gray-400 bg-transparent focus:border-[#1B1664FC] outline-none py-2"
                   />
-                  {errors.fullName && <p className="text-red-500 text-xs mt-1">{errors.fullName.message}</p>}
+                  {errors.fullName && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.fullName.message}
+                    </p>
+                  )}
                 </div>
 
                 <div>
-                  <label className="block text-sm mb-1">{t("Email") || "Email"}</label>
+                  <label className="block text-sm mb-1">
+                    {t("Email") || "Email"}
+                  </label>
                   <input
                     {...register("email")}
                     type="email"
                     placeholder={t("Your Email") || "Your Email"}
                     className="w-full border-b border-gray-400 bg-transparent focus:border-[#1B1664FC] outline-none py-2"
                   />
-                  {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+                  {errors.email && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.email.message}
+                    </p>
+                  )}
                 </div>
 
                 <div>
-                  <label className="block text-sm mb-1">{t("Phone Number") || "Phone Number"}</label>
+                  <label className="block text-sm mb-1">
+                    {t("Phone Number") || "Phone Number"}
+                  </label>
                   <PhoneInput
                     country={"eg"}
                     value={watch("phone")}
@@ -262,18 +339,26 @@ const LoginRegister = ({ onLoginSuccess }) => {
                 </div>
 
                 <div>
-                  <label className="block text-sm mb-1">{t("Password") || "Password"}</label>
+                  <label className="block text-sm mb-1">
+                    {t("Password") || "Password"}
+                  </label>
                   <input
                     {...register("password")}
                     type="password"
                     placeholder="********"
                     className="w-full border-b border-gray-400 bg-transparent focus:border-[#1B1664FC] outline-none py-2"
                   />
-                  {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
+                  {errors.password && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.password.message}
+                    </p>
+                  )}
                 </div>
 
                 <div>
-                  <label className="block text-sm mb-1">{t("Confirm Password") || "Confirm Password"}</label>
+                  <label className="block text-sm mb-1">
+                    {t("Confirm Password") || "Confirm Password"}
+                  </label>
                   <input
                     {...register("confirmPassword")}
                     type="password"
@@ -281,19 +366,29 @@ const LoginRegister = ({ onLoginSuccess }) => {
                     className="w-full border-b border-gray-400 bg-transparent focus:border-[#1B1664FC] outline-none py-2"
                   />
                   {errors.confirmPassword && (
-                    <p className="text-red-500 text-xs mt-1">{errors.confirmPassword.message}</p>
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.confirmPassword.message}
+                    </p>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-sm mb-1">{t("Affiliate") || "Affiliate"}</label>
+                  <label className="block text-sm mb-1">
+                    {t("Affiliate") || "Affiliate"}
+                  </label>
                   <input
                     {...register("affiliate")}
                     type="text"
-                    placeholder={t("Affiliate code or name") || "Affiliate code or name"}
+                    placeholder={
+                      t("Affiliate code or name") || "Affiliate code or name"
+                    }
                     className="w-full border-b border-gray-400 bg-transparent focus:border-[#1B1664FC] outline-none py-2"
                   />
-                  {errors.affiliate && <p className="text-red-500 text-xs mt-1">{errors.affiliate.message}</p>}
+                  {errors.affiliate && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.affiliate.message}
+                    </p>
+                  )}
                 </div>
 
                 <button
@@ -302,6 +397,46 @@ const LoginRegister = ({ onLoginSuccess }) => {
                 >
                   {t("Sign Up") || "Sign Up"}
                 </button>
+                <div className="text-center">
+                  <GoogleLogin
+                    onSuccess={async (credentialResponse) => {
+                      try {
+                        const decoded = jwtDecode(
+                          credentialResponse.credential
+                        );
+                        console.log("🟢 Google User:", decoded);
+
+                        // هنا تقدرِ تبعتي البيانات للسيرفر لو بتسجلي المستخدم الجديد
+                        // أو تسجليه مباشرة محليًا لو عندك API مخصص:
+                        const res = await ApiClient.post("Auth/google-login", {
+                          email: decoded.email,
+                          name: decoded.name,
+                          googleId: decoded.sub,
+                        });
+
+                        localStorage.setItem("Auth_Token", res.data.token);
+                        localStorage.setItem("user_id", res.data.user.id);
+                        localStorage.setItem("email", res.data.user.email);
+
+                        enqueueSnackbar("تم تسجيل الدخول بواسطة Google ✅", {
+                          variant: "success",
+                        });
+                        navigate("/twofactor/uploadVerification");
+                      } catch (error) {
+                        console.error("❌ Google login error:", error);
+                        enqueueSnackbar("فشل تسجيل الدخول عبر Google ⚠️", {
+                          variant: "error",
+                        });
+                      }
+                    }}
+                    onError={() => {
+                      enqueueSnackbar(
+                        "حدث خطأ أثناء تسجيل الدخول بـ Google ⚠️",
+                        { variant: "error" }
+                      );
+                    }}
+                  />
+                </div>
               </motion.form>
             )}
           </AnimatePresence>
@@ -310,7 +445,8 @@ const LoginRegister = ({ onLoginSuccess }) => {
             <p className="text-gray-600 dark:text-gray-400 text-sm">
               {isLogin
                 ? t("Don't have an account?") || "Don't have an account?"
-                : t("Already have an account?") || "Already have an account?"}{" "}
+                : t("Already have an account?") ||
+                  "Already have an account?"}{" "}
               <button
                 onClick={() => {
                   setIsLogin(!isLogin);
@@ -318,7 +454,9 @@ const LoginRegister = ({ onLoginSuccess }) => {
                 }}
                 className="text-[#1B1664FC] hover:underline font-semibold"
               >
-                {isLogin ? t("Sign Up") || "Sign Up" : t("Sign In") || "Sign In"}
+                {isLogin
+                  ? t("Sign Up") || "Sign Up"
+                  : t("Sign In") || "Sign In"}
               </button>
             </p>
           </div>
@@ -328,7 +466,11 @@ const LoginRegister = ({ onLoginSuccess }) => {
       {/* Side Image */}
       <div className="md:w-1/2 w-full hidden md:flex items-center justify-center p-8">
         <div className="w-full h-full rounded-3xl overflow-hidden shadow-lg">
-          <img src={london} alt="Login side" className="object-cover w-full h-full" />
+          <img
+            src={london}
+            alt="Login side"
+            className="object-cover w-full h-full"
+          />
         </div>
       </div>
 
