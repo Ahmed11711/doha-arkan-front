@@ -2,7 +2,7 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://f1d9d884a140.ngrok-free.app/api/",
+  baseURL: "https://back.zayamrock.com/api/",
 });
 
 axiosInstance.interceptors.request.use((config) => {

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import PricingCard from "../components/PricingCard";
-import hero from "../assets/images/hero.png";
+import hero from "../assets/images/hero2.jpg";
 import { useTranslation } from "react-i18next";
 export default function Services() {
   const services = [
