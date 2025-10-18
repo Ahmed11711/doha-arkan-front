@@ -19,7 +19,7 @@ const Navbar = ({ theme, toggleTheme, toggleLanguage }) => {
   const isArabic = i18n.language === "ar";
 
   const navItems = [
-    { path: "/", label: isArabic ? "الرئيسية" : "Home" },
+    { path: "/home", label: isArabic ? "الرئيسية" : "Home" },
     { path: "/about", label: isArabic ? "من نحن" : "About Us" },
     { path: "/services", label: isArabic ? "الخدمات" : "Services" },
     { path: "/blogs", label: isArabic ? "المدونات" : "Blogs" },
@@ -30,7 +30,7 @@ const Navbar = ({ theme, toggleTheme, toggleLanguage }) => {
   return (
     <nav
       className={`fixed top-0 left-0 w-full max-w-full z-50 flex justify-between items-center 
-  py-3 px-4 md:py-4 md:px-6 transition-all overflow-x-hidden
+  py-3 px-4 md:py-4 md:px-6 transition-all
   bg-gradient-to-r from-[#1B166430] via-[#ffffff40] to-[#1B166420]
   dark:from-[#1B166480] dark:via-[#2a2a4a60] dark:to-[#1B166450]
   backdrop-blur-lg border-b border-white/10 dark:border-gray-700/30`}
@@ -42,9 +42,8 @@ const Navbar = ({ theme, toggleTheme, toggleLanguage }) => {
 
       {/* Desktop Menu */}
       <ul
-        className={`hidden md:flex items-center gap-6 px-8 py-3 rounded-full backdrop-blur-md bg-white/30 dark:bg-gray-700/30 border border-white/40 dark:border-gray-600/40 shadow-md ${
-          isArabic ? "flex-row-reverse" : "flex-row"
-        }`}
+        className={`hidden md:flex items-center gap-6 px-8 py-3 rounded-full backdrop-blur-md bg-white/30 dark:bg-gray-700/30 border border-white/40 dark:border-gray-600/40 shadow-md overflow-hidden">
+ ${isArabic ? "flex-row-reverse" : "flex-row"}`}
       >
         {navItems.map((item) => (
           <li key={item.path}>
@@ -72,7 +71,7 @@ const Navbar = ({ theme, toggleTheme, toggleLanguage }) => {
             onClick={toggleLanguage}
             className="px-3 py-1 rounded-md bg-[#1B1664FC] text-white hover:bg-[#372E8B] text-sm transition"
           >
-            {isArabic ? "En" : "ع"}
+            {isArabic ? "En" : "Ar"}
           </button>
 
           <button

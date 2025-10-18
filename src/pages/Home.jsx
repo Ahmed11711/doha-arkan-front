@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import hero from "../assets/images/hero.png";
+import hero from "../assets/images/hero3.png";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 import "./Home.css";
 import PackagesCoverflow from "../components/PackagesCoverflow";

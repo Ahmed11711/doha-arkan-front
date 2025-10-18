@@ -59,8 +59,9 @@ function App() {
         toggleTheme={toggleTheme}
         toggleLanguage={toggleLanguage}
       />
-      <ScrollToTop />
       <main className="flex-grow">
+        <ScrollToTop />
+
         <Routes>
           <Route
             path="/"
@@ -81,14 +82,17 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/services" element={<Services />} />
           <Route path="/blogs" element={<Blogs />} />
-            <Route path="/blogs/:id" element={<BlogDetails />} />
+          <Route path="/blogs/:id" element={<BlogDetails />} />
 
           <Route path="/twofactor" element={<TwoFactor />} />
           <Route path="/twofactor/email" element={<EmailAuth />} />
           <Route path="/twofactor/sms" element={<SMSAuth />} />
           <Route path="/twofactor/google" element={<GoogleAuth />} />
           <Route path="/twofactor/done" element={<Done />} />
-          <Route path="/twofactor/uploadVerification" element={<UploadVerification />} />
+          <Route
+            path="/twofactor/uploadVerification"
+            element={<UploadVerification />}
+          />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
