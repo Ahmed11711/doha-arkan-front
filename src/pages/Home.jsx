@@ -233,11 +233,11 @@ const Home = () => {
                 key={idx}
                 className="border border-gray-200 dark:border-gray-700 rounded-2xl p-8 text-center shadow-sm hover:shadow-lg transition-all duration-300 bg-white dark:bg-gray-800"
               >
-                <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+                <div className="w-28 h-28 mx-auto mb-6 rounded-full border-4 border-[#1B1664FC] shadow-md overflow-hidden bg-gray-100 dark:bg-gray-700">
                   <img
                     src={service.img}
                     alt={service.title}
-                    className="w-12 h-12 object-contain"
+                    className="w-full h-full object-cover"
                   />
                 </div>
 
