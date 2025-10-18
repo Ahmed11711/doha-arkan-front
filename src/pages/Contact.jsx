@@ -2,7 +2,7 @@
 import React from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
-import contactImg from "../assets/images/hero.png";
+import contactImg from "../assets/images/hero3.png";
 import { useTranslation } from "react-i18next";
 
 export default function Contact() {
