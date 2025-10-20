@@ -25,38 +25,25 @@ const LoginRegister = () => {
 
   // ✅ Validation Schemas
   const schemaLogin = yup.object().shape({
-    email: yup
-      .string()
-      .email(t("invalid_email") || "Invalid email")
-      .required(t("required") || "Required"),
-    password: yup.string().required(t("required") || "Required"),
+    email: yup.string().email(t("invalid_email")).required(t("required")),
+    password: yup.string().required(t("required")),
   });
 
   const schemaRegister = yup.object().shape({
-    fullName: yup.string().required(t("required") || "Required"),
-    email: yup
-      .string()
-      .email(t("invalid_email") || "Invalid email")
-      .required(t("required") || "Required"),
+    fullName: yup.string().required(t("required")),
+    email: yup.string().email(t("invalid_email")).required(t("required")),
     phone: yup
       .string()
-      .matches(/^\+\d+$/, t("invalid_phone") || "Invalid phone format")
-      .required(t("required") || "Required"),
-    password: yup
-      .string()
-      .min(6, t("password_min") || "Minimum 6 characters")
-      .required(t("required") || "Required"),
+      .matches(/^\+\d+$/, t("invalid_phone"))
+      .required(t("required")),
+    password: yup.string().min(6, t("password_min")).required(t("required")),
     confirmPassword: yup
       .string()
-      .oneOf(
-        [yup.ref("password"), null],
-        t("password_match") || "Passwords must match"
-      )
-      .required(t("required") || "Required"),
-    affiliate: yup.string().required(t("required") || "Required"),
+      .oneOf([yup.ref("password"), null], t("password_match"))
+      .required(t("required")),
+    affiliate: yup.string().required(t("required")),
   });
 
-  // ✅ React Hook Form setup
   const {
     register,
     handleSubmit,
@@ -68,19 +55,13 @@ const LoginRegister = () => {
     resolver: yupResolver(isLogin ? schemaLogin : schemaRegister),
   });
 
-  // ✅ Handle Submit
   const onSubmit = async (data) => {
-    console.log("🟢 Form Submitted:", data);
-
     try {
       if (isLogin) {
-        console.log("🔐 Sending Login Request...");
         const res = await ApiClient.post("Auth/login", {
           email: data.email,
           password: data.password,
         });
-
-        console.log("✅ Login Response:", res);
 
         if (res?.data?.token) {
           const { token, user } = res.data;
@@ -90,12 +71,15 @@ const LoginRegister = () => {
           localStorage.setItem("isAuthenticated", "true");
 
           enqueueSnackbar("تم تسجيل الدخول بنجاح ✅", { variant: "success" });
-          navigate("/twofactor/uploadVerification");
+          if (user.verified_kyc === false) {
+            navigate("/twofactor/uploadVerification");
+          } else {
+            navigate("/");
+          }
         } else {
           enqueueSnackbar("فشل تسجيل الدخول ⚠️", { variant: "error" });
         }
       } else {
-        console.log("📝 Sending Register Request...");
         const signupRes = await ApiClient.post("Auth/create-account", {
           name: data.fullName,
           email: data.email,
@@ -105,8 +89,6 @@ const LoginRegister = () => {
           type: "user",
         });
 
-        console.log("✅ Register Response:", signupRes);
-
         localStorage.setItem("user_id", signupRes.data.id);
         localStorage.setItem("email", signupRes.data.email);
 
@@ -115,26 +97,21 @@ const LoginRegister = () => {
       }
     } catch (error) {
       console.error("❌ Error:", error);
-
-      if (error?.response?.status === 422) {
-        setApiErrors(error.response.data.error || {});
-      }
-
-      const errMsg =
-        error?.response?.data?.message ||
-        "حدث خطأ غير متوقع، حاول مرة أخرى لاحقًا.";
-
-      enqueueSnackbar(errMsg, { variant: "error" });
+      setApiErrors(error?.response?.data?.error || {});
+      enqueueSnackbar(
+        error?.response?.data?.message || "حدث خطأ غير متوقع ⚠️",
+        { variant: "error" }
+      );
     }
   };
 
-  // ✅ UI
   return (
-    <div className="min-h-screen flex flex-col md:flex-row">
-      <div className="md:w-1/2 w-full flex items-center justify-center bg-white dark:bg-gray-800 p-10">
-        <div className="w-full max-w-md">
-          {/* Switch buttons */}
-          <div className="flex justify-center mb-8 bg-gray-100 dark:bg-gray-700 rounded-full p-1">
+    <div className="min-h-screen pt-20 flex flex-col md:flex-row items-center justify-center bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+      {/* Left Section */}
+      <div className="md:w-1/2 w-full flex items-center justify-center p-8">
+        <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 md:p-10 transition-all duration-300">
+          {/* Toggle Buttons */}
+          <div className="flex justify-between bg-gray-100 dark:bg-gray-700 rounded-full p-1 mb-8">
             <button
               onClick={() => {
                 setIsLogin(true);
@@ -143,10 +120,10 @@ const LoginRegister = () => {
               className={`w-1/2 py-2 rounded-full font-semibold transition-all ${
                 isLogin
                   ? "bg-[#1B1664FC] text-white"
-                  : "text-gray-600 dark:text-gray-300 hover:text-[#1B1664FC]"
+                  : "text-gray-600 dark:text-gray-300"
               }`}
             >
-              {t("Sign In") || "Sign In"}
+              {t("Sign In")}
             </button>
             <button
               onClick={() => {
@@ -156,34 +133,34 @@ const LoginRegister = () => {
               className={`w-1/2 py-2 rounded-full font-semibold transition-all ${
                 !isLogin
                   ? "bg-[#1B1664FC] text-white"
-                  : "text-gray-600 dark:text-gray-300 hover:text-[#1B1664FC]"
+                  : "text-gray-600 dark:text-gray-300"
               }`}
             >
-              {t("Sign Up") || "Sign Up"}
+              {t("Sign Up")}
             </button>
           </div>
 
-          {/* Animate Forms */}
+          {/* Animated Forms */}
           <AnimatePresence mode="wait">
             {isLogin ? (
-              // 🔹 Login Form
               <motion.form
-                key="login-form"
+                key="login"
                 onSubmit={handleSubmit(onSubmit)}
-                initial={{ opacity: 0, x: -30 }}
+                initial={{ opacity: 0, x: -40 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 30 }}
+                exit={{ opacity: 0, x: 40 }}
                 transition={{ duration: 0.3 }}
-                className="space-y-6"
+                className="space-y-5"
               >
+                {/* Email */}
                 <div>
                   <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">
-                    {t("Email") || "Email"}
+                    {t("Email")}
                   </label>
                   <input
                     {...register("email")}
                     type="email"
-                    placeholder={t("Your Email") || "Your Email"}
+                    placeholder={t("Your Email")}
                     className="w-full border-b border-gray-400 bg-transparent focus:border-[#1B1664FC] outline-none py-2"
                   />
                   {errors.email && (
@@ -193,9 +170,10 @@ const LoginRegister = () => {
                   )}
                 </div>
 
+                {/* Password */}
                 <div>
                   <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">
-                    {t("Password") || "Password"}
+                    {t("Password")}
                   </label>
                   <input
                     {...register("password")}
@@ -209,33 +187,34 @@ const LoginRegister = () => {
                     </p>
                   )}
                 </div>
+
+                {/* Forgot Password */}
                 <div className="text-right">
                   <button
                     type="button"
                     onClick={() => navigate("/forgot-password")}
                     className="text-sm text-[#1B1664FC] hover:underline"
                   >
-                    نسيت كلمة المرور؟
+                    {t("Forgot Password?")}
                   </button>
                 </div>
 
+                {/* Submit */}
                 <button
                   type="submit"
                   className="w-full bg-[#1B1664FC] hover:bg-[#372E8B] text-white py-2 rounded-lg transition-all"
                 >
-                  {t("Log In") || "Log In"}
+                  {t("Log In")}
                 </button>
-                <div className="text-center">
+
+                {/* Google Login */}
+                <div className="flex justify-center">
                   <GoogleLogin
                     onSuccess={async (credentialResponse) => {
                       try {
                         const decoded = jwtDecode(
                           credentialResponse.credential
                         );
-                        console.log("🟢 Google User:", decoded);
-
-                        // هنا تقدرِ تبعتي البيانات للسيرفر لو بتسجلي المستخدم الجديد
-                        // أو تسجليه مباشرة محليًا لو عندك API مخصص:
                         const res = await ApiClient.post("Auth/google-login", {
                           email: decoded.email,
                           name: decoded.name,
@@ -250,41 +229,33 @@ const LoginRegister = () => {
                           variant: "success",
                         });
                         navigate("/twofactor/uploadVerification");
-                      } catch (error) {
-                        console.error("❌ Google login error:", error);
+                      } catch {
                         enqueueSnackbar("فشل تسجيل الدخول عبر Google ⚠️", {
                           variant: "error",
                         });
                       }
                     }}
-                    onError={() => {
-                      enqueueSnackbar(
-                        "حدث خطأ أثناء تسجيل الدخول بـ Google ⚠️",
-                        { variant: "error" }
-                      );
-                    }}
                   />
                 </div>
               </motion.form>
             ) : (
-              // 🔹 Register Form
+              // Register Form
               <motion.form
-                key="register-form" // 👈 مهم جدًا
+                key="register"
                 onSubmit={handleSubmit(onSubmit)}
-                initial={{ opacity: 0, x: 30 }}
+                initial={{ opacity: 0, x: 40 }}
                 animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -30 }}
+                exit={{ opacity: 0, x: -40 }}
                 transition={{ duration: 0.3 }}
-                className="space-y-6"
+                className="space-y-5"
               >
+                {/* Full Name */}
                 <div>
-                  <label className="block text-sm mb-1">
-                    {t("Full Name") || "Full Name"}
-                  </label>
+                  <label className="block text-sm mb-1">{t("Full Name")}</label>
                   <input
                     {...register("fullName")}
                     type="text"
-                    placeholder={t("Your Name") || "Your Name"}
+                    placeholder={t("Your Name")}
                     className="w-full border-b border-gray-400 bg-transparent focus:border-[#1B1664FC] outline-none py-2"
                   />
                   {errors.fullName && (
@@ -294,14 +265,13 @@ const LoginRegister = () => {
                   )}
                 </div>
 
+                {/* Email */}
                 <div>
-                  <label className="block text-sm mb-1">
-                    {t("Email") || "Email"}
-                  </label>
+                  <label className="block text-sm mb-1">{t("Email")}</label>
                   <input
                     {...register("email")}
                     type="email"
-                    placeholder={t("Your Email") || "Your Email"}
+                    placeholder={t("Your Email")}
                     className="w-full border-b border-gray-400 bg-transparent focus:border-[#1B1664FC] outline-none py-2"
                   />
                   {errors.email && (
@@ -311,9 +281,10 @@ const LoginRegister = () => {
                   )}
                 </div>
 
+                {/* Phone */}
                 <div>
                   <label className="block text-sm mb-1">
-                    {t("Phone Number") || "Phone Number"}
+                    {t("Phone Number")}
                   </label>
                   <PhoneInput
                     country={"eg"}
@@ -338,10 +309,9 @@ const LoginRegister = () => {
                   )}
                 </div>
 
+                {/* Password */}
                 <div>
-                  <label className="block text-sm mb-1">
-                    {t("Password") || "Password"}
-                  </label>
+                  <label className="block text-sm mb-1">{t("Password")}</label>
                   <input
                     {...register("password")}
                     type="password"
@@ -355,9 +325,10 @@ const LoginRegister = () => {
                   )}
                 </div>
 
+                {/* Confirm Password */}
                 <div>
                   <label className="block text-sm mb-1">
-                    {t("Confirm Password") || "Confirm Password"}
+                    {t("Confirm Password")}
                   </label>
                   <input
                     {...register("confirmPassword")}
@@ -372,16 +343,13 @@ const LoginRegister = () => {
                   )}
                 </div>
 
+                {/* Affiliate */}
                 <div>
-                  <label className="block text-sm mb-1">
-                    {t("Affiliate") || "Affiliate"}
-                  </label>
+                  <label className="block text-sm mb-1">{t("Affiliate")}</label>
                   <input
                     {...register("affiliate")}
                     type="text"
-                    placeholder={
-                      t("Affiliate code or name") || "Affiliate code or name"
-                    }
+                    placeholder={t("Affiliate code or name")}
                     className="w-full border-b border-gray-400 bg-transparent focus:border-[#1B1664FC] outline-none py-2"
                   />
                   {errors.affiliate && (
@@ -391,62 +359,35 @@ const LoginRegister = () => {
                   )}
                 </div>
 
+                {/* Submit */}
                 <button
                   type="submit"
                   className="w-full bg-[#1B1664FC] hover:bg-[#372E8B] text-white py-2 rounded-lg transition-all"
                 >
-                  {t("Sign Up") || "Sign Up"}
+                  {t("Sign Up")}
                 </button>
-                <div className="text-center">
+
+                {/* Google Login */}
+                <div className="flex justify-center">
                   <GoogleLogin
-                    onSuccess={async (credentialResponse) => {
-                      try {
-                        const decoded = jwtDecode(
-                          credentialResponse.credential
-                        );
-                        console.log("🟢 Google User:", decoded);
-
-                        // هنا تقدرِ تبعتي البيانات للسيرفر لو بتسجلي المستخدم الجديد
-                        // أو تسجليه مباشرة محليًا لو عندك API مخصص:
-                        const res = await ApiClient.post("Auth/google-login", {
-                          email: decoded.email,
-                          name: decoded.name,
-                          googleId: decoded.sub,
-                        });
-
-                        localStorage.setItem("Auth_Token", res.data.token);
-                        localStorage.setItem("user_id", res.data.user.id);
-                        localStorage.setItem("email", res.data.user.email);
-
-                        enqueueSnackbar("تم تسجيل الدخول بواسطة Google ✅", {
-                          variant: "success",
-                        });
-                        navigate("/twofactor/uploadVerification");
-                      } catch (error) {
-                        console.error("❌ Google login error:", error);
-                        enqueueSnackbar("فشل تسجيل الدخول عبر Google ⚠️", {
-                          variant: "error",
-                        });
-                      }
-                    }}
-                    onError={() => {
-                      enqueueSnackbar(
-                        "حدث خطأ أثناء تسجيل الدخول بـ Google ⚠️",
-                        { variant: "error" }
-                      );
-                    }}
+                    onSuccess={() => {}}
+                    onError={() =>
+                      enqueueSnackbar("حدث خطأ أثناء تسجيل الدخول ⚠️", {
+                        variant: "error",
+                      })
+                    }
                   />
                 </div>
               </motion.form>
             )}
           </AnimatePresence>
 
+          {/* Switch Between Login / Register */}
           <div className="text-center mt-6">
             <p className="text-gray-600 dark:text-gray-400 text-sm">
               {isLogin
-                ? t("Don't have an account?") || "Don't have an account?"
-                : t("Already have an account?") ||
-                  "Already have an account?"}{" "}
+                ? `${t("Don't have an account?")} `
+                : `${t("Already have an account?")} `}
               <button
                 onClick={() => {
                   setIsLogin(!isLogin);
@@ -454,24 +395,20 @@ const LoginRegister = () => {
                 }}
                 className="text-[#1B1664FC] hover:underline font-semibold"
               >
-                {isLogin
-                  ? t("Sign Up") || "Sign Up"
-                  : t("Sign In") || "Sign In"}
+                {isLogin ? t("Sign Up") : t("Sign In")}
               </button>
             </p>
           </div>
         </div>
       </div>
 
-      {/* Side Image */}
-      <div className="md:w-1/2 w-full hidden md:flex items-center justify-center p-8">
-        <div className="w-full h-full rounded-3xl overflow-hidden shadow-lg">
-          <img
-            src={london}
-            alt="Login side"
-            className="object-cover w-full h-full"
-          />
-        </div>
+      {/* Right Image */}
+      <div className="md:w-1/2 hidden md:flex items-center justify-center p-8">
+        <img
+          src={london}
+          alt="Login"
+          className="rounded-3xl shadow-2xl object-cover w-full h-full"
+        />
       </div>
 
       {/* Snackbar */}
@@ -483,8 +420,8 @@ const LoginRegister = () => {
       >
         <Alert severity="success" variant="filled">
           {isLogin
-            ? t("Logged in successfully!") || "Logged in successfully!"
-            : t("Registered successfully!") || "Registered successfully!"}
+            ? t("Logged in successfully!")
+            : t("Registered successfully!")}
         </Alert>
       </Snackbar>
     </div>

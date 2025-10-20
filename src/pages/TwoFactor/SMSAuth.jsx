@@ -83,7 +83,7 @@ export default function SMSAuth() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-6">
+    <div className="min-h-screen flex pt-24 items-center justify-center bg-gray-100 dark:bg-gray-900 p-6">
       <div className="w-full max-w-2xl bg-white dark:bg-gray-800 rounded-3xl shadow-3xl p-16 flex flex-col items-center space-y-6 transition-all">
         <button
           onClick={() => navigate("/auth")}

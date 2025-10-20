@@ -1,7 +1,8 @@
 import React from "react";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
-import hero from "../assets/images/hero.png"; // غيّري الصورة حسب مشروعك
+import hero from "../assets/images/hero.png";
 import { useTranslation } from "react-i18next";
 
 export default function HomeBlogs() {
@@ -69,7 +70,6 @@ export default function HomeBlogs() {
           )}
         </p>
       </div>
-      {/* Featured Blog */}
       <motion.div
         className={`max-w-7xl border p-8 rounded mx-auto flex flex-col md:flex-row items-center gap-10 mb-16 ${
           isArabic ? "flex-row-reverse" : ""
@@ -116,7 +116,6 @@ export default function HomeBlogs() {
         </div>
       </motion.div>
 
-      {/* Other Blogs */}
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
         {others.map((blog, i) => (
           <motion.div
@@ -154,7 +153,6 @@ export default function HomeBlogs() {
         ))}
       </div>
 
-      {/* Featured Blog */}
       <motion.div
         className={`max-w-7xl border p-8 rounded mx-auto flex flex-col md:flex-row items-center gap-10 mt-16 ${
           isArabic ? "flex-row-reverse" : ""

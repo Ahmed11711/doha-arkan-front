@@ -35,28 +35,41 @@
   "password_min": "كلمة المرور يجب ألا تقل عن 6 أحرف",
   "password_match": "كلمتا المرور غير متطابقتين",
   "forgotPassword": {
-  "title": "نسيت كلمة المرور",
-  "emailLabel": "البريد الإلكتروني",
-  "emailPlaceholder": "example@email.com",
-  "sendCode": "إرسال الكود",
-  "sending": "جاري الإرسال...",
-  "success": "تم إرسال كود التحقق إلى البريد الإلكتروني ✅",
-  "fail": "فشل إرسال الكود ⚠️",
-  "enterEmail": "من فضلك أدخل البريد الإلكتروني"
-},
-"resetPassword": {
-  "title": "إعادة تعيين كلمة المرور",
-  "codeLabel": "كود التحقق",
-  "codePlaceholder": "أدخل الكود المرسل إلى البريد",
-  "passwordLabel": "كلمة المرور الجديدة",
-  "confirmPasswordLabel": "تأكيد كلمة المرور",
-  "passwordPlaceholder": "********",
-  "changePassword": "تغيير كلمة المرور",
-  "updating": "جارٍ التحديث...",
-  "success": "تم تحديث كلمة المرور بنجاح ✅",
-  "fail": "فشل تحديث كلمة المرور ⚠️",
-  "noEmail": "حدث خطأ، أعد المحاولة من البداية.",
-  "mismatch": "كلمتا المرور غير متطابقتين ⚠️"
-}
-
+    "title": "نسيت كلمة المرور",
+    "emailLabel": "البريد الإلكتروني",
+    "emailPlaceholder": "example@email.com",
+    "sendCode": "إرسال الكود",
+    "sending": "جاري الإرسال...",
+    "success": "تم إرسال كود التحقق إلى البريد الإلكتروني ✅",
+    "fail": "فشل إرسال الكود ⚠️",
+    "enterEmail": "من فضلك أدخل البريد الإلكتروني"
+  },
+  "resetPassword": {
+    "title": "إعادة تعيين كلمة المرور",
+    "codeLabel": "كود التحقق",
+    "codePlaceholder": "أدخل الكود المرسل إلى البريد",
+    "passwordLabel": "كلمة المرور الجديدة",
+    "confirmPasswordLabel": "تأكيد كلمة المرور",
+    "passwordPlaceholder": "********",
+    "changePassword": "تغيير كلمة المرور",
+    "updating": "جارٍ التحديث...",
+    "success": "تم تحديث كلمة المرور بنجاح ✅",
+    "fail": "فشل تحديث كلمة المرور ⚠️",
+    "noEmail": "حدث خطأ، أعد المحاولة من البداية.",
+    "mismatch": "كلمتا المرور غير متطابقتين ⚠️"
+  },
+  "wallet": {
+    "dir": "rtl",
+    "currentBalance": "الرصيد الحالي",
+    "balance": "رصيد الحساب",
+    "shares": "الأسهم",
+    "sellInv": "الاستثمار المباع",
+    "rentalUnits": "الوحدات المؤجرة",
+    "copy": "نسخ",
+    "deposit": "إيداع",
+    "withdraw": "سحب",
+    "affiliate": "التسويق بالعمولة",
+    "history": "سجل المعاملات",
+    "noTransactions": "لا توجد معاملات بعد"
+  }
 }

@@ -148,7 +148,7 @@ const Navbar = ({ theme, toggleTheme, toggleLanguage }) => {
               onClick={toggleLanguage}
               className="px-4 py-2 rounded-md bg-[#1B1664FC] text-white hover:bg-[#372E8B] text-sm transition"
             >
-              {isArabic ? "En" : "ع"}
+              {isArabic ? "En" : "Ar"}
             </button>
 
             <button

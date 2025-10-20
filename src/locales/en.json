@@ -35,28 +35,41 @@
   "password_min": "Password must be at least 6 characters",
   "password_match": "Passwords must match",
   "forgotPassword": {
-  "title": "Forgot Password",
-  "emailLabel": "Email Address",
-  "emailPlaceholder": "example@email.com",
-  "sendCode": "Send Code",
-  "sending": "Sending...",
-  "success": "Verification code sent to your email ✅",
-  "fail": "Failed to send verification code ⚠️",
-  "enterEmail": "Please enter your email address"
-},
-"resetPassword": {
-  "title": "Reset Password",
-  "codeLabel": "Verification Code",
-  "codePlaceholder": "Enter the code sent to your email",
-  "passwordLabel": "New Password",
-  "confirmPasswordLabel": "Confirm Password",
-  "passwordPlaceholder": "********",
-  "changePassword": "Change Password",
-  "updating": "Updating...",
-  "success": "Password updated successfully ✅",
-  "fail": "Failed to update password ⚠️",
-  "noEmail": "An error occurred, please start again.",
-  "mismatch": "Passwords do not match ⚠️"
-}
-
+    "title": "Forgot Password",
+    "emailLabel": "Email Address",
+    "emailPlaceholder": "example@email.com",
+    "sendCode": "Send Code",
+    "sending": "Sending...",
+    "success": "Verification code sent to your email ✅",
+    "fail": "Failed to send verification code ⚠️",
+    "enterEmail": "Please enter your email address"
+  },
+  "resetPassword": {
+    "title": "Reset Password",
+    "codeLabel": "Verification Code",
+    "codePlaceholder": "Enter the code sent to your email",
+    "passwordLabel": "New Password",
+    "confirmPasswordLabel": "Confirm Password",
+    "passwordPlaceholder": "********",
+    "changePassword": "Change Password",
+    "updating": "Updating...",
+    "success": "Password updated successfully ✅",
+    "fail": "Failed to update password ⚠️",
+    "noEmail": "An error occurred, please start again.",
+    "mismatch": "Passwords do not match ⚠️"
+  },
+  "wallet": {
+    "dir": "ltr",
+    "currentBalance": "Current Balance",
+    "balance": "Account Balance",
+    "shares": "Shares",
+    "sellInv": "Sell Inv.",
+    "rentalUnits": "Rental Units",
+    "copy": "Copy",
+    "deposit": "Deposit",
+    "withdraw": "Withdraw",
+    "affiliate": "Affiliate",
+    "history": "History Transaction",
+    "noTransactions": "No transactions yet"
+  }
 }

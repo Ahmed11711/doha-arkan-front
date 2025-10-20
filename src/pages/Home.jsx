@@ -78,32 +78,31 @@ const Home = () => {
 
       <section className="py-16 px-6 bg-gray-100 dark:bg-gray-900 transition-colors duration-500">
         <div
-          className={`max-w-7xl mx-auto flex flex-col-reverse md:flex-row items-center gap-12 ${
-            isArabic ? "md:flex-row-reverse" : ""
-          }`}
+          className={`max-w-7xl mx-auto flex flex-col ${
+            isArabic ? "md:flex-row-reverse" : "md:flex-row"
+          } items-center gap-12`}
         >
-          {/* النصوص */}
           <div
             className={`flex-1 ${
               isArabic ? "text-right" : "text-left"
-            } relative w-full`}
+            } w-full order-1 md:order-1`}
           >
             <div className="relative mb-6">
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white relative z-10">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white relative z-10">
                 {t("Who We Are")}
               </h2>
-              <span className="absolute top-0 left-0 text-7xl md:text-8xl font-extrabold text-gray-300 dark:text-gray-700 opacity-20 select-none z-0">
+              <span className="absolute top-0 left-0 text-6xl sm:text-7xl md:text-8xl font-extrabold text-gray-300 dark:text-gray-700 opacity-20 select-none z-0">
                 {t("Who We Are")}
               </span>
             </div>
 
-            <p className="text-lg text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+            <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
               Lorem ipsum dolor sit amet consectetur. Aliquam nibh quam vivamus
               ultricies semper sed gravida dictumst nunc. Ut ac luctus facilisis
               ipsum mauris volutpat elementum ut. Volutpat nullam tellus egestas
               scelerisque tellus.
             </p>
-            <p className="text-lg text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+            <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
               Id pellentesque eget sollicitudin quis morbi arcu. Id etiam sed
               dui tellus purus morbi aenean. Quis non non massa ut amet. Nec id
               sed ullamcorper tincidunt egestas sit. Ac elementum in justo
@@ -116,30 +115,32 @@ const Home = () => {
             </button>
           </div>
 
-          {/* الأوربت SVG */}
-          <div className="flex-1 flex justify-center items-center w-full">
-            <div className="orbit-container w-[90%] max-w-[400px] sm:max-w-[450px] md:max-w-[500px]">
-              <svg viewBox="0 0 500 500" className="orbit-svg w-full h-auto">
+          <div className="flex-1 flex justify-center items-center w-full order-2 md:order-2">
+            <div className="orbit-container w-[85%] sm:w-[80%] md:w-[90%] max-w-[550px]">
+              <svg
+                viewBox="0 0 500 500"
+                className="orbit-svg w-full  drop-shadow-lg"
+              >
                 {/* الدوائر (المسارات) */}
                 <circle
                   cx="250"
                   cy="250"
-                  r="110"
+                  r="120"
                   className="orbit-path inner"
                 />
                 <circle
                   cx="250"
                   cy="250"
-                  r="180"
+                  r="190"
                   className="orbit-path outer"
                 />
 
                 {/* النص في المنتصف */}
                 <text
                   x="250"
-                  y="260"
+                  y="265"
                   textAnchor="middle"
-                  className="center-text"
+                  className="center-text text-2xl font-bold fill-[#1B1664FC]"
                 >
                   arkan
                 </text>
@@ -148,61 +149,85 @@ const Home = () => {
                 <g className="inner-orbit">
                   <foreignObject
                     x="250"
-                    y="120"
-                    width="50"
-                    height="50"
+                    y="110"
+                    width="60"
+                    height="60"
                     className="orbit-item"
                   >
-                    <img src={hero} alt="1" />
+                    <img
+                      src={hero}
+                      alt="1"
+                      className="rounded-full w-full h-full object-cover"
+                    />
                   </foreignObject>
                   <foreignObject
-                    x="330"
+                    x="340"
                     y="220"
-                    width="50"
-                    height="50"
+                    width="60"
+                    height="60"
                     className="orbit-item"
                   >
-                    <img src={hero} alt="2" />
+                    <img
+                      src={hero}
+                      alt="2"
+                      className="rounded-full w-full h-full object-cover"
+                    />
                   </foreignObject>
                   <foreignObject
                     x="250"
-                    y="330"
-                    width="50"
-                    height="50"
+                    y="340"
+                    width="60"
+                    height="60"
                     className="orbit-item"
                   >
-                    <img src={hero} alt="3" />
+                    <img
+                      src={hero}
+                      alt="3"
+                      className="rounded-full w-full h-full object-cover"
+                    />
                   </foreignObject>
                 </g>
 
                 {/* العناصر على الدائرة الخارجية */}
                 <g className="outer-orbit">
                   <foreignObject
-                    x="400"
+                    x="420"
                     y="220"
-                    width="50"
-                    height="50"
+                    width="70"
+                    height="70"
                     className="orbit-item"
                   >
-                    <img src={hero} alt="4" />
+                    <img
+                      src={hero}
+                      alt="4"
+                      className="rounded-full w-full h-full object-cover"
+                    />
                   </foreignObject>
                   <foreignObject
                     x="250"
-                    y="50"
-                    width="50"
-                    height="50"
+                    y="30"
+                    width="70"
+                    height="70"
                     className="orbit-item"
                   >
-                    <img src={hero} alt="5" />
+                    <img
+                      src={hero}
+                      alt="5"
+                      className="rounded-full w-full h-full object-cover"
+                    />
                   </foreignObject>
                   <foreignObject
-                    x="50"
-                    y="240"
-                    width="50"
-                    height="50"
+                    x="40"
+                    y="230"
+                    width="70"
+                    height="70"
                     className="orbit-item"
                   >
-                    <img src={hero} alt="6" />
+                    <img
+                      src={hero}
+                      alt="6"
+                      className="rounded-full w-full h-full object-cover"
+                    />
                   </foreignObject>
                 </g>
               </svg>

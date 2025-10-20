@@ -66,12 +66,6 @@ export default function UploadVerification() {
     try {
       setLoading(true);
       setMessage({ text: "Uploading verification data...", type: "info" });
-      console.log(
-        "Files to upload:",
-        files.front_id,
-        files.back_id,
-        files.face
-      );
 
       const formData = new FormData();
       formData.append("user_id", user_id);
@@ -79,10 +73,7 @@ export default function UploadVerification() {
       formData.append("back_id", files.back_id);
       formData.append("face", files.face);
 
-      const response = await ApiClient.post("kyc", formData,{
-        headers: {          
-        },
-      });
+      const response = await ApiClient.post("kyc", formData);
 
       console.log("✅ KYC Response:", response.data);
       setMessage({
@@ -103,11 +94,11 @@ export default function UploadVerification() {
   };
 
   const Stepper = () => (
-    <div className="flex items-center justify-center space-x-5 mb-12">
+    <div className="flex items-center justify-center my-10 sm:mb-12 flex-wrap gap-3 sm:gap-5 text-center">
       {[1, 2, 3].map((num) => (
         <React.Fragment key={num}>
           <span
-            className={`flex items-center justify-center w-14 h-14 rounded-full font-semibold text-xl ${
+            className={`flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full font-semibold text-lg sm:text-xl ${
               step === num
                 ? "bg-[#1B1664FC] text-white shadow-lg scale-105"
                 : step > num
@@ -117,9 +108,10 @@ export default function UploadVerification() {
           >
             {num}
           </span>
+
           {num !== 3 && (
             <div
-              className={`w-20 h-[4px] rounded-full ${
+              className={`hidden sm:block w-12 sm:w-20 h-[3px] sm:h-[4px] rounded-full ${
                 step > num ? "bg-green-600" : "bg-gray-300 dark:bg-gray-600"
               } transition-colors duration-300`}
             ></div>
@@ -160,28 +152,28 @@ export default function UploadVerification() {
 
     return (
       <>
-        <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3 text-center">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-3 text-center">
           {title}
         </h2>
-        <p className="text-gray-600 dark:text-gray-400 text-center mb-8 text-lg">
+        <p className="text-gray-600 dark:text-gray-400 text-center mb-6 sm:mb-8 text-base sm:text-lg">
           {desc}
         </p>
 
         <img
           src={imageExample}
           alt="Example"
-          className="w-72 h-44 object-contain mb-8 rounded-2xl border dark:border-gray-700"
+          className="w-48 sm:w-64 md:w-72 h-auto mb-6 sm:mb-8 rounded-2xl border dark:border-gray-700 object-contain mx-auto"
         />
 
-        <div className="w-full border-2 border-dashed border-gray-400 dark:border-gray-600 rounded-2xl p-10 text-center">
+        <div className="w-full border-2 border-dashed border-gray-400 dark:border-gray-600 rounded-2xl p-6 sm:p-10 text-center">
           {file ? (
             <div className="flex flex-col items-center">
               <img
                 src={URL.createObjectURL(file)}
                 alt={`${name} Preview`}
-                className="w-full h-72 object-cover rounded-2xl mb-4"
+                className="w-full max-w-sm h-auto rounded-2xl mb-4 object-cover"
               />
-              <label className="cursor-pointer text-[#1B1664FC] font-semibold underline hover:text-[#372E8B] transition-all">
+              <label className="cursor-pointer text-[#1B1664FC] font-semibold underline hover:text-[#372E8B] transition-all text-sm sm:text-base">
                 <input
                   type="file"
                   name={name}
@@ -193,7 +185,7 @@ export default function UploadVerification() {
               </label>
             </div>
           ) : (
-            <label className="cursor-pointer text-gray-600 dark:text-gray-300 font-medium">
+            <label className="cursor-pointer text-gray-600 dark:text-gray-300 font-medium text-sm sm:text-base">
               <input
                 type="file"
                 name={name}
@@ -201,7 +193,7 @@ export default function UploadVerification() {
                 className="hidden"
                 onChange={handleFileChange}
               />
-              <span className="block text-lg">Click to upload</span>
+              <span className="block text-lg sm:text-xl">Click to upload</span>
             </label>
           )}
         </div>
@@ -210,14 +202,14 @@ export default function UploadVerification() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-8">
-      <div className="w-full max-w-3xl bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-12 flex flex-col items-center transition-all scale-[1.05]">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-4 sm:p-8">
+      <div className="w-full max-w-md sm:max-w-2xl md:max-w-3xl bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-2xl p-6 sm:p-10 md:p-12 flex flex-col items-center transition-all">
         <Stepper />
         {renderStepContent()}
 
         {message.text && (
           <div
-            className={`mt-8 px-6 py-3 rounded-xl text-center font-medium ${
+            className={`mt-6 sm:mt-8 px-4 sm:px-6 py-3 rounded-xl text-center font-medium text-sm sm:text-base ${
               message.type === "error"
                 ? "bg-red-100 text-red-700"
                 : message.type === "success"
@@ -229,12 +221,12 @@ export default function UploadVerification() {
           </div>
         )}
 
-        <div className="flex justify-between w-full mt-10">
+        <div className="flex flex-col sm:flex-row justify-between gap-4 sm:gap-0 w-full mt-8 sm:mt-10">
           {step > 1 ? (
             <button
               type="button"
               onClick={handleBack}
-              className="bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600 text-gray-800 dark:text-white px-8 py-4 rounded-xl font-semibold transition-all text-lg"
+              className="bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600 text-gray-800 dark:text-white px-8 py-3 rounded-xl font-semibold transition-all text-base sm:text-lg w-full sm:w-auto"
             >
               Back
             </button>
@@ -247,7 +239,7 @@ export default function UploadVerification() {
             disabled={loading}
             className={`${
               loading ? "bg-gray-400" : "bg-[#1B1664FC] hover:bg-[#372E8B]"
-            } text-white px-10 py-4 rounded-xl font-semibold transition-all text-lg`}
+            } text-white px-8 sm:px-10 py-3 sm:py-4 rounded-xl font-semibold transition-all text-base sm:text-lg w-full sm:w-auto`}
           >
             {loading ? "Uploading..." : step === 3 ? "Finish" : "Next"}
           </button>

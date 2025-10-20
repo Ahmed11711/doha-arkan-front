@@ -19,6 +19,7 @@ import BlogDetails from "./pages/BlogDetails";
 import ScrollToTop from "./components/ScrollToTop";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import WalletPage from "./pages/WalletPage";
 function App() {
   const { i18n } = useTranslation();
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
@@ -81,9 +82,9 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/services" element={<Services />} />
+          <Route path="/sell-wallets" element={<WalletPage />} />
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/blogs/:id" element={<BlogDetails />} />
-
           <Route path="/twofactor" element={<TwoFactor />} />
           <Route path="/twofactor/email" element={<EmailAuth />} />
           <Route path="/twofactor/sms" element={<SMSAuth />} />

@@ -67,7 +67,7 @@ export default function TwoFactor() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
+    <div className="min-h-screen pt-24 flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
       <div className="w-full max-w-4xl bg-white dark:bg-gray-800 rounded-3xl shadow-2xl p-10 flex flex-col items-center space-y-8 transition-all">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
           Two-Factor Authentication
