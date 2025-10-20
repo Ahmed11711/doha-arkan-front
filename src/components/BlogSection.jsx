@@ -198,7 +198,7 @@ export default function HomeBlogs() {
           />
         </div>
       </motion.div>
-      <div className="text-center mt-10">
+      <div className="text-left mt-12">
         <button className="px-8 py-3 rounded-full bg-[#1B1664FC] text-white font-medium hover:bg-[#15104F] transition flex items-center gap-2 mx-auto">
           {t("View All Blogs")}
           {isArabic ? <FaArrowLeft /> : <FaArrowRight />}
