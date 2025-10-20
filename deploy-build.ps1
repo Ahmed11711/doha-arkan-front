@@ -5,6 +5,8 @@ $REPO_URL = "https://github.com/Ahmed11711/doha-arkan-front.git"
 
 Write-Host "🚀 Starting deployment to branch '$BRANCH'..."
 
+git checkout main
+
 # بناء المشروع
 npm run build
 
