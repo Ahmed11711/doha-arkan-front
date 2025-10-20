@@ -11,7 +11,7 @@ import GoogleAuth from "./pages/TwoFactor/GoogleAuth";
 import Done from "./pages/TwoFactor/Done";
 import UploadVerification from "./pages/TwoFactor/UploadVerification";
 import ForgotPassword from "./pages/ForgotPassword";
-import ResetPassword from "./pages/ResetPassword";   
+import ResetPassword from "./pages/ResetPassword";
 import Home from "./pages/Home";
 import Services from "./pages/Services";
 import Blogs from "./pages/Blogs";
