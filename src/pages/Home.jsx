@@ -4,33 +4,28 @@ import hero from "../assets/images/hero3.png";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 import "./Home.css";
 import PackagesCoverflow from "../components/PackagesCoverflow";
-import BlogSection from "../components/BlogSection.jsx";
+import BlogSection from "../components/BlogSection";
+import { useEffect, useState } from "react";
+import ApiClient from "../services/API";
+
 const Home = () => {
   const { t, i18n } = useTranslation();
   const isArabic = i18n.language === "ar";
-  const services = [
-    {
-      img: hero,
-      title: t("Buy Crypto"),
-      description: t(
-        "Purchase cryptocurrencies easily with competitive rates and secure transactions."
-      ),
-    },
-    {
-      img: hero,
-      title: t("Sell Crypto"),
-      description: t(
-        "Sell your cryptocurrencies quickly and securely with our user-friendly platform."
-      ),
-    },
-    {
-      img: hero,
-      title: t("Exchange Crypto"),
-      description: t(
-        "Easily exchange between different cryptocurrencies with low fees and fast processing."
-      ),
-    },
-  ];
+  const [services, setServices] = useState([]);
+
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const res = await ApiClient.get("service");
+        console.log("✅ Services:", res);
+        setServices(res.data || res);
+      } catch (error) {
+        console.error("❌ Error fetching services:", error);
+      }
+    };
+
+    fetchServices();
+  }, []);
 
   return (
     <>
@@ -271,7 +266,7 @@ const Home = () => {
                 </h3>
 
                 <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
-                  {service.description}
+                  {service.desc}
                 </p>
 
                 <button className="inline-flex items-center justify-center gap-2 px-5 py-2 rounded-full bg-[#1B1664FC] text-white font-medium hover:bg-[#15104F] transition">

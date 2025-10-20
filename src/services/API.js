@@ -1,19 +1,40 @@
 import axiosInstance from "./axiosInstance";
 
 class ApiClient {
-  static cache = {};
+  static cache = {}; // { endpoint: { data, timestamp } }
+  static CACHE_DURATION = 5 * 60 * 1000; // 5 دقائق (يمكنك تعديلها)
 
+  // ======= GET =======
   static async get(endpoint, useCache = true) {
     const url = endpoint;
 
+    // ✅ لو الكاش مفعّل وفي بيانات حديثة
     if (useCache && this.cache[url]) {
-      return this.cache[url];
+      const { data, timestamp } = this.cache[url];
+      const now = Date.now();
+
+      // لو الكاش لسه صالح
+      if (now - timestamp < this.CACHE_DURATION) {
+        console.log("💾 Using cached data for:", url);
+        return data;
+      }
+
+      // لو انتهت مدة الكاش نحذفه
+      delete this.cache[url];
     }
 
     console.log("🌐 GET Fetching:", url);
     try {
       const res = await axiosInstance.get(url);
-      if (useCache) this.cache[url] = res.data;
+
+      // ✅ حفظ البيانات في الكاش مع توقيت الحفظ
+      if (useCache) {
+        this.cache[url] = {
+          data: res.data,
+          timestamp: Date.now(),
+        };
+      }
+
       console.log("✅ GET Success:", res.data);
       return res.data;
     } catch (error) {
@@ -46,7 +67,11 @@ class ApiClient {
           ...(auth && { Authorization: `Bearer ${auth}` }),
         },
       });
-      // console.log("🗑 DELETE Success:", res.data);
+
+      // ❌ لو حذفنا حاجة من السيرفر نحذفها من الكاش برضو
+      delete this.cache[endpoint];
+
+      console.log("🗑 DELETE Success:", res.data);
       return res.data;
     } catch (error) {
       console.error("❌ DELETE Error:", error.response || error);
@@ -63,12 +88,24 @@ class ApiClient {
           ...(auth && { Authorization: `Bearer ${auth}` }),
         },
       });
-      // console.log(`📩 ${method.toUpperCase()} Success:`, res.data);
+
+      // ✅ لو تم تحديث أو إضافة بيانات، نحدث الكاش
+      if (["post", "put", "patch"].includes(method)) {
+        delete this.cache[endpoint];
+      }
+
+      console.log(`📩 ${method.toUpperCase()} Success:`, res.data);
       return res.data;
     } catch (error) {
       console.error(`❌ ${method.toUpperCase()} Error:`, error.response || error);
       throw error;
     }
+  }
+
+  // ======= Clear All Cache =======
+  static clearCache() {
+    this.cache = {};
+    console.log("🧹 Cache cleared!");
   }
 }
 
