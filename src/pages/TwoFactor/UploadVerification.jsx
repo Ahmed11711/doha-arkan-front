@@ -81,7 +81,7 @@ export default function UploadVerification() {
         type: "success",
       });
 
-      setTimeout(() => navigate("/twofactor/done"), 1000);
+      setTimeout(() => navigate("/twofactor/done-to-home"), 1000);
     } catch (error) {
       console.error("❌ KYC Upload Error:", error);
       setMessage({

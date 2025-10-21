@@ -22,6 +22,8 @@ import Contact from "./pages/Contact";
 import WalletPage from "./pages/WalletPage";
 import Deposit from "./pages/Deposit";
 import Withdraw from "./pages/Withdraw";
+import Affiliate from "./pages/Affiliate";
+import DoneToHome from "./pages/TwoFactor/DoneToHome";
 function App() {
   const { i18n } = useTranslation();
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
@@ -87,6 +89,7 @@ function App() {
           <Route path="/sell-wallets" element={<WalletPage />} />
           <Route path="/deposit" element={<Deposit />} />
           <Route path="/withdraw" element={<Withdraw />} />
+          <Route path="/affiliate" element={<Affiliate />} />
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/blogs/:id" element={<BlogDetails />} />
           <Route path="/twofactor" element={<TwoFactor />} />
@@ -94,6 +97,7 @@ function App() {
           <Route path="/twofactor/sms" element={<SMSAuth />} />
           <Route path="/twofactor/google" element={<GoogleAuth />} />
           <Route path="/twofactor/done" element={<Done />} />
+          <Route path="/twofactor/done-to-home" element={<DoneToHome />} />
           <Route
             path="/twofactor/uploadVerification"
             element={<UploadVerification />}

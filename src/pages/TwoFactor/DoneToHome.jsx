@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function Done() {
+export default function DoneToHome() {
   const navigate = useNavigate();
 
   return (
@@ -17,7 +17,7 @@ export default function Done() {
           You are now fully authenticated.
         </p>
         <button
-          onClick={() => navigate("/auth")}
+          onClick={() => navigate("/")}
           className="w-full bg-[#1B1664FC] hover:bg-[#372E8B] text-white py-4 rounded-xl font-semibold text-lg mt-4 transition-all"
         >
           Continue

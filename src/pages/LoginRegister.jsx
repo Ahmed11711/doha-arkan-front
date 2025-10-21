@@ -23,7 +23,6 @@ const LoginRegister = () => {
   const { enqueueSnackbar } = useSnackbar();
   const [apiErrors, setApiErrors] = useState({});
 
-  // ✅ Validation Schemas
   const schemaLogin = yup.object().shape({
     email: yup.string().email(t("invalid_email")).required(t("required")),
     password: yup.string().required(t("required")),
@@ -107,10 +106,8 @@ const LoginRegister = () => {
 
   return (
     <div className="min-h-screen pt-20 flex flex-col md:flex-row items-center justify-center bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-      {/* Left Section */}
       <div className="md:w-1/2 w-full flex items-center justify-center p-8">
         <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 md:p-10 transition-all duration-300">
-          {/* Toggle Buttons */}
           <div className="flex justify-between bg-gray-100 dark:bg-gray-700 rounded-full p-1 mb-8">
             <button
               onClick={() => {
@@ -140,7 +137,6 @@ const LoginRegister = () => {
             </button>
           </div>
 
-          {/* Animated Forms */}
           <AnimatePresence mode="wait">
             {isLogin ? (
               <motion.form
@@ -152,7 +148,6 @@ const LoginRegister = () => {
                 transition={{ duration: 0.3 }}
                 className="space-y-5"
               >
-                {/* Email */}
                 <div>
                   <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">
                     {t("Email")}
@@ -163,14 +158,13 @@ const LoginRegister = () => {
                     placeholder={t("Your Email")}
                     className="w-full border-b border-gray-400 bg-transparent focus:border-[#1B1664FC] outline-none py-2"
                   />
-                  {errors.email && (
+                  {(errors.email || apiErrors.email) && (
                     <p className="text-red-500 text-xs mt-1">
-                      {errors.email.message}
+                      {errors.email?.message || apiErrors.email?.[0]}
                     </p>
                   )}
                 </div>
 
-                {/* Password */}
                 <div>
                   <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">
                     {t("Password")}
@@ -181,14 +175,13 @@ const LoginRegister = () => {
                     placeholder="********"
                     className="w-full border-b border-gray-400 bg-transparent focus:border-[#1B1664FC] outline-none py-2"
                   />
-                  {errors.password && (
+                  {(errors.password || apiErrors.password) && (
                     <p className="text-red-500 text-xs mt-1">
-                      {errors.password.message}
+                      {errors.password?.message || apiErrors.password?.[0]}
                     </p>
                   )}
                 </div>
 
-                {/* Forgot Password */}
                 <div className="text-right">
                   <button
                     type="button"
@@ -199,7 +192,6 @@ const LoginRegister = () => {
                   </button>
                 </div>
 
-                {/* Submit */}
                 <button
                   type="submit"
                   className="w-full bg-[#1B1664FC] hover:bg-[#372E8B] text-white py-2 rounded-lg transition-all"
@@ -207,7 +199,6 @@ const LoginRegister = () => {
                   {t("Log In")}
                 </button>
 
-                {/* Google Login */}
                 <div className="flex justify-center">
                   <GoogleLogin
                     onSuccess={async (credentialResponse) => {
@@ -239,7 +230,6 @@ const LoginRegister = () => {
                 </div>
               </motion.form>
             ) : (
-              // Register Form
               <motion.form
                 key="register"
                 onSubmit={handleSubmit(onSubmit)}
@@ -249,7 +239,6 @@ const LoginRegister = () => {
                 transition={{ duration: 0.3 }}
                 className="space-y-5"
               >
-                {/* Full Name */}
                 <div>
                   <label className="block text-sm mb-1">{t("Full Name")}</label>
                   <input
@@ -258,14 +247,13 @@ const LoginRegister = () => {
                     placeholder={t("Your Name")}
                     className="w-full border-b border-gray-400 bg-transparent focus:border-[#1B1664FC] outline-none py-2"
                   />
-                  {errors.fullName && (
+                  {(errors.fullName || apiErrors.fullName) && (
                     <p className="text-red-500 text-xs mt-1">
-                      {errors.fullName.message}
+                      {errors.fullName?.message || apiErrors.fullName?.[0]}
                     </p>
                   )}
                 </div>
 
-                {/* Email */}
                 <div>
                   <label className="block text-sm mb-1">{t("Email")}</label>
                   <input
@@ -274,14 +262,13 @@ const LoginRegister = () => {
                     placeholder={t("Your Email")}
                     className="w-full border-b border-gray-400 bg-transparent focus:border-[#1B1664FC] outline-none py-2"
                   />
-                  {errors.email && (
+                  {(errors.email || apiErrors.email) && (
                     <p className="text-red-500 text-xs mt-1">
-                      {errors.email.message}
+                      {errors.email?.message || apiErrors.email?.[0]}
                     </p>
                   )}
                 </div>
 
-                {/* Phone */}
                 <div>
                   <label className="block text-sm mb-1">
                     {t("Phone Number")}
@@ -309,7 +296,6 @@ const LoginRegister = () => {
                   )}
                 </div>
 
-                {/* Password */}
                 <div>
                   <label className="block text-sm mb-1">{t("Password")}</label>
                   <input
@@ -318,14 +304,13 @@ const LoginRegister = () => {
                     placeholder="********"
                     className="w-full border-b border-gray-400 bg-transparent focus:border-[#1B1664FC] outline-none py-2"
                   />
-                  {errors.password && (
+                  {(errors.password || apiErrors.password) && (
                     <p className="text-red-500 text-xs mt-1">
-                      {errors.password.message}
+                      {errors.password?.message || apiErrors.password?.[0]}
                     </p>
                   )}
                 </div>
 
-                {/* Confirm Password */}
                 <div>
                   <label className="block text-sm mb-1">
                     {t("Confirm Password")}
@@ -336,14 +321,14 @@ const LoginRegister = () => {
                     placeholder="********"
                     className="w-full border-b border-gray-400 bg-transparent focus:border-[#1B1664FC] outline-none py-2"
                   />
-                  {errors.confirmPassword && (
+                  {(errors.confirmPassword || apiErrors.confirmPassword) && (
                     <p className="text-red-500 text-xs mt-1">
-                      {errors.confirmPassword.message}
+                      {errors.confirmPassword?.message ||
+                        apiErrors.confirmPassword?.[0]}
                     </p>
                   )}
                 </div>
 
-                {/* Affiliate */}
                 <div>
                   <label className="block text-sm mb-1">{t("Affiliate")}</label>
                   <input
@@ -352,14 +337,13 @@ const LoginRegister = () => {
                     placeholder={t("Affiliate code or name")}
                     className="w-full border-b border-gray-400 bg-transparent focus:border-[#1B1664FC] outline-none py-2"
                   />
-                  {errors.affiliate && (
+                  {(errors.affiliate || apiErrors.affiliate) && (
                     <p className="text-red-500 text-xs mt-1">
-                      {errors.affiliate.message}
+                      {errors.affiliate?.message || apiErrors.affiliate?.[0]}
                     </p>
                   )}
                 </div>
 
-                {/* Submit */}
                 <button
                   type="submit"
                   className="w-full bg-[#1B1664FC] hover:bg-[#372E8B] text-white py-2 rounded-lg transition-all"
@@ -367,7 +351,6 @@ const LoginRegister = () => {
                   {t("Sign Up")}
                 </button>
 
-                {/* Google Login */}
                 <div className="flex justify-center">
                   <GoogleLogin
                     onSuccess={() => {}}
@@ -382,7 +365,6 @@ const LoginRegister = () => {
             )}
           </AnimatePresence>
 
-          {/* Switch Between Login / Register */}
           <div className="text-center mt-6">
             <p className="text-gray-600 dark:text-gray-400 text-sm">
               {isLogin
@@ -402,7 +384,6 @@ const LoginRegister = () => {
         </div>
       </div>
 
-      {/* Right Image */}
       <div className="md:w-1/2 hidden md:flex items-center justify-center p-8">
         <img
           src={london}
@@ -411,7 +392,6 @@ const LoginRegister = () => {
         />
       </div>
 
-      {/* Snackbar */}
       <Snackbar
         open={openSnackbar}
         autoHideDuration={3000}

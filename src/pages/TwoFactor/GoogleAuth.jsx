@@ -34,7 +34,7 @@ export default function GoogleAuth() {
 
   useEffect(() => {
     setup();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleCopy = () => {
@@ -175,7 +175,7 @@ export default function GoogleAuth() {
                 value={c}
                 onChange={(e) => handleChange(e, idx)}
                 onKeyDown={(e) => handleKeyDown(e, idx)}
-                className="w-16 h-16 text-center border-b-2 border-gray-400 dark:border-gray-500 text-gray-900 dark:text-white text-2xl font-semibold focus:border-red-600 outline-none transition-all rounded-md"
+                className="w-16 h-16 text-center border-b-2 border-gray-400 dark:border-gray-500 text-gray-900 dark:text-white text-2xl font-semibold focus:border-[#1B1664FC] outline-none transition-all rounded-md"
               />
             ))}
           </div>
@@ -183,7 +183,7 @@ export default function GoogleAuth() {
           <button
             onClick={handleVerify}
             disabled={loading}
-            className="w-full bg-red-600 hover:bg-red-700 text-white py-4 rounded-xl font-semibold text-lg mt-6"
+            className="w-full bg-[#1B1664FC] hover:bg-[#372E8B] text-white py-4 rounded-xl font-semibold text-lg transition-all"
           >
             {loading ? "Verifying..." : "Verify"}
           </button>
@@ -205,8 +205,8 @@ export default function GoogleAuth() {
           Your Google Authenticator is now connected.
         </p>
         <button
-          onClick={() => navigate("/twofactor/done")}
-          className="w-full bg-red-600 hover:bg-red-700 text-white py-4 rounded-xl font-semibold text-lg mt-6"
+          onClick={() => navigate("/auth")}
+            className="w-full bg-[#1B1664FC] hover:bg-[#372E8B] text-white py-4 rounded-xl font-semibold text-lg transition-all"
         >
           Continue
         </button>
