@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Routes, Route, Navigate, Router } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import LoginRegister from "./pages/LoginRegister";
@@ -24,9 +24,15 @@ import Deposit from "./pages/Deposit";
 import Withdraw from "./pages/Withdraw";
 import Affiliate from "./pages/Affiliate";
 import DoneToHome from "./pages/TwoFactor/DoneToHome";
+
+import DashboardLayout from "./dashboard/DashboardLayout";
+import DepositDashboard from "./dashboard/pages/Deposit";
+import WithdrawDashboard from "./dashboard/pages/Withdraw";
+import AffiliateDashboard from "./dashboard/pages/Affiliate";
+import KYCDashboard from "./dashboard/pages/KYC";
+
 function App() {
   const { i18n } = useTranslation();
-  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
   const [isAuthenticated, setIsAuthenticated] = useState(
     localStorage.getItem("isAuthenticated") === "true"
   );
@@ -37,33 +43,38 @@ function App() {
     document.body.dir = newLang === "ar" ? "rtl" : "ltr";
   };
 
-  const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-  };
-
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", theme === "dark");
-  }, [theme]);
 
   useEffect(() => {
     document.body.dir = i18n.language === "ar" ? "rtl" : "ltr";
   }, [i18n.language]);
 
-  // ✅ لما المستخدم يعمل تسجيل دخول
   const handleLoginSuccess = () => {
     localStorage.setItem("isAuthenticated", "true");
     setIsAuthenticated(true);
   };
 
+  const ProtectedRoute = ({ children }) => {
+    if (!isAuthenticated) {
+      return <Navigate to="/auth" replace />;
+    }
+    return children;
+  };
+  useEffect(() => {
+    const auth = localStorage.getItem("isAuthenticated") === "true";
+    if (auth !== isAuthenticated) {
+      setIsAuthenticated(auth);
+    }
+  }, [isAuthenticated]);
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white transition-all">
-      <Navbar
-        theme={theme}
-        toggleTheme={toggleTheme}
-        toggleLanguage={toggleLanguage}
-      />
+      {isAuthenticated &&
+        !window.location.pathname.startsWith("/dashboard") && (
+          <Navbar
+            toggleLanguage={toggleLanguage}
+          />
+        )}
+
       <main className="flex-grow">
         <ScrollToTop />
 
@@ -78,20 +89,93 @@ function App() {
               )
             }
           />
+
           <Route
             path="/auth"
             element={<LoginRegister onLoginSuccess={handleLoginSuccess} />}
           />
-          <Route path="/home" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/sell-wallets" element={<WalletPage />} />
-          <Route path="/deposit" element={<Deposit />} />
-          <Route path="/withdraw" element={<Withdraw />} />
-          <Route path="/affiliate" element={<Affiliate />} />
-          <Route path="/blogs" element={<Blogs />} />
-          <Route path="/blogs/:id" element={<BlogDetails />} />
+
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/about"
+            element={
+              <ProtectedRoute>
+                <About />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/contact"
+            element={
+              <ProtectedRoute>
+                <Contact />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/services"
+            element={
+              <ProtectedRoute>
+                <Services />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/sell-wallets"
+            element={
+              <ProtectedRoute>
+                <WalletPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/deposit"
+            element={
+              <ProtectedRoute>
+                <Deposit />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/withdraw"
+            element={
+              <ProtectedRoute>
+                <Withdraw />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/affiliate"
+            element={
+              <ProtectedRoute>
+                <Affiliate />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/blogs"
+            element={
+              <ProtectedRoute>
+                <Blogs />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/blogs/:id"
+            element={
+              <ProtectedRoute>
+                <BlogDetails />
+              </ProtectedRoute>
+            }
+          />
+
           <Route path="/twofactor" element={<TwoFactor />} />
           <Route path="/twofactor/email" element={<EmailAuth />} />
           <Route path="/twofactor/sms" element={<SMSAuth />} />
@@ -104,10 +188,26 @@ function App() {
           />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+
+          {/* Dashboard Routes */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <DashboardLayout />
+              </ProtectedRoute>
+            }
+          >
+            <Route path="deposit" element={<DepositDashboard />} />
+            <Route path="withdraw" element={<WithdrawDashboard />} />
+            <Route path="affiliate" element={<AffiliateDashboard />} />
+            <Route path="kyc" element={<KYCDashboard />} />
+          </Route>
         </Routes>
       </main>
 
-      <Footer />
+      {isAuthenticated &&
+        !window.location.pathname.startsWith("/dashboard") && <Footer />}
     </div>
   );
 }

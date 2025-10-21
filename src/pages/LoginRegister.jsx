@@ -15,7 +15,7 @@ import { Snackbar, Alert } from "@mui/material";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 
-const LoginRegister = () => {
+const LoginRegister = ({ onLoginSuccess }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState(true);
@@ -62,23 +62,29 @@ const LoginRegister = () => {
           password: data.password,
         });
 
-        if (res?.data?.token) {
+        if (res?.data?.token && res?.data?.user) {
           const { token, user } = res.data;
+
           localStorage.setItem("Auth_Token", token);
           localStorage.setItem("user_id", user.id);
           localStorage.setItem("email", user.email);
+          localStorage.setItem("name", user.name || "User");
           localStorage.setItem("isAuthenticated", "true");
 
           enqueueSnackbar("تم تسجيل الدخول بنجاح ✅", { variant: "success" });
+
           if (user.verified_kyc === false) {
+            if (onLoginSuccess) onLoginSuccess();
             navigate("/twofactor/uploadVerification");
           } else {
-            navigate("/");
+            if (onLoginSuccess) onLoginSuccess();
+            navigate("/home");
           }
         } else {
           enqueueSnackbar("فشل تسجيل الدخول ⚠️", { variant: "error" });
         }
       } else {
+        // ✅ تسجيل جديد
         const signupRes = await ApiClient.post("Auth/create-account", {
           name: data.fullName,
           email: data.email,
@@ -88,11 +94,17 @@ const LoginRegister = () => {
           type: "user",
         });
 
-        localStorage.setItem("user_id", signupRes.data.id);
-        localStorage.setItem("email", signupRes.data.email);
+        if (signupRes?.data?.id) {
+          localStorage.setItem("user_id", signupRes.data.id);
+          localStorage.setItem("email", signupRes.data.email);
+          localStorage.setItem("name", signupRes.data.name || data.fullName);
+          localStorage.setItem("isAuthenticated", "true");
 
-        enqueueSnackbar("تم إنشاء الحساب بنجاح ✅", { variant: "success" });
-        navigate("/twofactor");
+          enqueueSnackbar("تم إنشاء الحساب بنجاح ✅", { variant: "success" });
+          navigate("/twofactor");
+        } else {
+          enqueueSnackbar("فشل إنشاء الحساب ⚠️", { variant: "error" });
+        }
       }
     } catch (error) {
       console.error("❌ Error:", error);

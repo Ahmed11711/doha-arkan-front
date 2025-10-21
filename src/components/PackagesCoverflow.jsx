@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import PricingCard from "./PricingCard";
 import { useTranslation } from "react-i18next";
-
+import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 const PACKS = [
   {
     plan: "Basic",
@@ -92,7 +92,7 @@ export default function PackagesCoverflow() {
           onClick={prev}
           className="absolute left-2 sm:left-6 top-1/2 -translate-y-1/2 z-20 bg-[#1B1664] text-white w-10 h-10 sm:w-14 sm:h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-[#15104F] transition"
         >
-          ‹
+          <FaArrowLeft className="text-xl sm:text-2xl" />
         </button>
 
         {/* cards container */}
@@ -146,7 +146,7 @@ export default function PackagesCoverflow() {
           onClick={next}
           className="absolute right-2 sm:right-6 top-1/2 -translate-y-1/2 z-20 bg-[#1B1664] text-white w-10 h-10 sm:w-14 sm:h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-[#15104F] transition"
         >
-          ›
+          <FaArrowRight className="text-xl sm:text-2xl" />
         </button>
 
         {/* dots */}

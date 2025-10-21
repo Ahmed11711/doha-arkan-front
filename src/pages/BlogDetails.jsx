@@ -29,7 +29,7 @@ export default function BlogDetails() {
         }}
       >
         <div
-          className={`relative z-10 text-white max-w-xl  ${
+          className={`relative z-10 text-white max-w-xl ${
             isArabic ? "ms-5 text-right" : "ms-5 text-left"
           }`}
         >
@@ -50,7 +50,7 @@ export default function BlogDetails() {
       {/* Blog Main Image */}
       <div className="relative max-w-5xl mx-auto mt-20 mb-12 px-4">
         <img
-          src={blog.image || "https://via.placeholder.com/1200x600"}
+          src={blog.img || "https://via.placeholder.com/1200x600"}
           alt={blog.title}
           className="w-full rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 object-cover"
         />
@@ -63,32 +63,35 @@ export default function BlogDetails() {
             {blog.title}
           </h1>
           <p className="text-gray-500 dark:text-gray-400">
-            {new Date(blog.date).toDateString()}
+            {new Date(blog.created_at).toDateString()}
           </p>
         </div>
+
         {/* Author Info */}
-        <div className="flex items-center  gap-4 mb-12">
+        <div className="flex items-center gap-4 mb-12">
           <img
-            src={blog.authorImg}
-            alt={blog.author}
+            src={blog.userImg}
+            alt={blog.userName}
             className="w-14 h-14 rounded-full object-cover border-2 border-[#1B1664]"
           />
           <div>
             <h4 className="font-semibold text-gray-900 dark:text-white">
-              {blog.author}
+              {blog.userName}
             </h4>
             <p className="text-gray-500 dark:text-gray-400 text-sm">
               {t("Content Creator")}
             </p>
           </div>
         </div>
+
+        {/* Blog Text */}
         <motion.div
           className="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 leading-relaxed mb-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6 }}
         >
-          <p>{blog.content}</p>
+          <p>{blog.text}</p>
         </motion.div>
 
         {/* Back Button */}

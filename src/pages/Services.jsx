@@ -5,6 +5,7 @@ import PricingCard from "../components/PricingCard";
 import hero from "../assets/images/hero2.jpg";
 import { useTranslation } from "react-i18next";
 import ApiClient from "../services/API";
+import { useLocation } from "react-router-dom";
 
 export default function Services() {
   const { t, i18n } = useTranslation();
@@ -13,6 +14,16 @@ export default function Services() {
   const [services, setServices] = useState([]);
   const [activeTab, setActiveTab] = useState(0);
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const tab = parseInt(params.get("tab"), 10);
+
+    if (!isNaN(tab)) {
+      setActiveTab(tab);
+    }
+  }, [location.search]);
 
   useEffect(() => {
     const fetchServices = async () => {

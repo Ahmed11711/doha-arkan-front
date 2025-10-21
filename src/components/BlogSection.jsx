@@ -4,11 +4,13 @@ import { motion } from "framer-motion";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import ApiClient from "../services/API";
+import { useNavigate } from "react-router-dom";
 
 export default function HomeBlogs() {
   const { t, i18n } = useTranslation();
   const isArabic = i18n.language === "ar";
   const [blogs, setBlogs] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -72,7 +74,10 @@ export default function HomeBlogs() {
           </span>
         </div>
 
-        <button className="mt-4 px-6 py-2 rounded-full bg-[#1B1664FC] text-white font-medium hover:bg-[#15104F] transition flex items-center gap-2">
+        <button
+          onClick={() => navigate(`/blogs/${blog.id}`, { state: blog })}
+          className="mt-4 px-6 py-2 rounded-full bg-[#1B1664FC] text-white font-medium hover:bg-[#15104F] transition flex items-center gap-2"
+        >
           {t("Read More")}
           {isArabic ? <FaArrowLeft /> : <FaArrowRight />}
         </button>
@@ -150,7 +155,10 @@ export default function HomeBlogs() {
       {lastBlog && blogs.length > 1 && renderFeatured(lastBlog, "last")}
 
       <div className="text-left mt-12 flex justify-center">
-        <button className="px-8 py-3 rounded-full bg-[#1B1664FC] text-white font-medium hover:bg-[#15104F] transition flex items-center gap-2">
+        <button
+          onClick={() => navigate("/blogs")}
+          className="px-8 py-3 rounded-full bg-[#1B1664FC] text-white font-medium hover:bg-[#15104F] transition flex items-center gap-2"
+        >
           {t("View All Blogs")}
           {isArabic ? <FaArrowLeft /> : <FaArrowRight />}
         </button>

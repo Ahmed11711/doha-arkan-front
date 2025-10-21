@@ -7,11 +7,13 @@ import PackagesCoverflow from "../components/PackagesCoverflow";
 import BlogSection from "../components/BlogSection";
 import { useEffect, useState } from "react";
 import ApiClient from "../services/API";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const { t, i18n } = useTranslation();
   const isArabic = i18n.language === "ar";
   const [services, setServices] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -269,7 +271,10 @@ const Home = () => {
                   {service.desc}
                 </p>
 
-                <button className="inline-flex items-center justify-center gap-2 px-5 py-2 rounded-full bg-[#1B1664FC] text-white font-medium hover:bg-[#15104F] transition">
+                <button
+                  onClick={() => navigate(`/services?tab=${idx}`)}
+                  className="inline-flex items-center justify-center gap-2 px-5 py-2 rounded-full bg-[#1B1664FC] text-white font-medium hover:bg-[#15104F] transition"
+                >
                   {isArabic ? (
                     <FaArrowLeft className="text-sm" />
                   ) : (
