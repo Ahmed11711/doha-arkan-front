@@ -10,9 +10,11 @@ import { useTranslation } from "react-i18next";
 import empty from "../assets/images/empty.png";
 import empty2 from "../assets/images/empty2.png";
 import wallet from "../assets/images/wallet.png";
+import { useNavigate } from "react-router-dom";
 
 export default function WalletPage() {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const balance = 5000;
   const address = "TLmUhwUQuvGmBf";
@@ -21,7 +23,23 @@ export default function WalletPage() {
     { label: t("wallet.sellInv"), value: 0 },
     { label: t("wallet.rentalUnits"), value: 0 },
   ];
-
+  const buttons = [
+    {
+      icon: <FaDollarSign />,
+      label: t("wallet.deposit"),
+      path: "/deposit",
+    },
+    {
+      icon: <FaRegCalendarAlt />,
+      label: t("wallet.withdraw"),
+      path: "/withdraw",
+    },
+    {
+      icon: <FaShareAlt />,
+      label: t("wallet.affiliate"),
+      path: "/affiliate",
+    },
+  ];
   return (
     <div
       dir={t("dir")}
@@ -101,24 +119,12 @@ export default function WalletPage() {
       <div className="max-w-6xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Left actions */}
         <div className="md:col-span-1 space-y-4">
-          {[
-            {
-              icon: <FaDollarSign />,
-              label: t("wallet.deposit"),
-            },
-            {
-              icon: <FaRegCalendarAlt />,
-              label: t("wallet.withdraw"),
-            },
-            {
-              icon: <FaShareAlt />,
-              label: t("wallet.affiliate"),
-            },
-          ].map((btn, i) => (
+          {buttons.map((btn, i) => (
             <button
               key={i}
+              onClick={() => navigate(btn.path)} // ⬅️ هنا الانتقال للصفحة
               className="w-full flex items-center justify-between gap-3 p-4 rounded-2xl transition-all duration-300
-              bg-white hover:shadow-md dark:bg-gray-800 dark:hover:bg-gray-700"
+          bg-white hover:shadow-md dark:bg-gray-800 dark:hover:bg-gray-700"
             >
               <div className="flex items-center gap-3">
                 <div className="p-3 rounded-xl bg-violet-100 text-[#1B1664] dark:bg-[#2a2a4a] dark:text-white">
