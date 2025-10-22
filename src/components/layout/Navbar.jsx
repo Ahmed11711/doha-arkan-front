@@ -1,6 +1,4 @@
 import {
-  FaMoon,
-  FaSun,
   FaUser,
   FaSignInAlt,
   FaUserPlus,
@@ -55,26 +53,25 @@ const Navbar = ({ toggleLanguage }) => {
     { path: "/about", label: isArabic ? "من نحن" : "About Us" },
     { path: "/services", label: isArabic ? "الخدمات" : "Services" },
     { path: "/blogs", label: isArabic ? "المدونات" : "Blogs" },
-    { path: "/sell-wallets", label: isArabic ? "بيع المحافظ" : "Sell Wallets" },
+    { path: "/dashboard", label: isArabic ? "بيع المحافظ" : "Dashboard" },
     { path: "/contact", label: isArabic ? "تواصل معنا" : "Contact Us" },
   ];
 
   return (
     <nav
-      className={`fixed top-0 left-0 w-full max-w-full z-50 flex justify-between items-center 
+      className={`fixed top-0 left-0 w-full z-50 flex justify-between items-center 
       py-3 px-4 md:py-4 md:px-6 transition-all
       bg-gradient-to-r from-[#1B166430] via-[#ffffff40] to-[#1B166420]
-      dark:from-[#1B166480] dark:via-[#2a2a4a60] dark:to-[#1B166450]
-      backdrop-blur-lg border-b border-white/10 dark:border-gray-700/30`}
+      backdrop-blur-lg border-b border-white/10 `}
     >
       {/* Logo */}
-      <Link to="/" className="text-2xl font-bold text-gray-900 dark:text-white">
+      <Link to="/" className="text-2xl font-bold text-gray-900 ">
         ARKAN
       </Link>
 
       {/* Desktop Menu */}
       <ul
-        className={`hidden md:flex items-center gap-6 px-8 py-3 rounded-full backdrop-blur-md bg-white/30 dark:bg-gray-700/30 border border-white/40 dark:border-gray-600/40 shadow-md ${
+        className={`hidden md:flex items-center gap-6 px-8 py-3 rounded-full backdrop-blur-md bg-white/30 border border-white/40 shadow-md ${
           isArabic ? "flex-row-reverse" : "flex-row"
         }`}
       >
@@ -84,8 +81,8 @@ const Navbar = ({ toggleLanguage }) => {
               to={item.path}
               className={`text-base font-medium transition ${
                 location.pathname === item.path
-                  ? "text-[#1B1664FC] dark:text-yellow-400"
-                  : "text-gray-700 dark:text-gray-200 hover:text-[#1B1664FC] dark:hover:text-yellow-400"
+                  ? "text-[#1B1664FC]"
+                  : "text-gray-700 hover:text-[#1B1664FC]"
               }`}
             >
               {item.label}
@@ -100,8 +97,7 @@ const Navbar = ({ toggleLanguage }) => {
           isArabic ? "flex-row-reverse" : "flex-row"
         }`}
       >
-        {/* Language + Theme */}
-        <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md bg-white/30 dark:bg-gray-700/30 border border-white/40 dark:border-gray-600/40 shadow-md">
+        <div className="hidden md:flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md bg-white/30 border border-white/40 shadow-md">
           <button
             onClick={toggleLanguage}
             className="px-3 py-1 rounded-md bg-[#1B1664FC] text-white hover:bg-[#372E8B] text-sm transition"
@@ -114,7 +110,7 @@ const Navbar = ({ toggleLanguage }) => {
         <div className="relative hidden md:block">
           <button
             onClick={() => setOpenDropdown((prev) => !prev)}
-            className="flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md bg-white/30 dark:bg-gray-700/30 border border-white/40 dark:border-gray-600/40 shadow-md text-gray-800 dark:text-gray-200 hover:bg-white/50 dark:hover:bg-gray-600/50 transition"
+            className="flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md bg-white/30 border border-white/40 shadow-md text-gray-800 hover:bg-white/50 transition"
           >
             <FaUser />
             {isLoggedIn && userName && (
@@ -126,7 +122,7 @@ const Navbar = ({ toggleLanguage }) => {
 
           {openDropdown && (
             <div
-              className={`absolute mt-2 right-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg w-44 overflow-hidden z-50 ${
+              className={`absolute mt-2 right-0 bg-white border border-gray-200 rounded-xl shadow-lg w-44 overflow-hidden z-50 ${
                 isArabic ? "text-right" : "text-left"
               }`}
             >
@@ -134,14 +130,14 @@ const Navbar = ({ toggleLanguage }) => {
                 <>
                   <Link
                     to="/auth"
-                    className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200"
+                    className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 text-gray-700"
                     onClick={() => setOpenDropdown(false)}
                   >
                     <FaSignInAlt /> {isArabic ? "تسجيل الدخول" : "Sign In"}
                   </Link>
                   <Link
                     to="/auth"
-                    className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200"
+                    className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 text-gray-700"
                     onClick={() => setOpenDropdown(false)}
                   >
                     <FaUserPlus /> {isArabic ? "إنشاء حساب" : "Sign Up"}
@@ -150,7 +146,7 @@ const Navbar = ({ toggleLanguage }) => {
               ) : (
                 <button
                   onClick={handleLogout}
-                  className="w-full flex items-center gap-2 px-4 py-2 text-left hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200"
+                  className="w-full flex items-center gap-2 px-4 py-2 text-left hover:bg-gray-100 text-gray-700"
                 >
                   <FaSignOutAlt /> {isArabic ? "تسجيل الخروج" : "Logout"}
                 </button>
@@ -161,7 +157,7 @@ const Navbar = ({ toggleLanguage }) => {
 
         {/* Mobile Menu Toggle */}
         <button
-          className="md:hidden text-gray-800 dark:text-gray-200 text-2xl"
+          className="md:hidden text-gray-800 text-2xl"
           onClick={() => setMenuOpen(!menuOpen)}
         >
           {menuOpen ? <FaTimes /> : <FaBars />}
@@ -171,7 +167,7 @@ const Navbar = ({ toggleLanguage }) => {
       {/* Mobile Menu */}
       {menuOpen && (
         <div
-          className={`absolute top-full left-0 w-full bg-white/70 dark:bg-gray-900/80 backdrop-blur-md border-t border-white/20 dark:border-gray-700/40 flex flex-col items-center py-6 space-y-4 md:hidden ${
+          className={`absolute top-full left-0 w-full bg-white/70 backdrop-blur-md border-t border-white/20 flex flex-col items-center py-6 space-y-4 md:hidden ${
             isArabic ? "text-right" : "text-left"
           }`}
         >
@@ -181,8 +177,8 @@ const Navbar = ({ toggleLanguage }) => {
               to={item.path}
               className={`text-lg font-medium transition ${
                 location.pathname === item.path
-                  ? "text-[#1B1664FC] dark:text-yellow-400"
-                  : "text-gray-700 dark:text-gray-200 hover:text-[#1B1664FC] dark:hover:text-yellow-400"
+                  ? "text-[#1B1664FC]"
+                  : "text-gray-700 hover:text-[#1B1664FC]"
               }`}
               onClick={() => setMenuOpen(false)}
             >
@@ -204,14 +200,14 @@ const Navbar = ({ toggleLanguage }) => {
               <>
                 <Link
                   to="/auth"
-                  className="flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-white/40 dark:bg-gray-700/40 hover:bg-white/60 dark:hover:bg-gray-600/60 text-gray-800 dark:text-gray-200 transition"
+                  className="flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-white/40 hover:bg-white/60 text-gray-800 transition"
                   onClick={() => setMenuOpen(false)}
                 >
                   <FaSignInAlt /> {isArabic ? "تسجيل الدخول" : "Sign In"}
                 </Link>
                 <Link
                   to="/auth"
-                  className="flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-white/40 dark:bg-gray-700/40 hover:bg-white/60 dark:hover:bg-gray-600/60 text-gray-800 dark:text-gray-200 transition"
+                  className="flex items-center justify-center gap-2 px-4 py-2 rounded-md bg-white/40 hover:bg-white/60 text-gray-800 transition"
                   onClick={() => setMenuOpen(false)}
                 >
                   <FaUserPlus /> {isArabic ? "إنشاء حساب" : "Sign Up"}

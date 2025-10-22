@@ -3,23 +3,23 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import hero from "../assets/images/hero.png";
+
 export default function About() {
   const { t, i18n } = useTranslation();
   const isArabic = i18n.language === "ar";
+
   return (
     <>
       <section
         className="relative w-full h-[95vh] bg-cover bg-center flex items-end"
-        style={{
-          backgroundImage: `url(${hero})`,
-        }}
+        style={{ backgroundImage: `url(${hero})` }}
       >
         <div
-          className={`relative z-10 text-white max-w-xl  ${
+          className={`relative z-10 text-white max-w-xl ${
             isArabic ? "ms-5 text-right" : "ms-5 text-left"
           }`}
         >
-          <span className="inline-block bg-gray-200 text-gray-700 text-xs font-semibold px-3 py-1 rounded-full dark:bg-gray-700 dark:text-gray-200">
+          <span className="inline-block bg-gray-200 text-gray-700 text-xs font-semibold px-3 py-1 rounded-full">
             About Us
           </span>
           <h3 className="text-4xl md:text-6xl font-bold mb-4 font-[Rubik]">
@@ -33,7 +33,8 @@ export default function About() {
         </div>
       </section>
 
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white font-[Rubik]">
+      <div className="min-h-screen bg-gray-50 text-gray-900 font-[Rubik]">
+        {/* About Section */}
         <section className="relative py-24 px-6 text-center overflow-hidden">
           <div className="max-w-3xl mx-auto">
             <motion.h1
@@ -43,7 +44,7 @@ export default function About() {
             >
               About Us
             </motion.h1>
-            <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+            <p className="text-lg text-gray-700 leading-relaxed">
               We believe in empowering traders and investors worldwide by
               offering secure, innovative, and transparent crypto trading
               solutions. Lorem ipsum dolor sit amet, consectetur adipisicing
@@ -60,7 +61,7 @@ export default function About() {
                 whileHover={{ scale: 1.03 }}
               />
             </div>
-            <p className="text-gray-600 dark:text-gray-300 mb-6 leading-relaxed">
+            <p className="text-gray-600 mb-6 leading-relaxed">
               At Arkan, our mission is to make cryptocurrency trading simple,
               safe, and accessible to everyone. We bring together advanced
               tools, expert insights, and a strong community to empower users to
@@ -76,11 +77,9 @@ export default function About() {
           </div>
         </section>
 
+        {/* Stats Section */}
         <section className="max-w-6xl mx-auto my-16 px-6">
-          <div
-            className="bg-gradient-to-r from-[#1B1664] to-[#3A36A1] dark:from-[#15104F] dark:to-[#1B1664]
-               text-white py-14 px-8 rounded-[3rem] shadow-lg"
-          >
+          <div className="bg-gradient-to-r from-[#1B1664] to-[#3A36A1] text-white py-14 px-8 rounded-[3rem] shadow-lg">
             <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/20 text-center">
               {[
                 { num: "500+", label: "Successful Trades" },
@@ -96,6 +95,7 @@ export default function About() {
           </div>
         </section>
 
+        {/* Vision Section */}
         <section className="max-w-6xl mx-auto py-24 px-6 grid md:grid-cols-2 gap-16 items-center">
           <motion.div
             className="order-2 md:order-1"
@@ -113,40 +113,31 @@ export default function About() {
           </motion.div>
 
           <motion.div
-            className="order-1 md:order-2 bg-gradient-to-br from-[#f8f8ff] to-[#ecebff]
-               dark:from-[#1e1b4b] dark:to-[#15104F]
-               p-10 rounded-3xl shadow-md"
+            className="order-1 md:order-2 bg-gradient-to-br from-[#f8f8ff] to-[#ecebff] p-10 rounded-3xl shadow-md"
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl font-bold mb-4 text-[#1B1664] dark:text-[#a99fff]">
+            <h2 className="text-3xl font-bold mb-4 text-[#1B1664]">
               Our Vision — Message from Founder
             </h2>
-            <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-lg italic">
+            <p className="text-gray-600 leading-relaxed text-lg italic">
               “At{" "}
-              <span className="font-semibold text-[#1B1664] dark:text-[#cbbcff]">
-                Arkan
-              </span>
-              , we’re redefining digital trading through innovation,
-              transparency, and education. Our goal is to help traders grow
-              confidently in the evolving crypto world.”
+              <span className="font-semibold text-[#1B1664]">Arkan</span>, we’re
+              redefining digital trading through innovation, transparency, and
+              education. Our goal is to help traders grow confidently in the
+              evolving crypto world.”
             </p>
             <div className="mt-6">
-              <p className="font-semibold text-[#1B1664] dark:text-[#cbbcff]">
-                — Ahmed Youssef
-              </p>
-              <p className="text-gray-500 dark:text-gray-400 text-sm">
-                Founder & CEO
-              </p>
+              <p className="font-semibold text-[#1B1664]">— Ahmed Youssef</p>
+              <p className="text-gray-500 text-sm">Founder & CEO</p>
             </div>
           </motion.div>
         </section>
 
+        {/* Team Section */}
         <section className="max-w-6xl mx-auto py-24 px-6 text-center">
-          <h2 className="text-3xl font-bold mb-16 text-[#1B1664] dark:text-[#a99fff]">
-            Our Team
-          </h2>
+          <h2 className="text-3xl font-bold mb-16 text-[#1B1664]">Our Team</h2>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-14">
             {[
@@ -159,24 +150,20 @@ export default function About() {
             ].map((member, i) => (
               <motion.div
                 key={i}
-                className="flex flex-col items-center text-center bg-gradient-to-b 
-                   from-[#ffffff] to-[#f5f5ff] dark:from-[#1c1a4a] dark:to-[#15104F]
-                   rounded-3xl shadow-md p-8 hover:shadow-xl transition"
+                className="flex flex-col items-center text-center bg-gradient-to-b from-[#ffffff] to-[#f5f5ff] rounded-3xl shadow-md p-8 hover:shadow-xl transition"
                 whileHover={{ y: -6 }}
               >
                 <div className="w-40 h-40 mb-6">
                   <img
                     src={member.img}
                     alt={member.name}
-                    className="w-full h-full rounded-full object-cover border-4 border-[#1B1664] dark:border-[#a99fff]"
+                    className="w-full h-full rounded-full object-cover border-4 border-[#1B1664]"
                   />
                 </div>
-                <h4 className="text-xl font-semibold text-[#1B1664] dark:text-white">
+                <h4 className="text-xl font-semibold text-[#1B1664]">
                   {member.name}
                 </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                  {member.role}
-                </p>
+                <p className="text-sm text-gray-600 mt-1">{member.role}</p>
               </motion.div>
             ))}
           </div>

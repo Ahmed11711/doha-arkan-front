@@ -19,7 +19,7 @@ export default function Affiliate() {
   return (
     <div
       dir={t("dir")}
-      className="min-h-screen font-sans transition-all duration-300 pt-16 bg-[#f6f7fb] text-gray-800 dark:bg-[#0e0e1a] dark:text-white"
+      className="min-h-screen font-sans transition-all duration-300 pt-16 bg-[#f6f7fb] text-gray-800"
     >
       {/* Header */}
       <div
@@ -38,7 +38,7 @@ export default function Affiliate() {
             } mb-8 sm:mb-12`}
           >
             <div className="flex-column items-center gap-3 mt-3 flex-wrap">
-              <h1 className="text-2xl sm:text-3xl font-bold mb-8 text-white dark:text-white flex items-center gap-3">
+              <h1 className="text-2xl sm:text-3xl font-bold mb-8 text-white flex items-center gap-3">
                 Affiliate
               </h1>
               <p>refer a Freind & Win up to $250</p>
@@ -78,8 +78,8 @@ export default function Affiliate() {
         </div>
 
         <div className="md:col-span-2">
-          <div className="rounded-3xl p-8 shadow-sm min-h-[300px] bg-white dark:bg-gray-800 transition">
-            <h4 className="text-lg font-semibold mb-6 text-[#1B1664] dark:text-white">
+          <div className="rounded-3xl p-8 shadow-sm min-h-[300px] bg-white transition">
+            <h4 className="text-lg font-semibold mb-6 text-[#1B1664]">
               {t("wallet.history")}
             </h4>
 
@@ -88,14 +88,9 @@ export default function Affiliate() {
                 <img
                   src={empty}
                   alt="empty"
-                  className="w-40 mx-auto block dark:hidden transition-all duration-300"
+                  className="w-40 mx-auto block transition-all duration-300"
                 />
-                <img
-                  src={empty2}
-                  alt="empty dark"
-                  className="w-40 mx-auto hidden dark:block transition-all duration-300"
-                />
-                <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
+                <div className="mt-4 text-sm text-gray-500 ">
                   {t("wallet.noTransactions")}
                 </div>
               </div>

@@ -14,6 +14,7 @@ import PhoneInput from "react-phone-input-2";
 import { Snackbar, Alert } from "@mui/material";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
+import { useAuth } from "../context/AuthContext";
 
 const LoginRegister = ({ onLoginSuccess }) => {
   const { t } = useTranslation();
@@ -22,6 +23,7 @@ const LoginRegister = ({ onLoginSuccess }) => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const [apiErrors, setApiErrors] = useState({});
+  const { login } = useAuth();
 
   const schemaLogin = yup.object().shape({
     email: yup.string().email(t("invalid_email")).required(t("required")),
@@ -65,11 +67,7 @@ const LoginRegister = ({ onLoginSuccess }) => {
         if (res?.data?.token && res?.data?.user) {
           const { token, user } = res.data;
 
-          localStorage.setItem("Auth_Token", token);
-          localStorage.setItem("user_id", user.id);
-          localStorage.setItem("email", user.email);
-          localStorage.setItem("name", user.name || "User");
-          localStorage.setItem("isAuthenticated", "true");
+          login(user, token);
 
           enqueueSnackbar("تم تسجيل الدخول بنجاح ✅", { variant: "success" });
 
@@ -95,11 +93,12 @@ const LoginRegister = ({ onLoginSuccess }) => {
         });
 
         if (signupRes?.data?.id) {
-          localStorage.setItem("user_id", signupRes.data.id);
-          localStorage.setItem("email", signupRes.data.email);
-          localStorage.setItem("name", signupRes.data.name || data.fullName);
-          localStorage.setItem("isAuthenticated", "true");
-
+          const newUser = {
+            id: signupRes.data.id,
+            email: signupRes.data.email,
+            name: signupRes.data.name || data.fullName,
+          };
+          login(newUser, signupRes.data.token || "");
           enqueueSnackbar("تم إنشاء الحساب بنجاح ✅", { variant: "success" });
           navigate("/twofactor");
         } else {
@@ -117,19 +116,17 @@ const LoginRegister = ({ onLoginSuccess }) => {
   };
 
   return (
-    <div className="min-h-screen pt-20 flex flex-col md:flex-row items-center justify-center bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+    <div className="min-h-screen pt-20 flex flex-col md:flex-row items-center justify-center bg-gray-50 transition-colors duration-300">
       <div className="md:w-1/2 w-full flex items-center justify-center p-8">
-        <div className="w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 md:p-10 transition-all duration-300">
-          <div className="flex justify-between bg-gray-100 dark:bg-gray-700 rounded-full p-1 mb-8">
+        <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8 md:p-10 transition-all duration-300">
+          <div className="flex justify-between bg-gray-100 rounded-full p-1 mb-8">
             <button
               onClick={() => {
                 setIsLogin(true);
                 reset();
               }}
               className={`w-1/2 py-2 rounded-full font-semibold transition-all ${
-                isLogin
-                  ? "bg-[#1B1664FC] text-white"
-                  : "text-gray-600 dark:text-gray-300"
+                isLogin ? "bg-[#1B1664FC] text-white" : "text-gray-600"
               }`}
             >
               {t("Sign In")}
@@ -140,9 +137,7 @@ const LoginRegister = ({ onLoginSuccess }) => {
                 reset();
               }}
               className={`w-1/2 py-2 rounded-full font-semibold transition-all ${
-                !isLogin
-                  ? "bg-[#1B1664FC] text-white"
-                  : "text-gray-600 dark:text-gray-300"
+                !isLogin ? "bg-[#1B1664FC] text-white" : "text-gray-600"
               }`}
             >
               {t("Sign Up")}
@@ -161,7 +156,7 @@ const LoginRegister = ({ onLoginSuccess }) => {
                 className="space-y-5"
               >
                 <div>
-                  <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm text-gray-700 mb-1">
                     {t("Email")}
                   </label>
                   <input
@@ -178,7 +173,7 @@ const LoginRegister = ({ onLoginSuccess }) => {
                 </div>
 
                 <div>
-                  <label className="block text-sm text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm text-gray-700 mb-1">
                     {t("Password")}
                   </label>
                   <input
@@ -218,26 +213,49 @@ const LoginRegister = ({ onLoginSuccess }) => {
                         const decoded = jwtDecode(
                           credentialResponse.credential
                         );
-                        const res = await ApiClient.post("Auth/google-login", {
-                          email: decoded.email,
-                          name: decoded.name,
-                          googleId: decoded.sub,
+
+                        // إرسال التوكن للجسر الخلفي
+                        const res = await ApiClient.post("Auth/login-google", {
+                          id_token: credentialResponse.credential,
                         });
 
-                        localStorage.setItem("Auth_Token", res.data.token);
-                        localStorage.setItem("user_id", res.data.user.id);
-                        localStorage.setItem("email", res.data.user.email);
+                        const { user, token } = res?.data || {};
 
-                        enqueueSnackbar("تم تسجيل الدخول بواسطة Google ✅", {
-                          variant: "success",
-                        });
-                        navigate("/twofactor/uploadVerification");
-                      } catch {
-                        enqueueSnackbar("فشل تسجيل الدخول عبر Google ⚠️", {
-                          variant: "error",
-                        });
+                        if (token && user) {
+                          localStorage.setItem("Auth_Token", token);
+                          localStorage.setItem("user_id", user.id);
+                          localStorage.setItem("email", user.email);
+
+                          enqueueSnackbar("تم تسجيل الدخول بواسطة Google ✅", {
+                            variant: "success",
+                          });
+
+                          // ✅ تحقق من حالة KYC
+                          if (user.verified_kyc === true) {
+                            navigate("/home");
+                          } else {
+                            navigate("/twofactor/uploadVerification");
+                          }
+                        } else {
+                          enqueueSnackbar("فشل تسجيل الدخول عبر Google ⚠️", {
+                            variant: "error",
+                          });
+                        }
+                      } catch (error) {
+                        console.error("❌ Google Login Error:", error);
+                        enqueueSnackbar(
+                          "حدث خطأ أثناء تسجيل الدخول عبر Google ⚠️",
+                          {
+                            variant: "error",
+                          }
+                        );
                       }
                     }}
+                    onError={() =>
+                      enqueueSnackbar("فشل تسجيل الدخول عبر Google ⚠️", {
+                        variant: "error",
+                      })
+                    }
                   />
                 </div>
               </motion.form>
@@ -365,12 +383,30 @@ const LoginRegister = ({ onLoginSuccess }) => {
 
                 <div className="flex justify-center">
                   <GoogleLogin
-                    onSuccess={() => {}}
-                    onError={() =>
-                      enqueueSnackbar("حدث خطأ أثناء تسجيل الدخول ⚠️", {
-                        variant: "error",
-                      })
-                    }
+                    onSuccess={async (credentialResponse) => {
+                      try {
+                        const decoded = jwtDecode(
+                          credentialResponse.credential
+                        );
+
+                        const res = await ApiClient.post("Auth/login-google", {
+                          id_token: credentialResponse,
+                        });
+
+                        localStorage.setItem("Auth_Token", res.data.token);
+                        localStorage.setItem("user_id", res.data.user.id);
+                        localStorage.setItem("email", res.data.user.email);
+
+                        enqueueSnackbar("تم تسجيل الدخول بواسطة Google ✅", {
+                          variant: "success",
+                        });
+                        navigate("/twofactor");
+                      } catch {
+                        enqueueSnackbar("فشل تسجيل الدخول عبر Google ⚠️", {
+                          variant: "error",
+                        });
+                      }
+                    }}
                   />
                 </div>
               </motion.form>
@@ -378,7 +414,7 @@ const LoginRegister = ({ onLoginSuccess }) => {
           </AnimatePresence>
 
           <div className="text-center mt-6">
-            <p className="text-gray-600 dark:text-gray-400 text-sm">
+            <p className="text-gray-600 text-sm">
               {isLogin
                 ? `${t("Don't have an account?")} `
                 : `${t("Already have an account?")} `}

@@ -103,7 +103,7 @@ export default function UploadVerification() {
                 ? "bg-[#1B1664FC] text-white shadow-lg scale-105"
                 : step > num
                 ? "bg-green-600 text-white"
-                : "bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300"
+                : "bg-gray-300 text-gray-700"
             } transition-all duration-300`}
           >
             {num}
@@ -112,7 +112,7 @@ export default function UploadVerification() {
           {num !== 3 && (
             <div
               className={`hidden sm:block w-12 sm:w-20 h-[3px] sm:h-[4px] rounded-full ${
-                step > num ? "bg-green-600" : "bg-gray-300 dark:bg-gray-600"
+                step > num ? "bg-green-600" : "bg-gray-300"
               } transition-colors duration-300`}
             ></div>
           )}
@@ -152,20 +152,20 @@ export default function UploadVerification() {
 
     return (
       <>
-        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-3 text-center">
+        <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 text-center">
           {title}
         </h2>
-        <p className="text-gray-600 dark:text-gray-400 text-center mb-6 sm:mb-8 text-base sm:text-lg">
+        <p className="text-gray-600 text-center mb-6 sm:mb-8 text-base sm:text-lg">
           {desc}
         </p>
 
         <img
           src={imageExample}
           alt="Example"
-          className="w-48 sm:w-64 md:w-72 h-auto mb-6 sm:mb-8 rounded-2xl border dark:border-gray-700 object-contain mx-auto"
+          className="w-48 sm:w-64 md:w-72 h-auto mb-6 sm:mb-8 rounded-2xl border object-contain mx-auto"
         />
 
-        <div className="w-full border-2 border-dashed border-gray-400 dark:border-gray-600 rounded-2xl p-6 sm:p-10 text-center">
+        <div className="w-full border-2 border-dashed border-gray-400 rounded-2xl p-6 sm:p-10 text-center">
           {file ? (
             <div className="flex flex-col items-center">
               <img
@@ -185,7 +185,7 @@ export default function UploadVerification() {
               </label>
             </div>
           ) : (
-            <label className="cursor-pointer text-gray-600 dark:text-gray-300 font-medium text-sm sm:text-base">
+            <label className="cursor-pointer text-gray-600 font-medium text-sm sm:text-base">
               <input
                 type="file"
                 name={name}
@@ -202,8 +202,8 @@ export default function UploadVerification() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-4 sm:p-8">
-      <div className="w-full max-w-md sm:max-w-2xl md:max-w-3xl bg-white dark:bg-gray-800 rounded-2xl sm:rounded-3xl shadow-2xl p-6 sm:p-10 md:p-12 flex flex-col items-center transition-all">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4 sm:p-8">
+      <div className="w-full max-w-md sm:max-w-2xl md:max-w-3xl bg-white rounded-2xl sm:rounded-3xl shadow-2xl p-6 sm:p-10 md:p-12 flex flex-col items-center transition-all">
         <Stepper />
         {renderStepContent()}
 
@@ -226,7 +226,7 @@ export default function UploadVerification() {
             <button
               type="button"
               onClick={handleBack}
-              className="bg-gray-300 dark:bg-gray-700 hover:bg-gray-400 dark:hover:bg-gray-600 text-gray-800 dark:text-white px-8 py-3 rounded-xl font-semibold transition-all text-base sm:text-lg w-full sm:w-auto"
+              className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-8 py-3 rounded-xl font-semibold transition-all text-base sm:text-lg w-full sm:w-auto"
             >
               Back
             </button>

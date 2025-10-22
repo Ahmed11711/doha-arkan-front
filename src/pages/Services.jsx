@@ -62,7 +62,7 @@ export default function Services() {
             isArabic ? "ms-5 text-right" : "ms-5 text-left"
           }`}
         >
-          <span className="inline-block bg-gray-200 text-gray-700 text-xs font-semibold px-3 py-1 rounded-full dark:bg-gray-700 dark:text-gray-200">
+          <span className="inline-block bg-gray-200 text-gray-700 text-xs font-semibold px-3 py-1 rounded-full">
             {t("Services")}
           </span>
           <h3 className="text-4xl md:text-6xl font-bold mb-4 font-[Rubik]">
@@ -76,23 +76,21 @@ export default function Services() {
         </div>
       </section>
 
-      {/* ===== Services Section ===== */}
-      <section className="py-20 px-6 bg-gray-50 dark:bg-gray-900 transition-colors duration-500 min-h-screen">
+      <section className="py-20 px-6 bg-gray-50 transition-colors duration-500 min-h-screen">
         <div className="max-w-7xl mx-auto text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
             {t("Choose your right plan")}
           </h2>
-          <p className="text-gray-600 dark:text-gray-300">
+          <p className="text-gray-600">
             {t(
               "Select from best plans tailored to each service. Customize your experience with flexibility and performance."
             )}
           </p>
 
-          {/* ===== Tabs ===== */}
           {loading ? (
             <p className="text-gray-500 mt-10">{t("Loading services...")}</p>
           ) : services.length === 0 ? (
-            <p className="text-gray-500 dark:text-gray-400 mt-10">
+            <p className="text-gray-500 mt-10">
               {t("No services available now")}
             </p>
           ) : (
@@ -104,7 +102,7 @@ export default function Services() {
                   className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${
                     activeTab === index
                       ? "bg-[#1B1664] text-white shadow-md"
-                      : "bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700"
+                      : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                   }`}
                 >
                   {service.title || service.name}

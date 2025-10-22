@@ -13,14 +13,14 @@ export default function BlogDetails() {
 
   if (!blog) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-gray-700 dark:text-gray-300">
+      <div className="min-h-screen flex items-center justify-center text-gray-700">
         Blog not found 😢
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-500">
+    <div className="min-h-screen bg-gray-50 transition-colors duration-500">
       {/* Hero Section */}
       <section
         className="relative w-full mb-10 h-[95vh] bg-cover bg-center flex items-end"
@@ -33,7 +33,7 @@ export default function BlogDetails() {
             isArabic ? "ms-5 text-right" : "ms-5 text-left"
           }`}
         >
-          <span className="inline-block bg-gray-200 text-gray-700 text-xs font-semibold px-3 py-1 rounded-full dark:bg-gray-700 dark:text-gray-200">
+          <span className="inline-block bg-gray-200 text-gray-700 text-xs font-semibold px-3 py-1 rounded-full">
             Blog Details
           </span>
           <h3 className="text-4xl md:text-6xl font-bold mb-4 font-[Rubik]">
@@ -52,17 +52,17 @@ export default function BlogDetails() {
         <img
           src={blog.img || "https://via.placeholder.com/1200x600"}
           alt={blog.title}
-          className="w-full rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 object-cover"
+          className="w-full rounded-2xl shadow-2xl border border-gray-200 object-cover"
         />
       </div>
 
       {/* Blog Content */}
       <section className="max-w-4xl mx-auto px-6 pb-16">
         <div className="text-center mb-10">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-3">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
             {blog.title}
           </h1>
-          <p className="text-gray-500 dark:text-gray-400">
+          <p className="text-gray-500">
             {new Date(blog.created_at).toDateString()}
           </p>
         </div>
@@ -75,10 +75,10 @@ export default function BlogDetails() {
             className="w-14 h-14 rounded-full object-cover border-2 border-[#1B1664]"
           />
           <div>
-            <h4 className="font-semibold text-gray-900 dark:text-white">
+            <h4 className="font-semibold text-gray-900">
               {blog.userName}
             </h4>
-            <p className="text-gray-500 dark:text-gray-400 text-sm">
+            <p className="text-gray-500  text-sm">
               {t("Content Creator")}
             </p>
           </div>
@@ -86,7 +86,7 @@ export default function BlogDetails() {
 
         {/* Blog Text */}
         <motion.div
-          className="prose dark:prose-invert max-w-none text-gray-700 dark:text-gray-300 leading-relaxed mb-10"
+          className="prose max-w-none text-gray-700 leading-relaxed mb-10"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6 }}

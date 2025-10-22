@@ -10,7 +10,7 @@ export default function PricingCard({
 }) {
   return (
     <div
-      className={`w-80 md:w-[22rem] p-8 mb-5 rounded-3xl bg-white dark:bg-gray-800 
+      className={`w-80 md:w-[22rem] p-8 mb-5 rounded-3xl bg-white 
       relative border transition-transform duration-300 hover:scale-105 
       ${featured ? "border-[#1B1664]" : "border-transparent"} 
       shadow-[0_20px_60px_rgba(0,0,0,0.15)]`}
@@ -29,7 +29,7 @@ export default function PricingCard({
       )}
 
       {/* Title */}
-      <h4 className="text-gray-600 dark:text-gray-300 text-center font-semibold mb-1">
+      <h4 className="text-gray-600 text-center font-semibold mb-1">
         {plan}
       </h4>
 
@@ -39,7 +39,7 @@ export default function PricingCard({
           <span className="text-sm line-through text-gray-400">
             ${(price * 1.3).toFixed(0)}
           </span>
-          <span className="text-4xl font-extrabold text-[#1B1664] dark:text-amber-300">
+          <span className="text-4xl font-extrabold text-[#1B1664] ">
             ${price}
           </span>
           <span className="text-sm text-gray-500">/{period}</span>
@@ -98,7 +98,7 @@ export default function PricingCard({
             </div>
             <span
               className={`${
-                f.enabled ? "text-gray-800 dark:text-white" : "text-gray-400"
+                f.enabled ? "text-gray-800" : "text-gray-400"
               }`}
             >
               {f.label}

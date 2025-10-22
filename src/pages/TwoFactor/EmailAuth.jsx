@@ -66,12 +66,12 @@ export default function EmailAuth() {
   };
 
   return (
-    <div className="min-h-screen pt-24 flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-6">
-      <div className="w-full max-w-2xl bg-white dark:bg-gray-800 rounded-3xl shadow-3xl p-16 flex flex-col items-center space-y-10 transition-all">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white text-center">
+    <div className="min-h-screen pt-24 flex items-center justify-center bg-gray-100 p-6">
+      <div className="w-full max-w-2xl bg-white rounded-3xl shadow-3xl p-16 flex flex-col items-center space-y-10 transition-all">
+        <h1 className="text-3xl font-bold text-gray-900 text-center">
           Email Verification
         </h1>
-        <p className="text-gray-600 dark:text-gray-300 text-center text-lg">
+        <p className="text-gray-600 text-center text-lg">
           Enter the 6-digit code sent to your email
         </p>
 
@@ -85,7 +85,7 @@ export default function EmailAuth() {
               value={c}
               onChange={(e) => handleChange(e, idx)}
               onKeyDown={(e) => handleKeyDown(e, idx)}
-              className="w-20 h-20 text-center border-b-2 border-gray-400 dark:border-gray-500 text-gray-900 dark:text-white text-3xl font-bold focus:border-[#1B1664FC] outline-none transition-all rounded-lg"
+              className="w-20 h-20 text-center border-b-2 border-gray-400 text-gray-900 text-3xl font-bold focus:border-[#1B1664FC] outline-none transition-all rounded-lg"
             />
           ))}
         </div>

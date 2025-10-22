@@ -28,7 +28,7 @@ export default function HomeBlogs() {
 
   if (!blogs || blogs.length === 0) {
     return (
-      <section className="py-20 px-6 text-center text-gray-500 dark:text-gray-300">
+      <section className="py-20 px-6 text-center text-gray-500">
         {t("No blogs available")}
       </section>
     );
@@ -56,10 +56,10 @@ export default function HomeBlogs() {
         <p className="text-sm text-gray-500">
           {new Date(blog.created_at).toLocaleDateString()}
         </p>
-        <h3 className="text-3xl font-bold text-gray-900 dark:text-white">
+        <h3 className="text-3xl font-bold text-gray-900 ">
           {blog.title}
         </h3>
-        <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
+        <p className="text-gray-600 leading-relaxed">
           {blog.text}
         </p>
 
@@ -69,7 +69,7 @@ export default function HomeBlogs() {
             alt={blog.userName}
             className="w-10 h-10 rounded-full object-cover"
           />
-          <span className="text-sm text-gray-700 dark:text-gray-300">
+          <span className="text-sm text-gray-700">
             {blog.userName}
           </span>
         </div>
@@ -93,29 +93,27 @@ export default function HomeBlogs() {
   );
 
   return (
-    <section className="py-20 px-6 bg-gray-100 dark:bg-gray-900 transition-colors duration-500">
+    <section className="py-20 px-6 bg-gray-100 transition-colors duration-500">
       <div className="text-center mb-16 relative">
-        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white relative z-10 inline-block">
+        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 relative z-10 inline-block">
           {t("Latest Blogs")}
         </h2>
-        <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-7xl md:text-8xl font-extrabold text-gray-200 dark:text-gray-700 opacity-20 select-none z-0">
+        <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-7xl md:text-8xl font-extrabold text-gray-200 opacity-20 select-none z-0">
           {t("Latest Blogs")}
         </span>
-        <p className="text-lg text-gray-600 dark:text-gray-300 mt-6 max-w-2xl mx-auto">
+        <p className="text-lg text-gray-600 mt-6 max-w-2xl mx-auto">
           {t("Explore our latest updates and crypto insights.")}
         </p>
       </div>
 
-      {/* ✅ Featured (first blog) */}
       {renderFeatured(featured)}
 
-      {/* ✅ Middle blogs (if any) */}
       {middleBlogs.length > 0 && (
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
           {middleBlogs.map((blog, i) => (
             <motion.div
               key={blog.id}
-              className="bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col"
+              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.2 }}
@@ -129,10 +127,10 @@ export default function HomeBlogs() {
                 <p className="text-sm text-gray-500 mb-2">
                   {new Date(blog.created_at).toLocaleDateString()}
                 </p>
-                <h4 className="text-xl font-semibold mb-3 text-gray-900 dark:text-white">
+                <h4 className="text-xl font-semibold mb-3 text-gray-900">
                   {blog.title}
                 </h4>
-                <p className="text-gray-600 dark:text-gray-300 flex-grow">
+                <p className="text-gray-600 flex-grow">
                   {blog.text}
                 </p>
                 <div className="flex items-center gap-3 mt-4">
@@ -141,7 +139,7 @@ export default function HomeBlogs() {
                     alt={blog.userName}
                     className="w-9 h-9 rounded-full object-cover"
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">
+                  <span className="text-sm text-gray-700">
                     {blog.userName}
                   </span>
                 </div>

@@ -1,47 +1,100 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
-  FaMoneyBillWave,
   FaCheckCircle,
-  FaClock,
   FaArrowRight,
   FaWallet,
   FaPlus,
-  FaRegKeyboard,
 } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
+import ApiClient from "../../services/API";
+import Popup from "../../components/common/Popup"; // ✅ هنضيفه تحت
 
 export default function WithdrawDashboard() {
   const { t } = useTranslation();
   const [showSteps, setShowSteps] = useState(false);
+  const [withdraws, setWithdraws] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const withdrawHistory = [
-    { id: 1, date: "2025-10-12", amount: "150 USD", method: "PayPal", status: "Completed" },
-    { id: 2, date: "2025-10-19", amount: "300 USD", method: "Crypto Wallet", status: "Pending" },
-  ];
+  const [amount, setAmount] = useState("");
+  const [address, setAddress] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [popupData, setPopupData] = useState(null);
 
-  const steps = [
-    {
-      icon: <FaRegKeyboard />,
-      title: t("Enter the Desired Amount"),
-      desc: t("Please enter the amount you wish to withdraw in the designated field."),
-    },
-    {
-      icon: <FaCheckCircle />,
-      title: t("Confirm the Request"),
-      desc: t("Click the 'Withdraw Request' button to confirm the transaction."),
-    },
-    {
-      icon: <FaClock />,
-      title: t("Wait for the Transfer"),
-      desc: t("Your request will be processed within 24 hours and funds will be transferred to your account."),
-    },
-  ];
+  // 🟦 نفترض إن الرصيد متاح من API أو ثابت مؤقتًا
+  const [availableBalance, setAvailableBalance] = useState(1200);
+
+  const fetchWithdraws = async () => {
+    try {
+      setLoading(true);
+      const res = await ApiClient.get("/withdraw");
+      setWithdraws(res.data || []);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchWithdraws();
+  }, []);
+
+  // ✅ التحقق من البيانات
+  const validateForm = () => {
+    if (!amount || isNaN(amount) || Number(amount) <= 0) {
+      return t("Please enter a valid amount");
+    }
+    if (Number(amount) > availableBalance) {
+      return t("Amount cannot exceed your available balance");
+    }
+    if (!address || !address.startsWith("T")) {
+      return t("Address must start with 'T'");
+    }
+    return null;
+  };
+
+  const handleCreateWithdraw = async () => {
+    const errorMsg = validateForm();
+    if (errorMsg) {
+      setPopupData({ success: false, message: errorMsg });
+      return;
+    }
+
+    try {
+      setSubmitting(true);
+      const formData = { amount, address, symbol: "USDT" };
+      const res = await ApiClient.post("/create-withdraw", formData);
+
+      if (res.success) {
+        setPopupData({
+          success: true,
+          message: t("Withdraw request submitted successfully!"),
+        });
+        setAmount("");
+        setAddress("");
+        fetchWithdraws();
+      } else {
+        setPopupData({
+          success: false,
+          message: res.message || t("Something went wrong."),
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      setPopupData({
+        success: false,
+        message: t("Server error occurred."),
+      });
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   return (
-    <div className="min-h-screen pt-10 px-6 text-gray-900 dark:text-gray-100">
-      <div className="w-full mx-auto bg-white dark:bg-gray-800 rounded-3xl shadow-lg p-8 md:p-10">
+    <div className="min-h-screen pt-10 px-6 text-gray-900">
+      <div className="w-full mx-auto bg-white rounded-3xl shadow-lg p-8 md:p-10">
         <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl font-bold text-[#1B1664] dark:text-white flex items-center gap-3">
+          <h1 className="text-2xl font-bold text-[#1B1664] flex items-center gap-3">
             <FaWallet className="text-[#1B1664]" /> {t("Withdraw")}
           </h1>
 
@@ -55,114 +108,142 @@ export default function WithdrawDashboard() {
           )}
         </div>
 
-        {/* الحالة الأولى: جدول الهيستوري */}
         {!showSteps && (
           <div>
             <h2 className="text-lg font-semibold mb-4">{t("Withdraw History")}</h2>
-            <div className="overflow-x-auto">
-              <table className="min-w-full border border-gray-200 dark:border-gray-600 rounded-xl overflow-hidden">
-                <thead className="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
-                  <tr>
-                    <th className="px-4 py-3 text-left">#</th>
-                    <th className="px-4 py-3 text-left">{t("Date")}</th>
-                    <th className="px-4 py-3 text-left">{t("Amount")}</th>
-                    <th className="px-4 py-3 text-left">{t("Method")}</th>
-                    <th className="px-4 py-3 text-left">{t("Status")}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {withdrawHistory.map((item) => (
-                    <tr
-                      key={item.id}
-                      className="border-t border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
-                    >
-                      <td className="px-4 py-3">{item.id}</td>
-                      <td className="px-4 py-3">{item.date}</td>
-                      <td className="px-4 py-3">{item.amount}</td>
-                      <td className="px-4 py-3">{item.method}</td>
-                      <td
-                        className={`px-4 py-3 font-medium ${
-                          item.status === "Completed"
-                            ? "text-green-600"
-                            : "text-yellow-500"
-                        }`}
-                      >
-                        {item.status}
-                      </td>
+            {loading ? (
+              <p className="text-gray-500">{t("Loading...")}</p>
+            ) : withdraws.length === 0 ? (
+              <p className="text-gray-500">{t("No withdraw history found.")}</p>
+            ) : (
+              <div className="overflow-x-auto">
+                <table className="min-w-full border border-gray-200 rounded-xl overflow-hidden">
+                  <thead className="bg-gray-100 text-gray-700">
+                    <tr>
+                      <th className="px-4 py-3 text-left">{t("Date")}</th>
+                      <th className="px-4 py-3 text-left">{t("Transaction ID")}</th>
+                      <th className="px-4 py-3 text-left">{t("Address")}</th>
+                      <th className="px-4 py-3 text-left">{t("Amount")}</th>
+                      <th className="px-4 py-3 text-left">{t("Status")}</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {withdraws.map((item) => (
+                      <tr
+                        key={item.id}
+                        className="border-t border-gray-200 hover:bg-gray-50 transition"
+                      >
+                        <td className="px-4 py-3">
+                          {new Date(item.created_at).toLocaleDateString("en-GB")}
+                        </td>
+                        <td
+                          className="px-4 py-3 truncate max-w-[150px] cursor-pointer"
+                          title={item.transaction_id}
+                          onClick={() => navigator.clipboard.writeText(item.transaction_id)}
+                        >
+                          {item.transaction_id.length > 10
+                            ? item.transaction_id.slice(0, 10) + "..."
+                            : item.transaction_id}
+                        </td>
+                        <td
+                          className="px-4 py-3 truncate max-w-[150px] cursor-pointer"
+                          title={item.address}
+                          onClick={() => navigator.clipboard.writeText(item.address)}
+                        >
+                          {item.address.length > 10
+                            ? item.address.slice(0, 10) + "..."
+                            : item.address}
+                        </td>
+                        <td className="px-4 py-3">
+                          {item.amount} {item.symbol}
+                        </td>
+                        <td
+                          className={`px-4 py-3 font-medium ${
+                            item.status === "completed"
+                              ? "text-green-600"
+                              : "text-yellow-500"
+                          }`}
+                        >
+                          {item.status}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         )}
 
-        {/* الحالة الثانية: خطوات السحب */}
         {showSteps && (
           <div>
             <button
               onClick={() => setShowSteps(false)}
-              className="mb-8 text-[#1B1664] dark:text-white hover:underline"
+              className="mb-8 text-[#1B1664] hover:underline"
             >
               ← {t("Back to History")}
             </button>
 
-            <div className="grid gap-6 sm:grid-cols-2 mb-10">
-              {steps.map((step, index) => (
-                <div
-                  key={index}
-                  className="flex items-start gap-4 bg-gray-50 dark:bg-gray-700 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all"
-                >
-                  <div className="text-[#1B1664] dark:text-white text-2xl mt-1">
-                    {step.icon}
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-lg text-[#1B1664] dark:text-white mb-1">
-                      {step.title}
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                      {step.desc}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="bg-gray-100 dark:bg-gray-700 rounded-3xl p-6 md:p-8 shadow-inner">
-              <h3 className="text-lg font-semibold mb-6 text-[#1B1664] dark:text-white flex items-center gap-2">
-                <FaCheckCircle className="text-[#1B1664] dark:text-white" />
+            <div className="bg-gray-100 rounded-3xl p-6 md:p-8 shadow-inner">
+              <h3 className="text-lg font-semibold mb-6 text-[#1B1664] flex items-center gap-2">
+                <FaCheckCircle className="text-[#1B1664]" />
                 {t("Complete Your Withdrawal")}
               </h3>
 
-              <div className="flex flex-col sm:flex-row items-center gap-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-2xl p-4">
-                <span className="flex-1 text-[#1B1664] dark:text-gray-200 font-semibold">
-                  {t("Available Balance")}: $122,080
+              {/* ✅ عرض الرصيد */}
+              <p className="mb-4 text-gray-700">
+                {t("Available Balance")}:{" "}
+                <span className="font-semibold text-[#1B1664]">
+                  ${availableBalance}
                 </span>
-              </div>
+              </p>
 
               <div className="flex flex-col sm:flex-row items-center gap-4 mt-6">
                 <input
                   type="number"
+                  value={amount}
+                  onChange={(e) => setAmount(e.target.value)}
                   placeholder={t("Enter amount")}
-                  className="w-full sm:flex-1 px-4 py-3 rounded-lg border dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 outline-none focus:ring-2 focus:ring-[#1B1664] transition"
+                  className="w-full sm:flex-1 px-4 py-3 rounded-lg border bg-white text-gray-900 outline-none focus:ring-2 focus:ring-[#1B1664] transition"
                 />
                 <input
                   type="text"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
                   placeholder={t("Enter address")}
-                  className="w-full sm:flex-1 px-4 py-3 rounded-lg border dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 outline-none focus:ring-2 focus:ring-[#1B1664] transition"
+                  className="w-full sm:flex-1 px-4 py-3 rounded-lg border bg-white text-gray-900 outline-none focus:ring-2 focus:ring-[#1B1664] transition"
                 />
-                <button className="px-8 py-3 bg-[#1B1664] hover:bg-[#2C218E] text-white font-semibold rounded-lg flex items-center gap-2 transition">
-                  <FaArrowRight /> {t("Withdraw Request")}
+                <button
+                  onClick={handleCreateWithdraw}
+                  disabled={submitting}
+                  className={`px-8 py-3 rounded-lg flex items-center gap-2 transition ${
+                    submitting
+                      ? "bg-gray-400 cursor-not-allowed"
+                      : "bg-[#1B1664] hover:bg-[#2C218E] text-white"
+                  }`}
+                >
+                  {submitting ? (
+                    t("Submitting...")
+                  ) : (
+                    <>
+                      <FaArrowRight /> {t("Withdraw Request")}
+                    </>
+                  )}
                 </button>
               </div>
-
-              <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                🕒 {t("Withdrawal requests are processed within 24 hours.")}.
-              </p>
             </div>
           </div>
         )}
       </div>
+
+      {/* ✅ البوباب */}
+      {popupData && (
+        <Popup
+          success={popupData.success}
+          message={popupData.message}
+          onClose={() => setPopupData(null)}
+        />
+      )}
     </div>
   );
 }

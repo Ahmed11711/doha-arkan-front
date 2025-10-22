@@ -67,7 +67,7 @@ function App() {
   }, [isAuthenticated]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white transition-all">
+    <div className="min-h-screen flex flex-col bg-gray-100 text-gray-900  transition-all">
       {isAuthenticated &&
         !window.location.pathname.startsWith("/dashboard") && (
           <Navbar

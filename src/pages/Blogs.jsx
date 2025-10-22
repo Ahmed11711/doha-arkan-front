@@ -40,7 +40,7 @@ export default function Blogs() {
     );
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-500">
+    <div className="min-h-screen bg-gray-50 transition-colors duration-500">
       {/* Hero Section */}
       <section
         className="relative w-full mb-10 h-[95vh] bg-cover bg-center flex items-end"
@@ -53,7 +53,7 @@ export default function Blogs() {
             isArabic ? "ms-5 text-right" : "ms-5 text-left"
           }`}
         >
-          <span className="inline-block bg-gray-200 text-gray-700 text-xs font-semibold px-3 py-1 rounded-full dark:bg-gray-700 dark:text-gray-200">
+          <span className="inline-block bg-gray-200 text-gray-700 text-xs font-semibold px-3 py-1 rounded-full ">
             Blogs
           </span>
           <h3 className="text-4xl md:text-6xl font-bold mb-4 font-[Rubik]">
@@ -77,7 +77,7 @@ export default function Blogs() {
             className={`px-5 py-2 rounded-full text-sm font-medium transition ${
               activeTab === "All"
                 ? "bg-[#1B1664] text-white shadow-lg"
-                : "bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700"
+                : "bg-gray-200 text-gray-700 hover:bg-gray-300"
             }`}
           >
             {t("All")}
@@ -91,7 +91,7 @@ export default function Blogs() {
               className={`px-5 py-2 rounded-full text-sm font-medium transition ${
                 activeTab === service.id
                   ? "bg-[#1B1664] text-white shadow-lg"
-                  : "bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700"
+                  : "bg-gray-200  text-gray-700  hover:bg-gray-300"
               }`}
             >
               {service.title}
@@ -105,7 +105,7 @@ export default function Blogs() {
           <select
             value={sortOrder}
             onChange={(e) => setSortOrder(e.target.value)}
-            className="bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-white rounded-full px-4 py-2 text-sm focus:outline-none border border-gray-300 dark:border-gray-700"
+            className="bg-gray-100 text-gray-800 rounded-full px-4 py-2 text-sm focus:outline-none border border-gray-300"
           >
             <option value="newest">{t("Newest First")}</option>
             <option value="oldest">{t("Oldest First")}</option>
@@ -120,7 +120,7 @@ export default function Blogs() {
             <motion.div
               key={blog.id}
               whileHover={{ y: -8 }}
-              className="bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden border border-gray-200 dark:border-gray-700 transition cursor-pointer"
+              className="bg-white rounded-2xl shadow-md overflow-hidden border border-gray-200 transition cursor-pointer"
               onClick={() => navigate(`/blogs/${blog.id}`, { state: blog })}
             >
               <img
@@ -129,13 +129,13 @@ export default function Blogs() {
                 className="w-full h-52 object-cover"
               />
               <div className="p-6">
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+                <p className="text-sm text-gray-500 mb-1">
                   {new Date(blog.created_at).toDateString()}
                 </p>
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3">
+                <h3 className="text-xl font-semibold text-gray-900  mb-3">
                   {blog.title}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm leading-relaxed line-clamp-3">
+                <p className="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-3">
                   {blog.text}
                 </p>
 
@@ -145,7 +145,7 @@ export default function Blogs() {
                     alt={blog.userName}
                     className="w-10 h-10 rounded-full object-cover"
                   />
-                  <span className="text-gray-700 dark:text-gray-200 text-sm">
+                  <span className="text-gray-700 text-sm">
                     {blog.userName}
                   </span>
                 </div>
@@ -153,7 +153,7 @@ export default function Blogs() {
             </motion.div>
           ))
         ) : (
-          <p className="text-center text-gray-500 dark:text-gray-400 col-span-3 py-10">
+          <p className="text-center text-gray-500 col-span-3 py-10">
             {t("No blogs found for this category.")}
           </p>
         )}

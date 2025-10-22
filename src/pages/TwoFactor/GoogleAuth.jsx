@@ -107,14 +107,15 @@ export default function GoogleAuth() {
     }
   };
 
+  // ========== Setup View ==========
   if (view === "setup") {
     return (
-      <div className="min-h-screen pt-24 flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-6">
-        <div className="w-full max-w-2xl bg-white dark:bg-gray-800 rounded-3xl shadow-3xl p-16 flex flex-col items-center space-y-8 transition-all">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white text-center">
+      <div className="min-h-screen pt-24 flex items-center justify-center bg-gray-100 p-6">
+        <div className="w-full max-w-2xl bg-white rounded-3xl shadow-3xl p-16 flex flex-col items-center space-y-8 transition-all">
+          <h1 className="text-3xl font-bold text-gray-900 text-center">
             Google Authentication
           </h1>
-          <p className="text-gray-600 dark:text-gray-300 text-center text-lg">
+          <p className="text-gray-600 text-center text-lg">
             Connect your Authenticator app for two-factor authentication.
           </p>
 
@@ -131,11 +132,11 @@ export default function GoogleAuth() {
                 <input
                   value={data.secret}
                   readOnly
-                  className="w-full text-center font-mono px-3 py-2 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full text-center font-mono px-3 py-2 rounded-md bg-gray-100 text-gray-900"
                 />
                 <button
                   onClick={handleCopy}
-                  className="bg-gray-200 dark:bg-gray-700 px-4 py-2 rounded-md"
+                  className="bg-gray-200 px-4 py-2 rounded-md"
                 >
                   Copy
                 </button>
@@ -154,14 +155,15 @@ export default function GoogleAuth() {
     );
   }
 
+  // ========== OTP View ==========
   if (view === "otp") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-6">
-        <div className="w-full max-w-2xl bg-white dark:bg-gray-800 rounded-3xl shadow-3xl p-16 flex flex-col items-center space-y-8 transition-all">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white text-center">
+      <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
+        <div className="w-full max-w-2xl bg-white rounded-3xl shadow-3xl p-16 flex flex-col items-center space-y-8 transition-all">
+          <h1 className="text-3xl font-bold text-gray-900 text-center">
             Enter Google Authenticator Code
           </h1>
-          <p className="text-gray-600 dark:text-gray-300 text-center text-lg">
+          <p className="text-gray-600 text-center text-lg">
             Enter the 6-character code from your Authenticator app.
           </p>
 
@@ -175,7 +177,7 @@ export default function GoogleAuth() {
                 value={c}
                 onChange={(e) => handleChange(e, idx)}
                 onKeyDown={(e) => handleKeyDown(e, idx)}
-                className="w-16 h-16 text-center border-b-2 border-gray-400 dark:border-gray-500 text-gray-900 dark:text-white text-2xl font-semibold focus:border-[#1B1664FC] outline-none transition-all rounded-md"
+                className="w-16 h-16 text-center border-b-2 border-gray-400 text-gray-900 text-2xl font-semibold focus:border-[#1B1664FC] outline-none transition-all rounded-md"
               />
             ))}
           </div>
@@ -192,21 +194,22 @@ export default function GoogleAuth() {
     );
   }
 
+  // ========== Success View ==========
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-6">
-      <div className="w-full max-w-2xl bg-white dark:bg-gray-800 rounded-3xl shadow-3xl p-16 flex flex-col items-center space-y-8 transition-all">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-6">
+      <div className="w-full max-w-2xl bg-white rounded-3xl shadow-3xl p-16 flex flex-col items-center space-y-8 transition-all">
         <span className="w-16 h-16 bg-green-100 text-green-600 flex items-center justify-center rounded-full text-3xl">
           ✓
         </span>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white text-center">
+        <h1 className="text-3xl font-bold text-gray-900 text-center">
           Verified!
         </h1>
-        <p className="text-gray-600 dark:text-gray-300 text-center text-lg">
+        <p className="text-gray-600 text-center text-lg">
           Your Google Authenticator is now connected.
         </p>
         <button
           onClick={() => navigate("/auth")}
-            className="w-full bg-[#1B1664FC] hover:bg-[#372E8B] text-white py-4 rounded-xl font-semibold text-lg transition-all"
+          className="w-full bg-[#1B1664FC] hover:bg-[#372E8B] text-white py-4 rounded-xl font-semibold text-lg transition-all"
         >
           Continue
         </button>

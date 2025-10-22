@@ -36,15 +36,15 @@ export default function ResetPassword() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 transition-colors duration-500">
-      <div className="w-full max-w-lg bg-white dark:bg-gray-800 shadow-2xl rounded-2xl p-10">
-        <h2 className="text-3xl font-bold text-center mb-8 text-gray-800 dark:text-white">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 transition-colors duration-500">
+      <div className="w-full max-w-lg bg-white shadow-2xl rounded-2xl p-10">
+        <h2 className="text-3xl font-bold text-center mb-8 text-gray-800">
           {t("resetPassword.title")}
         </h2>
 
         <form onSubmit={handleReset} className="space-y-6">
           <div>
-            <label className="block mb-2 text-gray-700 dark:text-gray-300">
+            <label className="block mb-2 text-gray-700">
               {t("resetPassword.codeLabel")}
             </label>
             <input
@@ -52,12 +52,12 @@ export default function ResetPassword() {
               value={code}
               onChange={(e) => setCode(e.target.value)}
               placeholder={t("resetPassword.codePlaceholder")}
-              className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-xl px-4 py-3 text-gray-800 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-gray-300 bg-white rounded-xl px-4 py-3 text-gray-800 focus:ring-2 focus:ring-indigo-500 outline-none"
             />
           </div>
 
           <div>
-            <label className="block mb-2 text-gray-700 dark:text-gray-300">
+            <label className="block mb-2 text-gray-700">
               {t("resetPassword.passwordLabel")}
             </label>
             <input
@@ -65,12 +65,12 @@ export default function ResetPassword() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder={t("resetPassword.passwordPlaceholder")}
-              className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-xl px-4 py-3 text-gray-800 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-gray-300 bg-white rounded-xl px-4 py-3 text-gray-800 focus:ring-2 focus:ring-indigo-500 outline-none"
             />
           </div>
 
           <div>
-            <label className="block mb-2 text-gray-700 dark:text-gray-300">
+            <label className="block mb-2 text-gray-700 ">
               {t("resetPassword.confirmPasswordLabel")}
             </label>
             <input
@@ -78,7 +78,7 @@ export default function ResetPassword() {
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder={t("resetPassword.passwordPlaceholder")}
-              className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 rounded-xl px-4 py-3 text-gray-800 dark:text-gray-100 focus:ring-2 focus:ring-indigo-500 outline-none"
+              className="w-full border border-gray-300 bg-white rounded-xl px-4 py-3 text-gray-800 focus:ring-2 focus:ring-indigo-500 outline-none"
             />
           </div>
 
