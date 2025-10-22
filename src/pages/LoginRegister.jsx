@@ -389,24 +389,48 @@ const LoginRegister = ({ onLoginSuccess }) => {
                           credentialResponse.credential
                         );
 
+                        // إرسال التوكن للجسر الخلفي
                         const res = await ApiClient.post("Auth/login-google", {
-                          id_token: credentialResponse,
+                          id_token: credentialResponse.credential,
                         });
 
-                        localStorage.setItem("Auth_Token", res.data.token);
-                        localStorage.setItem("user_id", res.data.user.id);
-                        localStorage.setItem("email", res.data.user.email);
+                        const { user, token } = res?.data || {};
 
-                        enqueueSnackbar("تم تسجيل الدخول بواسطة Google ✅", {
-                          variant: "success",
-                        });
-                        navigate("/twofactor");
-                      } catch {
-                        enqueueSnackbar("فشل تسجيل الدخول عبر Google ⚠️", {
-                          variant: "error",
-                        });
+                        if (token && user) {
+                          localStorage.setItem("Auth_Token", token);
+                          localStorage.setItem("user_id", user.id);
+                          localStorage.setItem("email", user.email);
+
+                          enqueueSnackbar("تم تسجيل الدخول بواسطة Google ✅", {
+                            variant: "success",
+                          });
+
+                          // ✅ تحقق من حالة KYC
+                          if (user.verified_kyc === true) {
+                            navigate("/home");
+                          } else {
+                            navigate("/twofactor/uploadVerification");
+                          }
+                        } else {
+                          enqueueSnackbar("فشل تسجيل الدخول عبر Google ⚠️", {
+                            variant: "error",
+                          });
+                        }
+                      } catch (error) {
+                        console.error("❌ Google Login Error:", error);
+                        enqueueSnackbar(
+                          "حدث خطأ أثناء تسجيل الدخول عبر Google ⚠️",
+                          {
+                            variant: "error",
+                          }
+                        );
                       }
                     }}
+                    onError={() =>
+                      enqueueSnackbar("فشل تسجيل الدخول عبر Google ⚠️", {
+                        variant: "error",
+                      })
+                    }
                   />
                 </div>
               </motion.form>

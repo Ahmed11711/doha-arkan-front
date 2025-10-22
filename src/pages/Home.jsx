@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import hero from "../assets/images/hero3.png";
+import app from "../assets/images/app.jpg";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 import "./Home.css";
 import PackagesCoverflow from "../components/PackagesCoverflow";
@@ -59,7 +60,9 @@ const Home = () => {
             isArabic ? "md:flex-row-reverse" : "md:flex-row"
           } items-center gap-12`}
         >
-          <div className={`flex-1 ${isArabic ? "text-right" : "text-left"} w-full`}>
+          <div
+            className={`flex-1 ${isArabic ? "text-right" : "text-left"} w-full`}
+          >
             <div className="relative mb-6">
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 relative z-10">
                 {t("Who We Are")}
@@ -83,16 +86,32 @@ const Home = () => {
               nunc elementum ornare aliquet placerat.
             </p>
 
-            <button className="px-6 py-3 bg-[#1B1664FC] hover:bg-[#372E8B] text-white font-semibold rounded shadow-md transition">
+            <button
+              onClick={() => navigate("/about")}
+              className="px-6 py-3 bg-[#1B1664FC] hover:bg-[#372E8B] text-white font-semibold rounded shadow-md transition"
+            >
               {t("Learn More")}
             </button>
           </div>
 
           <div className="flex-1 flex justify-center items-center w-full">
             <div className="orbit-container w-[85%] sm:w-[80%] md:w-[90%] max-w-[550px]">
-              <svg viewBox="0 0 500 500" className="orbit-svg w-full drop-shadow-lg">
-                <circle cx="250" cy="250" r="120" className="orbit-path inner" />
-                <circle cx="250" cy="250" r="190" className="orbit-path outer" />
+              <svg
+                viewBox="0 0 500 500"
+                className="orbit-svg w-full drop-shadow-lg"
+              >
+                <circle
+                  cx="250"
+                  cy="250"
+                  r="120"
+                  className="orbit-path inner"
+                />
+                <circle
+                  cx="250"
+                  cy="250"
+                  r="190"
+                  className="orbit-path outer"
+                />
 
                 <text
                   x="250"
@@ -104,45 +123,49 @@ const Home = () => {
                 </text>
 
                 <g className="inner-orbit">
-                  {[{ x: 250, y: 110 }, { x: 340, y: 220 }, { x: 250, y: 340 }].map(
-                    (pos, idx) => (
-                      <foreignObject
-                        key={idx}
-                        x={pos.x}
-                        y={pos.y}
-                        width="60"
-                        height="60"
-                        className="orbit-item"
-                      >
-                        <img
-                          src={hero}
-                          alt={idx + 1}
-                          className="rounded-full w-full h-full object-cover"
-                        />
-                      </foreignObject>
-                    )
-                  )}
+                  {[
+                    { x: 250, y: 110 },
+                    { x: 340, y: 220 },
+                    { x: 250, y: 340 },
+                  ].map((pos, idx) => (
+                    <foreignObject
+                      key={idx}
+                      x={pos.x}
+                      y={pos.y}
+                      width="60"
+                      height="60"
+                      className="orbit-item"
+                    >
+                      <img
+                        src={hero}
+                        alt={idx + 1}
+                        className="rounded-full w-full h-full object-cover"
+                      />
+                    </foreignObject>
+                  ))}
                 </g>
 
                 <g className="outer-orbit">
-                  {[{ x: 420, y: 220 }, { x: 250, y: 30 }, { x: 40, y: 230 }].map(
-                    (pos, idx) => (
-                      <foreignObject
-                        key={idx}
-                        x={pos.x}
-                        y={pos.y}
-                        width="70"
-                        height="70"
-                        className="orbit-item"
-                      >
-                        <img
-                          src={hero}
-                          alt={idx + 4}
-                          className="rounded-full w-full h-full object-cover"
-                        />
-                      </foreignObject>
-                    )
-                  )}
+                  {[
+                    { x: 420, y: 220 },
+                    { x: 250, y: 30 },
+                    { x: 40, y: 230 },
+                  ].map((pos, idx) => (
+                    <foreignObject
+                      key={idx}
+                      x={pos.x}
+                      y={pos.y}
+                      width="70"
+                      height="70"
+                      className="orbit-item"
+                    >
+                      <img
+                        src={hero}
+                        alt={idx + 4}
+                        className="rounded-full w-full h-full object-cover"
+                      />
+                    </foreignObject>
+                  ))}
                 </g>
               </svg>
             </div>
@@ -166,13 +189,14 @@ const Home = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
             {services.map((service, idx) => (
               <div
                 key={idx}
-                className="border border-gray-200 rounded-2xl p-8 text-center shadow-sm hover:shadow-lg transition-all duration-300 bg-white"
+                className="backdrop-blur-md bg-white/70 border-4 border-gray-300/60 rounded-2xl p-6 text-center shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
               >
-                <div className="w-28 h-28 mx-auto mb-6 rounded-full border-4 border-[#1B1664FC] shadow-md overflow-hidden bg-gray-100">
+                {/* الصورة */}
+                <div className="w-20 h-20 mx-auto mb-4 rounded-full border-4 border-[#1B1664FC] shadow-md overflow-hidden bg-gray-100">
                   <img
                     src={service.img}
                     alt={service.title}
@@ -180,17 +204,26 @@ const Home = () => {
                   />
                 </div>
 
-                <h3 className="text-2xl font-semibold mb-4 text-gray-900">
+                {/* العنوان */}
+                <h3 className="text-xl font-semibold mb-3 text-gray-900">
                   {service.title}
                 </h3>
 
-                <p className="text-gray-600 mb-6 leading-relaxed">{service.desc}</p>
+                {/* الوصف */}
+                <p className="text-gray-600 mb-5 text-sm leading-relaxed">
+                  {service.desc}
+                </p>
 
+                {/* الزر */}
                 <button
                   onClick={() => navigate(`/services?tab=${idx}`)}
-                  className="inline-flex items-center justify-center gap-2 px-5 py-2 rounded-full bg-[#1B1664FC] text-white font-medium hover:bg-[#15104F] transition"
+                  className="inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full bg-[#1B1664FC] text-white font-medium hover:bg-[#15104F] transition"
                 >
-                  {isArabic ? <FaArrowLeft className="text-sm" /> : <FaArrowRight className="text-sm" />}
+                  {isArabic ? (
+                    <FaArrowLeft className="text-sm" />
+                  ) : (
+                    <FaArrowRight className="text-sm" />
+                  )}
                 </button>
               </div>
             ))}
@@ -201,7 +234,6 @@ const Home = () => {
       <PackagesCoverflow services={services} />
       <BlogSection />
 
-      {/* Call to Action Section */}
       <section className="w-full py-20 px-6 bg-[#1B1664FC] transition-colors duration-500">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
           <div className="flex-1 text-center md:text-left">
@@ -230,7 +262,7 @@ const Home = () => {
 
           <div className="flex-1 flex justify-center md:justify-end">
             <img
-              src={hero}
+              src={app}
               alt="Crypto trading illustration"
               className="w-full max-w-md rounded-2xl shadow-2xl"
             />
