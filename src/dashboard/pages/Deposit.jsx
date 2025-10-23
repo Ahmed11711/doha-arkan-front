@@ -113,7 +113,6 @@ export default function DepositDashboard() {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-900">
       <div className="w-full mx-auto bg-white rounded-2xl shadow-md p-5 sm:p-8 md:p-10">
-        {/* Header */}
         <div className="flex flex-wrap items-center justify-between gap-3 mb-8">
           <h1 className="text-xl sm:text-2xl font-bold text-[#1B1664] flex items-center gap-2 sm:gap-3">
             <FaWallet className="text-[#1B1664]" /> {t("Deposit")}
@@ -128,7 +127,6 @@ export default function DepositDashboard() {
           )}
         </div>
 
-        {/* History Table */}
         {!showSteps && (
           <div className="w-full">
             <h2 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">
@@ -282,7 +280,6 @@ export default function DepositDashboard() {
           </div>
         )}
 
-        {/* Steps Section */}
         {showSteps && (
           <div>
             <button

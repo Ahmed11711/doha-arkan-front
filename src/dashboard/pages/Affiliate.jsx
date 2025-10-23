@@ -22,7 +22,6 @@ export default function AffiliateDashboard() {
 
       const res = await ApiClient.get(endpoint);
 
-      // ✅ خزني أول user_id يظهر كـ rootUserId
       if (!rootUserId && (userId || res?.data?.[0]?.user_id)) {
         setRootUserId(userId || res.data[0].user_id);
       }
