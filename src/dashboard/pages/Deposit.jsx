@@ -111,7 +111,7 @@ export default function DepositDashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900">
+    <div className="min-h-screen bg-gray-50 text-gray-600">
       <div className="w-full mx-auto bg-white rounded-2xl shadow-md p-5 sm:p-8 md:p-10">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-8">
           <h1 className="text-xl sm:text-2xl font-bold text-[#1B1664] flex items-center gap-2 sm:gap-3">
