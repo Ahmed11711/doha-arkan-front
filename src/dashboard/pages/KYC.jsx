@@ -6,7 +6,6 @@ import { useAuth } from "../../context/AuthContext";
 export default function KYCDashboard() {
   const { user } = useAuth();
 
-  // ✅ كل الـ hooks على نفس المستوى
   const [kycData, setKycData] = useState(null);
   const [selectedFiles, setSelectedFiles] = useState({
     front_id: null,
@@ -20,21 +19,21 @@ export default function KYCDashboard() {
 
   useEffect(() => {
     const fetchKYC = async () => {
-      if (!verifiedKYC) return; // لو verified false، ما تعملش fetch
       try {
         const res = await ApiClient.get("/kyc");
-        setKycData(res.data);
+        if (res.data.length > 0) setKycData(res.data[0]);
       } catch (err) {
         console.error("❌ Failed to fetch KYC:", err);
       }
     };
     fetchKYC();
-  }, [verifiedKYC]);
+  }, []);
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;
     if (files && files.length > 0) {
       setSelectedFiles((prev) => ({ ...prev, [name]: files[0] }));
+      setMessage({ text: "", type: "" });
     }
   };
 
@@ -52,6 +51,11 @@ export default function KYCDashboard() {
       setMessage({ text: "Uploading KYC data...", type: "info" });
       await ApiClient.post("/kyc", formData);
       setMessage({ text: "KYC data saved successfully!", type: "success" });
+
+      // تحديث الصور بعد الرفع
+      const res = await ApiClient.get("/kyc");
+      if (res.data.length > 0) setKycData(res.data[0]);
+      setSelectedFiles({ front_id: null, back_id: null, face: null });
     } catch (err) {
       console.error("❌ Upload error:", err);
       setMessage({ text: "Failed to upload KYC data.", type: "error" });
@@ -60,8 +64,13 @@ export default function KYCDashboard() {
     }
   };
 
-  // ✅ JSX conditional بعد كل الـ hooks
   if (!user) return <div className="p-6 text-gray-600">User not found</div>;
+
+  const fields = [
+    { label: "Front of ID", name: "front_id", icon: <FaIdCard /> },
+    { label: "Back of ID", name: "back_id", icon: <FaIdCard /> },
+    { label: "Selfie", name: "face", icon: <FaUserCircle /> },
+  ];
 
   return (
     <div className="p-6 bg-white rounded-xl shadow-md space-y-6">
@@ -82,53 +91,57 @@ export default function KYCDashboard() {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {[
-          { label: "Front of ID", name: "front_id", icon: <FaIdCard /> },
-          { label: "Back of ID", name: "back_id", icon: <FaIdCard /> },
-          { label: "Selfie", name: "face", icon: <FaUserCircle /> },
-        ].map((field) => (
-          <div
-            key={field.name}
-            className="border rounded-xl p-4 flex flex-col items-center justify-center"
-          >
-            <h3 className="text-lg font-semibold mb-3 flex items-center gap-2 text-gray-700">
-              {field.icon} {field.label}
-            </h3>
+        {fields.map((field) => {
+          const existingImage = kycData?.[field.name];
 
-            <div className="w-full h-48 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden mb-3">
-              {selectedFiles[field.name] ? (
-                <img
-                  src={URL.createObjectURL(selectedFiles[field.name])}
-                  alt={field.label}
-                  className="object-contain w-full h-full"
-                />
-              ) : verifiedKYC && kycData?.[field.name] ? (
-                <img
-                  src={kycData[field.name]}
-                  alt={field.label}
-                  className="object-contain w-full h-full"
-                />
-              ) : (
-                <span className="text-gray-400 text-sm">No image uploaded</span>
+          return (
+            <div
+              key={field.name}
+              className="border rounded-xl p-4 flex flex-col items-center justify-center"
+            >
+              <h3 className="text-lg font-semibold mb-3 flex items-center gap-2 text-gray-700">
+                {field.icon} {field.label}
+              </h3>
+
+              <div className="w-full h-48 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden mb-3">
+                {selectedFiles[field.name] ? (
+                  <img
+                    src={URL.createObjectURL(selectedFiles[field.name])}
+                    alt={field.label}
+                    className="object-contain w-full h-full"
+                  />
+                ) : existingImage ? (
+                  <img
+                    src={existingImage}
+                    alt={field.label}
+                    className="object-contain w-full h-full"
+                  />
+                ) : (
+                  <span className="text-gray-400 text-sm">
+                    No image uploaded
+                  </span>
+                )}
+              </div>
+
+              {/* لو مش verified و الصورة مش موجودة → زر رفع */}
+              {!verifiedKYC && !existingImage && (
+                <label className="cursor-pointer bg-[#1B1664FC] hover:bg-[#372E8B] text-white px-4 py-2 rounded-lg flex items-center gap-2 transition">
+                  <FaUpload /> Upload
+                  <input
+                    type="file"
+                    name={field.name}
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
+                </label>
               )}
             </div>
-
-            {!verifiedKYC && (
-              <label className="cursor-pointer bg-[#1B1664FC] hover:bg-[#372E8B] text-white px-4 py-2 rounded-lg flex items-center gap-2 transition">
-                <FaUpload /> Upload
-                <input
-                  type="file"
-                  name={field.name}
-                  accept="image/*"
-                  className="hidden"
-                  onChange={handleFileChange}
-                />
-              </label>
-            )}
-          </div>
-        ))}
+          );
+        })}
       </div>
 
+      {/* زر Upload عام للصور الجديدة */}
       {!verifiedKYC && (
         <div className="flex justify-end">
           <button

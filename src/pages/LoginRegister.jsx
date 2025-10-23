@@ -14,7 +14,6 @@ import PhoneInput from "react-phone-input-2";
 import { Snackbar, Alert } from "@mui/material";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
-import { useAuth } from "../context/AuthContext";
 
 const LoginRegister = ({ onLoginSuccess }) => {
   const { t } = useTranslation();
@@ -23,7 +22,6 @@ const LoginRegister = ({ onLoginSuccess }) => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const [apiErrors, setApiErrors] = useState({});
-  const { login } = useAuth();
 
   const schemaLogin = yup.object().shape({
     email: yup.string().email(t("invalid_email")).required(t("required")),
@@ -67,7 +65,11 @@ const LoginRegister = ({ onLoginSuccess }) => {
         if (res?.data?.token && res?.data?.user) {
           const { token, user } = res.data;
 
-          login(user, token);
+          localStorage.setItem("Auth_Token", token);
+          localStorage.setItem("user_id", user.id);
+          localStorage.setItem("email", user.email);
+          localStorage.setItem("name", user.name || "User");
+          localStorage.setItem("isAuthenticated", "true");
 
           enqueueSnackbar("تم تسجيل الدخول بنجاح ✅", { variant: "success" });
 
@@ -88,17 +90,19 @@ const LoginRegister = ({ onLoginSuccess }) => {
           email: data.email,
           phone: data.phone,
           password: data.password,
-          affiliate: data.affiliate,
+          coming_affiliate: data.affiliate,
           type: "user",
         });
 
         if (signupRes?.data?.id) {
-          const newUser = {
-            id: signupRes.data.id,
-            email: signupRes.data.email,
-            name: signupRes.data.name || data.fullName,
-          };
-          login(newUser, signupRes.data.token || "");
+          localStorage.setItem("user_id", signupRes.data.id);
+          localStorage.setItem("email", signupRes.data.email);
+          localStorage.setItem("name", signupRes.data.name || data.fullName);
+          localStorage.setItem("isAuthenticated", "true");
+          const affiliate = await ApiClient.post("Affiliate",{
+            user_id:signupRes.data.id
+          })
+
           enqueueSnackbar("تم إنشاء الحساب بنجاح ✅", { variant: "success" });
           navigate("/twofactor");
         } else {
@@ -214,48 +218,24 @@ const LoginRegister = ({ onLoginSuccess }) => {
                           credentialResponse.credential
                         );
 
-                        // إرسال التوكن للجسر الخلفي
                         const res = await ApiClient.post("Auth/login-google", {
-                          id_token: credentialResponse.credential,
+                          id_token: credentialResponse,
                         });
 
-                        const { user, token } = res?.data || {};
+                        localStorage.setItem("Auth_Token", res.data.token);
+                        localStorage.setItem("user_id", res.data.user.id);
+                        localStorage.setItem("email", res.data.user.email);
 
-                        if (token && user) {
-                          localStorage.setItem("Auth_Token", token);
-                          localStorage.setItem("user_id", user.id);
-                          localStorage.setItem("email", user.email);
-
-                          enqueueSnackbar("تم تسجيل الدخول بواسطة Google ✅", {
-                            variant: "success",
-                          });
-
-                          // ✅ تحقق من حالة KYC
-                          if (user.verified_kyc === true) {
-                            navigate("/home");
-                          } else {
-                            navigate("/twofactor/uploadVerification");
-                          }
-                        } else {
-                          enqueueSnackbar("فشل تسجيل الدخول عبر Google ⚠️", {
-                            variant: "error",
-                          });
-                        }
-                      } catch (error) {
-                        console.error("❌ Google Login Error:", error);
-                        enqueueSnackbar(
-                          "حدث خطأ أثناء تسجيل الدخول عبر Google ⚠️",
-                          {
-                            variant: "error",
-                          }
-                        );
+                        enqueueSnackbar("تم تسجيل الدخول بواسطة Google ✅", {
+                          variant: "success",
+                        });
+                        navigate("/twofactor/uploadVerification");
+                      } catch {
+                        enqueueSnackbar("فشل تسجيل الدخول عبر Google ⚠️", {
+                          variant: "error",
+                        });
                       }
                     }}
-                    onError={() =>
-                      enqueueSnackbar("فشل تسجيل الدخول عبر Google ⚠️", {
-                        variant: "error",
-                      })
-                    }
                   />
                 </div>
               </motion.form>
@@ -389,48 +369,24 @@ const LoginRegister = ({ onLoginSuccess }) => {
                           credentialResponse.credential
                         );
 
-                        // إرسال التوكن للجسر الخلفي
                         const res = await ApiClient.post("Auth/login-google", {
-                          id_token: credentialResponse.credential,
+                          id_token: credentialResponse,
                         });
 
-                        const { user, token } = res?.data || {};
+                        localStorage.setItem("Auth_Token", res.data.token);
+                        localStorage.setItem("user_id", res.data.user.id);
+                        localStorage.setItem("email", res.data.user.email);
 
-                        if (token && user) {
-                          localStorage.setItem("Auth_Token", token);
-                          localStorage.setItem("user_id", user.id);
-                          localStorage.setItem("email", user.email);
-
-                          enqueueSnackbar("تم تسجيل الدخول بواسطة Google ✅", {
-                            variant: "success",
-                          });
-
-                          // ✅ تحقق من حالة KYC
-                          if (user.verified_kyc === true) {
-                            navigate("/home");
-                          } else {
-                            navigate("/twofactor/uploadVerification");
-                          }
-                        } else {
-                          enqueueSnackbar("فشل تسجيل الدخول عبر Google ⚠️", {
-                            variant: "error",
-                          });
-                        }
-                      } catch (error) {
-                        console.error("❌ Google Login Error:", error);
-                        enqueueSnackbar(
-                          "حدث خطأ أثناء تسجيل الدخول عبر Google ⚠️",
-                          {
-                            variant: "error",
-                          }
-                        );
+                        enqueueSnackbar("تم تسجيل الدخول بواسطة Google ✅", {
+                          variant: "success",
+                        });
+                        navigate("/twofactor/uploadVerification");
+                      } catch {
+                        enqueueSnackbar("فشل تسجيل الدخول عبر Google ⚠️", {
+                          variant: "error",
+                        });
                       }
                     }}
-                    onError={() =>
-                      enqueueSnackbar("فشل تسجيل الدخول عبر Google ⚠️", {
-                        variant: "error",
-                      })
-                    }
                   />
                 </div>
               </motion.form>
