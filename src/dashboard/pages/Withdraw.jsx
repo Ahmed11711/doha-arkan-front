@@ -3,19 +3,29 @@ import { FaCheckCircle, FaArrowRight, FaWallet, FaPlus } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import ApiClient from "../../services/API";
 import Popup from "../../components/common/Popup";
-
+import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 export default function WithdrawDashboard() {
   const { t } = useTranslation();
   const [showSteps, setShowSteps] = useState(false);
   const [withdraws, setWithdraws] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const navigate = useNavigate();
   const [amount, setAmount] = useState("");
   const [address, setAddress] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [popupData, setPopupData] = useState(null);
+  const { user, updateUser } = useAuth();
+  // console.log("user", user.user_balance);
+  const [availableBalance, setAvailableBalance] = useState(
+    user?.user_balance || 0
+  );
 
-  const [availableBalance, setAvailableBalance] = useState(1200);
+  useEffect(() => {
+    if (user?.user_balance !== undefined) {
+      setAvailableBalance(Number(user.user_balance));
+    }
+  }, [user]);
 
   const fetchWithdraws = async () => {
     try {
@@ -63,9 +73,24 @@ export default function WithdrawDashboard() {
           success: true,
           message: t("Withdraw request submitted successfully!"),
         });
+        navigate("/dashboard/withdraw");
         setAmount("");
         setAddress("");
         fetchWithdraws();
+
+        try {
+          const meRes = await ApiClient.get("/me");
+          if (meRes?.data) {
+            console.log("meResdata", meRes?.data);
+            updateUser(meRes.data);
+            console.log("Updated Balance:", meRes.data.user_balance);
+
+            setAvailableBalance(Number(meRes.data.user_balance)); // ✅ حدّث الرصيد هنا
+            console.log("user", user.user_balance);
+          }
+        } catch (err) {
+          console.error("Error fetching updated user data:", err);
+        }
       } else {
         setPopupData({
           success: false,
@@ -101,44 +126,59 @@ export default function WithdrawDashboard() {
         </div>
 
         {!showSteps && (
-          <div>
-            <h2 className="text-lg font-semibold mb-4">
+          <div className="space-y-6">
+            <h2 className="text-2xl font-semibold mb-4 text-[#1B1664]">
               {t("Withdraw History")}
             </h2>
 
             {loading ? (
-              <p className="text-gray-500">{t("Loading...")}</p>
+              <div className="flex justify-center items-center py-10 text-gray-500">
+                <span className="animate-pulse">{t("Loading...")}</span>
+              </div>
             ) : withdraws.length === 0 ? (
-              <p className="text-gray-500">{t("No withdraw history found.")}</p>
+              <div className="text-center py-10 text-gray-500 bg-white rounded-2xl shadow-sm">
+                {t("No withdraw history found.")}
+              </div>
             ) : (
               <>
-                <div className="hidden md:block overflow-x-auto rounded-xl border border-gray-200">
+                {/* Desktop Table */}
+                <div className="hidden md:block overflow-x-auto rounded-2xl shadow-sm border border-gray-100 bg-white">
                   <table className="min-w-[650px] w-full text-sm">
-                    <thead className="bg-[#1B1664] text-white">
+                    <thead className="bg-gradient-to-r from-[#1B1664] to-[#2e2791] text-white rounded-t-2xl">
                       <tr>
-                        <th className="px-4 py-3 text-left">{t("Date")}</th>
-                        <th className="px-4 py-3 text-left">
+                        <th className="px-4 py-3 text-left font-medium">
+                          {t("Date")}
+                        </th>
+                        <th className="px-4 py-3 text-left font-medium">
                           {t("Transaction ID")}
                         </th>
-                        <th className="px-4 py-3 text-left">{t("Address")}</th>
-                        <th className="px-4 py-3 text-left">{t("Amount")}</th>
-                        <th className="px-4 py-3 text-left">{t("Status")}</th>
+                        <th className="px-4 py-3 text-left font-medium">
+                          {t("Address")}
+                        </th>
+                        <th className="px-4 py-3 text-left font-medium">
+                          {t("Amount")}
+                        </th>
+                        <th className="px-4 py-3 text-left font-medium">
+                          {t("Status")}
+                        </th>
                       </tr>
                     </thead>
 
-                    <tbody className="bg-white">
+                    <tbody>
                       {withdraws.map((item) => (
                         <tr
                           key={item.id}
-                          className="border-t border-gray-200 hover:bg-gray-50"
+                          className="border-t border-gray-100 hover:bg-gray-50 transition-colors"
                         >
-                          <td className="px-4 py-3">
+                          <td className="px-4 py-3 text-gray-700">
                             {new Date(item.created_at).toLocaleDateString(
                               "en-GB"
                             )}
                           </td>
+
                           <td
-                            className="px-4 py-3 font-mono text-xs text-gray-700 cursor-pointer"
+                            className="px-4 py-3 font-mono text-xs text-[#1B1664] cursor-pointer"
+                            title={item.transaction_id}
                             onClick={() =>
                               navigator.clipboard.writeText(item.transaction_id)
                             }
@@ -150,8 +190,10 @@ export default function WithdrawDashboard() {
                                 )}...${item.transaction_id.slice(-4)}`
                               : item.transaction_id}
                           </td>
+
                           <td
                             className="px-4 py-3 font-mono text-xs text-gray-700 cursor-pointer"
+                            title={item.address}
                             onClick={() =>
                               navigator.clipboard.writeText(item.address)
                             }
@@ -163,9 +205,11 @@ export default function WithdrawDashboard() {
                                 )}...${item.address.slice(-4)}`
                               : item.address}
                           </td>
-                          <td className="px-4 py-3">
-                            {item.amount} {item.symbol}
+
+                          <td className="px-4 py-3 font-medium text-[#1B1664]">
+                            {item.amount}
                           </td>
+
                           <td
                             className={`px-4 py-3 font-medium capitalize ${
                               item.status === "completed"
@@ -183,29 +227,30 @@ export default function WithdrawDashboard() {
                   </table>
                 </div>
 
+                {/* Mobile Cards */}
                 <div className="grid md:hidden gap-4">
                   {withdraws.map((item) => (
                     <div
                       key={item.id}
-                      className="bg-white shadow-sm border border-gray-200 rounded-2xl p-4"
+                      className="bg-white shadow-md border border-gray-100 rounded-2xl p-5 transition hover:shadow-lg"
                     >
-                      <div className="flex justify-between items-center mb-2">
+                      <div className="flex justify-between mb-2">
                         <span className="text-sm text-gray-500">
                           {t("Date")}
                         </span>
-                        <span className="text-sm font-semibold">
+                        <span className="text-sm font-medium text-gray-800">
                           {new Date(item.created_at).toLocaleDateString(
                             "en-GB"
                           )}
                         </span>
                       </div>
 
-                      <div className="flex justify-between items-center mb-2">
+                      <div className="flex justify-between mb-2">
                         <span className="text-sm text-gray-500">
                           {t("Transaction ID")}
                         </span>
                         <span
-                          className="text-sm font-mono text-gray-700 truncate max-w-[140px] cursor-pointer"
+                          className="text-sm font-mono text-[#1B1664] truncate max-w-[140px] cursor-pointer"
                           onClick={() =>
                             navigator.clipboard.writeText(item.transaction_id)
                           }
@@ -219,7 +264,7 @@ export default function WithdrawDashboard() {
                         </span>
                       </div>
 
-                      <div className="flex justify-between items-center mb-2">
+                      <div className="flex justify-between mb-2">
                         <span className="text-sm text-gray-500">
                           {t("Address")}
                         </span>
@@ -238,7 +283,7 @@ export default function WithdrawDashboard() {
                         </span>
                       </div>
 
-                      <div className="flex justify-between items-center mb-2">
+                      <div className="flex justify-between mb-2">
                         <span className="text-sm text-gray-500">
                           {t("Amount")}
                         </span>
@@ -247,12 +292,12 @@ export default function WithdrawDashboard() {
                         </span>
                       </div>
 
-                      <div className="flex justify-between items-center">
+                      <div className="flex justify-between">
                         <span className="text-sm text-gray-500">
                           {t("Status")}
                         </span>
                         <span
-                          className={`text-sm font-medium capitalize ${
+                          className={`text-sm font-semibold capitalize ${
                             item.status === "completed"
                               ? "text-green-600"
                               : item.status === "pending"
@@ -287,10 +332,7 @@ export default function WithdrawDashboard() {
               </h3>
 
               <p className="mb-4 text-gray-700">
-                {t("Available Balance")}:{" "}
-                <span className="font-semibold text-[#1B1664]">
-                  ${availableBalance}
-                </span>
+                {t("Available Balance")}: ${Number(availableBalance).toFixed(2)}
               </p>
 
               <div className="flex flex-col sm:flex-row items-center gap-4 mt-6">

@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 export default function ForgotPassword() {
-  const [email, setEmail] = useState("");
+  const [method, setMethod] = useState("email");
+  const [value, setValue] = useState("");
   const [loading, setLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
@@ -13,13 +14,17 @@ export default function ForgotPassword() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!email) return enqueueSnackbar(t("forgotPassword.enterEmail"), { variant: "warning" });
+    if (!value)
+      return enqueueSnackbar(t("forgotPassword.enterValue"), { variant: "warning" });
 
     setLoading(true);
     try {
-      await ApiClient.post("Auth/forgot-password", { email });
+      await ApiClient.post("Auth/forgot-password", { method, value });
       enqueueSnackbar(t("forgotPassword.success"), { variant: "success" });
-      localStorage.setItem("reset_email", email);
+
+      localStorage.setItem("reset_method", method);
+      localStorage.setItem("reset_value", value);
+
       navigate("/reset-password");
     } catch (err) {
       console.error(err);
@@ -37,15 +42,35 @@ export default function ForgotPassword() {
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          {/* اختيار الطريقة */}
+          <div>
+            <label className="block mb-2 text-gray-700">{t("forgotPassword.methodLabel")}</label>
+            <select
+              value={method}
+              onChange={(e) => setMethod(e.target.value)}
+              className="w-full border border-gray-300 bg-white rounded-xl px-4 py-3 text-gray-800 focus:ring-2 focus:ring-indigo-500 outline-none"
+            >
+              <option value="email">{t("forgotPassword.methodEmail")}</option>
+              <option value="sms">{t("forgotPassword.methodSMS")}</option>
+            </select>
+          </div>
+
+          {/* حقل القيمة */}
           <div>
             <label className="block mb-2 text-gray-700">
-              {t("forgotPassword.emailLabel")}
+              {method === "email"
+                ? t("forgotPassword.emailLabel")
+                : t("forgotPassword.phoneLabel")}
             </label>
             <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder={t("forgotPassword.emailPlaceholder")}
+              type={method === "email" ? "email" : "tel"}
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              placeholder={
+                method === "email"
+                  ? t("forgotPassword.emailPlaceholder")
+                  : t("forgotPassword.phonePlaceholder")
+              }
               className="w-full border border-gray-300 bg-white rounded-xl px-4 py-3 text-gray-800 focus:ring-2 focus:ring-indigo-500 outline-none"
             />
           </div>

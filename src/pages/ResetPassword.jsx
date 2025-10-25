@@ -13,19 +13,30 @@ export default function ResetPassword() {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const email = localStorage.getItem("reset_email");
+  const method = localStorage.getItem("reset_method");
+  const value = localStorage.getItem("reset_value");
 
   const handleReset = async (e) => {
     e.preventDefault();
-    if (!email) return enqueueSnackbar(t("resetPassword.noEmail"), { variant: "error" });
+
+    if (!method || !value)
+      return enqueueSnackbar(t("resetPassword.noData"), { variant: "error" });
+
     if (password !== confirmPassword)
       return enqueueSnackbar(t("resetPassword.mismatch"), { variant: "warning" });
 
     setLoading(true);
     try {
-      await ApiClient.post("Auth/reset-password", { email, otp: code, password });
+      await ApiClient.post("Auth/reset-password", {
+        method,
+        value,
+        otp: code,
+        password,
+      });
+
       enqueueSnackbar(t("resetPassword.success"), { variant: "success" });
-      localStorage.removeItem("reset_email");
+      localStorage.removeItem("reset_method");
+      localStorage.removeItem("reset_value");
       navigate("/login");
     } catch (err) {
       console.error(err);
@@ -70,7 +81,7 @@ export default function ResetPassword() {
           </div>
 
           <div>
-            <label className="block mb-2 text-gray-700 ">
+            <label className="block mb-2 text-gray-700">
               {t("resetPassword.confirmPasswordLabel")}
             </label>
             <input

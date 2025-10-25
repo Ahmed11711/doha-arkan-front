@@ -34,6 +34,21 @@ export const AuthProvider = ({ children }) => {
     setIsAuthenticated(true);
   };
 
+  const updateUser = (newUserData) => {
+    setUser((prev) => {
+      if (!prev) return newUserData;
+
+      // نحافظ على البيانات القديمة اللي في localStorage
+      const updated = { ...prev, ...newUserData };
+
+      // ❌ ما نحفظش الرصيد في localStorage
+      const { user_balance, ...userWithoutBalance } = updated;
+      localStorage.setItem("userData", JSON.stringify(userWithoutBalance));
+
+      return updated; // نرجع كل الداتا بما فيها الرصيد في الـ state فقط
+    });
+  };
+
   // 🔴 تسجيل الخروج
   const logout = () => {
     localStorage.removeItem("Auth_Token");
@@ -45,10 +60,21 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, isAuthenticated, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        token,
+        isAuthenticated,
+        login,
+        logout,
+        updateUser,
+        setUser,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => useContext(AuthContext);

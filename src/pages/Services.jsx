@@ -28,13 +28,12 @@ export default function Services() {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const res = await ApiClient.get("service"); // ✅ جلب البيانات من API
-        console.log("✅ Services:", res.data);
+        const res = await ApiClient.get("service");
+        // console.log("✅ Services:", res.data);
 
         if (Array.isArray(res.data)) {
           setServices(res.data);
         } else if (Array.isArray(res.data.data)) {
-          // أحيانًا السيرفر بيرجع داخل data.data
           setServices(res.data.data);
         }
 
@@ -124,18 +123,29 @@ export default function Services() {
             {services[activeTab].plans.map((plan, idx) => (
               <PricingCard
                 key={idx}
+                id={plan.id}
                 plan={plan.name}
-                price={plan.price}
-                period="month"
+                price={parseFloat(plan.amount)} 
+                period={`${plan.duration_months} ${t("months")}`} 
                 featured={plan.featured}
-                features={
-                  plan.features?.length
-                    ? plan.features
-                    : [
-                        { label: t("Feature 1"), enabled: true },
-                        { label: t("Feature 2"), enabled: false },
-                      ]
-                }
+                features={[
+                  {
+                    label: `${t("Profit Rate")}: ${plan.profit_rate}%`,
+                    enabled: true,
+                  },
+                  {
+                    label: `${t("Duration")}: ${plan.duration_months} ${t(
+                      "months"
+                    )}`,
+                    enabled: true,
+                  },
+                  {
+                    label: `${t("Capital Return")}: ${
+                      plan.capital_return ? t("Yes") : t("No")
+                    }`,
+                    enabled: plan.capital_return === 1,
+                  },
+                ]}
               />
             ))}
           </motion.div>

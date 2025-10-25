@@ -9,6 +9,7 @@ class ApiClient {
     const url = endpoint;
 
     if (useCache && this.cache[url]) {
+      // eslint-disable-next-line no-unused-vars
       const { data, timestamp } = this.cache[url];
       const now = Date.now();
 
@@ -21,11 +22,7 @@ class ApiClient {
     }
 
     try {
-      const auth = localStorage.getItem("Auth_Token");
-      const res = await axiosInstance.get(url, {
-        headers: auth ? { Authorization: `Bearer ${auth}` } : {},
-      });
-
+      const res = await axiosInstance.get(url);
       if (useCache) {
         this.cache[url] = {
           data: res.data,
@@ -57,10 +54,7 @@ class ApiClient {
   // ======= DELETE =======
   static async delete(endpoint) {
     try {
-      const auth = localStorage.getItem("Auth_Token");
-      const res = await axiosInstance.delete(endpoint, {
-        headers: auth ? { Authorization: `Bearer ${auth}` } : {},
-      });
+      const res = await axiosInstance.delete(endpoint);
 
       delete this.cache[endpoint];
       console.log(`🗑 Cache cleared for: ${endpoint}`);
@@ -75,13 +69,10 @@ class ApiClient {
   // ======= Shared function for sending data =======
   static async _sendData(method, endpoint, data) {
     try {
-      const auth = localStorage.getItem("Auth_Token");
-      const res = await axiosInstance[method](endpoint, data, {
-        headers: auth ? { Authorization: `Bearer ${auth}` } : {},
-      });
+      const res = await axiosInstance[method](endpoint, data);
 
       // Clear cache for relevant GET endpoint
-      const parts = endpoint.split(/[-_\/]/);
+      const parts = endpoint.split(/[-_/]/);
       const lastPart = parts[parts.length - 1];
       const keyToDelete = `/${lastPart}`;
       if (this.cache[keyToDelete]) {

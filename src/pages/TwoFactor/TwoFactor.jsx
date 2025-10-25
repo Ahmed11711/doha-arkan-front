@@ -49,13 +49,14 @@ export default function TwoFactor() {
     try {
       setLoading(true);
 
+      // eslint-disable-next-line no-unused-vars
       const res = await ApiClient.post("Auth/send-otp", {
         user_id,
         method: m.method,
       });
 
       enqueueSnackbar("Verification code sent successfully ✅", { variant: "success" });
-      console.log(res.data);
+      // console.log(res.data);
 
       navigate(m.path);
     } catch (err) {

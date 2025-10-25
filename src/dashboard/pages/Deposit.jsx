@@ -129,45 +129,54 @@ export default function DepositDashboard() {
 
         {!showSteps && (
           <div className="w-full">
-            <h2 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4">
+            <h2 className="text-base sm:text-lg font-semibold mb-4 text-[#1B1664]">
               {t("Deposit History")}
             </h2>
 
             {loading ? (
               <p className="text-gray-500">{t("Loading...")}</p>
             ) : deposits.length === 0 ? (
-              <p className="text-gray-500">
+              <div className="text-center py-10 text-gray-500 bg-gray-50 rounded-2xl">
                 {t("No deposit history available.")}
-              </p>
+              </div>
             ) : (
               <>
-                {/* ✅ Table for larger screens */}
-                <div className="hidden md:block overflow-x-auto rounded-xl border border-gray-200">
-                  <table className="min-w-[650px] w-full text-sm">
-                    <thead className="bg-[#1B1664] text-white">
+                {/* ✅ Modern table for large screens */}
+                <div className="hidden md:block overflow-x-auto rounded-2xl border border-gray-100 shadow-sm">
+                  <table className="min-w-[700px] w-full text-sm text-gray-800">
+                    <thead className="bg-gradient-to-r from-[#1B1664] to-[#2C218E] text-white">
                       <tr>
-                        <th className="px-4 py-3 text-left">{t("Date")}</th>
-                        <th className="px-4 py-3 text-left">
+                        <th className="px-5 py-3 text-left font-medium tracking-wide">
+                          {t("Date")}
+                        </th>
+                        <th className="px-5 py-3 text-left font-medium tracking-wide">
                           {t("Transaction ID")}
                         </th>
-                        <th className="px-4 py-3 text-left">{t("Address")}</th>
-                        <th className="px-4 py-3 text-left">{t("Amount")}</th>
-                        <th className="px-4 py-3 text-left">{t("Status")}</th>
+                        <th className="px-5 py-3 text-left font-medium tracking-wide">
+                          {t("Address")}
+                        </th>
+                        <th className="px-5 py-3 text-left font-medium tracking-wide">
+                          {t("Amount")}
+                        </th>
+                        <th className="px-5 py-3 text-left font-medium tracking-wide">
+                          {t("Status")}
+                        </th>
                       </tr>
                     </thead>
 
-                    <tbody className="bg-white">
-                      {deposits.map((item) => (
+                    <tbody className="bg-white divide-y divide-gray-100">
+                      {deposits.map((item, i) => (
                         <tr
-                          key={item.id}
-                          className="border-t border-gray-200 hover:bg-gray-50"
+                          key={i}
+                          className="hover:bg-gray-50 transition-all duration-150"
                         >
-                          <td className="px-4 py-3">
+                          <td className="px-5 py-3 text-gray-700">
                             {new Date(item.created_at).toLocaleDateString(
                               "en-GB"
                             )}
                           </td>
-                          <td className="px-4 py-3 font-mono text-xs text-gray-700">
+
+                          <td className="px-5 py-3 font-mono text-xs text-[#1B1664]">
                             {item.transaction_id?.length > 12
                               ? `${item.transaction_id.slice(
                                   0,
@@ -175,7 +184,8 @@ export default function DepositDashboard() {
                                 )}...${item.transaction_id.slice(-4)}`
                               : item.transaction_id}
                           </td>
-                          <td className="px-4 py-3 font-mono text-xs text-gray-700">
+
+                          <td className="px-5 py-3 font-mono text-xs text-gray-600">
                             {item.address?.length > 12
                               ? `${item.address.slice(
                                   0,
@@ -183,17 +193,32 @@ export default function DepositDashboard() {
                                 )}...${item.address.slice(-4)}`
                               : item.address}
                           </td>
-                          <td className="px-4 py-3">{item.amount}</td>
-                          <td
-                            className={`px-4 py-3 font-medium capitalize ${
-                              item.status === "completed"
-                                ? "text-green-600"
-                                : item.status === "pending"
-                                ? "text-yellow-500"
-                                : "text-gray-500"
-                            }`}
-                          >
-                            {item.status}
+
+                          <td className="px-5 py-3 font-semibold text-[#1B1664]">
+                            {item.amount}
+                          </td>
+
+                          <td className="px-5 py-3">
+                            <span
+                              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold capitalize ${
+                                item.status === "completed"
+                                  ? "bg-green-100 text-green-700"
+                                  : item.status === "pending"
+                                  ? "bg-yellow-100 text-yellow-700"
+                                  : "bg-gray-100 text-gray-600"
+                              }`}
+                            >
+                              <FaCheckCircle
+                                className={`${
+                                  item.status === "completed"
+                                    ? "text-green-500"
+                                    : item.status === "pending"
+                                    ? "text-yellow-500"
+                                    : "text-gray-400"
+                                }`}
+                              />
+                              {item.status}
+                            </span>
                           </td>
                         </tr>
                       ))}
@@ -201,29 +226,26 @@ export default function DepositDashboard() {
                   </table>
                 </div>
 
-                {/* ✅ Cards for mobile view */}
+                {/* ✅ Cards for mobile (unchanged, just polished) */}
                 <div className="grid md:hidden gap-4">
-                  {deposits.map((item) => (
+                  {deposits.map((item, i) => (
                     <div
-                      key={item.id}
-                      className="bg-white shadow-sm border border-gray-200 rounded-2xl p-4"
+                      key={i}
+                      className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-200"
                     >
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm text-gray-500">
-                          {t("Date")}
-                        </span>
-                        <span className="text-sm font-semibold">
+                      <div className="flex justify-between items-center mb-2 text-sm">
+                        <span className="text-gray-500">{t("Date")}</span>
+                        <span className="font-medium text-gray-800">
                           {new Date(item.created_at).toLocaleDateString(
                             "en-GB"
                           )}
                         </span>
                       </div>
-
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm text-gray-500">
+                      <div className="flex justify-between items-center mb-2 text-sm">
+                        <span className="text-gray-500">
                           {t("Transaction ID")}
                         </span>
-                        <span className="text-sm font-mono text-gray-700 truncate max-w-[140px]">
+                        <span className="font-mono text-[#1B1664] truncate max-w-[140px]">
                           {item.transaction_id?.length > 12
                             ? `${item.transaction_id.slice(
                                 0,
@@ -232,12 +254,9 @@ export default function DepositDashboard() {
                             : item.transaction_id}
                         </span>
                       </div>
-
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm text-gray-500">
-                          {t("Address")}
-                        </span>
-                        <span className="text-sm font-mono text-gray-700 truncate max-w-[140px]">
+                      <div className="flex justify-between items-center mb-2 text-sm">
+                        <span className="text-gray-500">{t("Address")}</span>
+                        <span className="font-mono text-gray-700 truncate max-w-[140px]">
                           {item.address?.length > 12
                             ? `${item.address.slice(
                                 0,
@@ -246,27 +265,21 @@ export default function DepositDashboard() {
                             : item.address}
                         </span>
                       </div>
-
-                      <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm text-gray-500">
-                          {t("Amount")}
-                        </span>
-                        <span className="text-sm font-semibold text-[#1B1664]">
+                      <div className="flex justify-between items-center mb-2 text-sm">
+                        <span className="text-gray-500">{t("Amount")}</span>
+                        <span className="font-semibold text-[#1B1664]">
                           {item.amount}
                         </span>
                       </div>
-
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm text-gray-500">
-                          {t("Status")}
-                        </span>
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-gray-500">{t("Status")}</span>
                         <span
-                          className={`text-sm font-medium capitalize ${
+                          className={`px-3 py-1 rounded-full text-xs font-medium capitalize ${
                             item.status === "completed"
-                              ? "text-green-600"
+                              ? "bg-green-100 text-green-700"
                               : item.status === "pending"
-                              ? "text-yellow-500"
-                              : "text-gray-500"
+                              ? "bg-yellow-100 text-yellow-700"
+                              : "bg-gray-100 text-gray-600"
                           }`}
                         >
                           {item.status}

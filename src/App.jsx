@@ -30,6 +30,8 @@ import DepositDashboard from "./dashboard/pages/Deposit";
 import WithdrawDashboard from "./dashboard/pages/Withdraw";
 import AffiliateDashboard from "./dashboard/pages/Affiliate";
 import KYCDashboard from "./dashboard/pages/KYC";
+import PrivacyPolicy from "./dashboard/pages/PrivacyPolicy";
+import MyPortfolio from "./dashboard/pages/MyPortfolio";
 
 function App() {
   const { i18n } = useTranslation();
@@ -42,7 +44,6 @@ function App() {
     i18n.changeLanguage(newLang);
     document.body.dir = newLang === "ar" ? "rtl" : "ltr";
   };
-
 
   useEffect(() => {
     document.body.dir = i18n.language === "ar" ? "rtl" : "ltr";
@@ -68,114 +69,38 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100 text-gray-900  transition-all">
-      {isAuthenticated &&
+      {/* {isAuthenticated &&
         !window.location.pathname.startsWith("/dashboard") && (
-          <Navbar
-            toggleLanguage={toggleLanguage}
-          />
-        )}
+          <Navbar toggleLanguage={toggleLanguage} />
+        )} */}
+      <Navbar toggleLanguage={toggleLanguage} />
 
       <main className="flex-grow">
         <ScrollToTop />
 
         <Routes>
-          <Route
-            path="/"
-            element={
-              isAuthenticated ? (
-                <Navigate to="/home" replace />
-              ) : (
-                <Navigate to="/auth" replace />
-              )
-            }
-          />
+          {/* ====== المسار الأساسي ====== */}
+          <Route path="/" element={<Navigate to="/home" replace />} />
 
+          {/* ====== صفحات عامة (غير محمية) ====== */}
           <Route
             path="/auth"
             element={<LoginRegister onLoginSuccess={handleLoginSuccess} />}
           />
+          <Route path="/home" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/sell-wallets" element={<WalletPage />} />
+          <Route path="/deposit" element={<Deposit />} />
+          <Route path="/withdraw" element={<Withdraw />} />
+          <Route path="/affiliate" element={<Affiliate />} />
+          <Route path="/blogs" element={<Blogs />} />
+          <Route path="/blogs/:id" element={<BlogDetails />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
-          <Route
-            path="/home"
-            element={
-              <ProtectedRoute>
-                <Home />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/about"
-            element={
-              <ProtectedRoute>
-                <About />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/contact"
-            element={
-              <ProtectedRoute>
-                <Contact />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/services"
-            element={
-              <ProtectedRoute>
-                <Services />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/sell-wallets"
-            element={
-              <ProtectedRoute>
-                <WalletPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/deposit"
-            element={
-              <ProtectedRoute>
-                <Deposit />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/withdraw"
-            element={
-              <ProtectedRoute>
-                <Withdraw />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/affiliate"
-            element={
-              <ProtectedRoute>
-                <Affiliate />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/blogs"
-            element={
-              <ProtectedRoute>
-                <Blogs />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/blogs/:id"
-            element={
-              <ProtectedRoute>
-                <BlogDetails />
-              </ProtectedRoute>
-            }
-          />
-
+          {/* ====== Two-Factor Auth ====== */}
           <Route path="/twofactor" element={<TwoFactor />} />
           <Route path="/twofactor/email" element={<EmailAuth />} />
           <Route path="/twofactor/sms" element={<SMSAuth />} />
@@ -186,10 +111,8 @@ function App() {
             path="/twofactor/uploadVerification"
             element={<UploadVerification />}
           />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
 
-          {/* Dashboard Routes */}
+          {/* ====== Dashboard (Protected Only) ====== */}
           <Route
             path="/dashboard"
             element={
@@ -202,12 +125,17 @@ function App() {
             <Route path="withdraw" element={<WithdrawDashboard />} />
             <Route path="affiliate" element={<AffiliateDashboard />} />
             <Route path="kyc" element={<KYCDashboard />} />
+            <Route path="privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="my-portfolio" element={<MyPortfolio />} />
           </Route>
+
+          {/* ====== مسار غير موجود ====== */}
+          <Route path="*" element={<Navigate to="/home" replace />} />
         </Routes>
       </main>
-
-      {isAuthenticated &&
-        !window.location.pathname.startsWith("/dashboard") && <Footer />}
+      <Footer />
+      {/* {isAuthenticated &&
+        !window.location.pathname.startsWith("/dashboard") && <Footer />} */}
     </div>
   );
 }

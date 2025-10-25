@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 // eslint-disable-next-line no-unused-vars
 import { motion, AnimatePresence } from "framer-motion";
@@ -14,13 +14,16 @@ import PhoneInput from "react-phone-input-2";
 import { Snackbar, Alert } from "@mui/material";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
+import { useAuth } from "../context/AuthContext";
+import { useUserStore } from "../store/userStore";
 
 const LoginRegister = ({ onLoginSuccess }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
+  const { login } = useAuth();
   const [isLogin, setIsLogin] = useState(true);
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
   const [apiErrors, setApiErrors] = useState({});
 
   const schemaLogin = yup.object().shape({
@@ -54,6 +57,13 @@ const LoginRegister = ({ onLoginSuccess }) => {
     resolver: yupResolver(isLogin ? schemaLogin : schemaRegister),
   });
 
+  useEffect(() => {
+    // console.log("Data changed:", localStorage.getItem("Auth_Token"));
+    if(localStorage.getItem("Auth_Token")){
+      navigate("/")
+    }
+  }, []); // كل ما data تتغير هيتنادى الـ useEffect
+
   const onSubmit = async (data) => {
     try {
       if (isLogin) {
@@ -65,26 +75,24 @@ const LoginRegister = ({ onLoginSuccess }) => {
         if (res?.data?.token && res?.data?.user) {
           const { token, user } = res.data;
 
-          localStorage.setItem("Auth_Token", token);
-          localStorage.setItem("user_id", user.id);
-          localStorage.setItem("email", user.email);
-          localStorage.setItem("name", user.name || "User");
-          localStorage.setItem("isAuthenticated", "true");
+          login(user, token);
+          useUserStore.getState().login(res.data.user, res.data.token);
 
-          enqueueSnackbar("تم تسجيل الدخول بنجاح ✅", { variant: "success" });
+          enqueueSnackbar(t("تم تسجيل الدخول بنجاح ✅"), {
+            variant: "success",
+          });
 
           if (user.verified_kyc === false) {
-            if (onLoginSuccess) onLoginSuccess();
+            onLoginSuccess?.();
             navigate("/twofactor/uploadVerification");
           } else {
-            if (onLoginSuccess) onLoginSuccess();
+            onLoginSuccess?.();
             navigate("/home");
           }
         } else {
-          enqueueSnackbar("فشل تسجيل الدخول ⚠️", { variant: "error" });
+          enqueueSnackbar(t("فشل تسجيل الدخول ⚠️"), { variant: "error" });
         }
       } else {
-        // ✅ تسجيل جديد
         const signupRes = await ApiClient.post("Auth/create-account", {
           name: data.fullName,
           email: data.email,
@@ -93,28 +101,33 @@ const LoginRegister = ({ onLoginSuccess }) => {
           coming_affiliate: data.affiliate,
           type: "user",
         });
+        // ✅ تحقق من الموافقة على الشروط قبل الإرسال
+        if (!watch("agreeEntry") || !watch("agreeExit")) {
+          enqueueSnackbar(t("You must agree to both criteria to continue."), {
+            variant: "error",
+          });
+          return; // ❌ منع الـ submit
+        }
 
         if (signupRes?.data?.id) {
-          localStorage.setItem("user_id", signupRes.data.id);
-          localStorage.setItem("email", signupRes.data.email);
-          localStorage.setItem("name", signupRes.data.name || data.fullName);
-          localStorage.setItem("isAuthenticated", "true");
-          const affiliate = await ApiClient.post("Affiliate",{
-            user_id:signupRes.data.id
-          })
+          await ApiClient.post("Affiliate", { user_id: signupRes.data.id });
 
-          enqueueSnackbar("تم إنشاء الحساب بنجاح ✅", { variant: "success" });
+          enqueueSnackbar(t("تم إنشاء الحساب بنجاح ✅"), {
+            variant: "success",
+          });
           navigate("/twofactor");
         } else {
-          enqueueSnackbar("فشل إنشاء الحساب ⚠️", { variant: "error" });
+          enqueueSnackbar(t("فشل إنشاء الحساب ⚠️"), { variant: "error" });
         }
       }
     } catch (error) {
       console.error("❌ Error:", error);
       setApiErrors(error?.response?.data?.error || {});
       enqueueSnackbar(
-        error?.response?.data?.message || "حدث خطأ غير متوقع ⚠️",
-        { variant: "error" }
+        error?.response?.data?.message || t("حدث خطأ غير متوقع ⚠️"),
+        {
+          variant: "error",
+        }
       );
     }
   };
@@ -202,18 +215,18 @@ const LoginRegister = ({ onLoginSuccess }) => {
                     {t("Forgot Password?")}
                   </button>
                 </div>
-
                 <button
                   type="submit"
                   className="w-full bg-[#1B1664FC] hover:bg-[#372E8B] text-white py-2 rounded-lg transition-all"
                 >
                   {t("Log In")}
                 </button>
-
+                {/* google */}
                 <div className="flex justify-center">
                   <GoogleLogin
                     onSuccess={async (credentialResponse) => {
                       try {
+                        // eslint-disable-next-line no-unused-vars
                         const decoded = jwtDecode(
                           credentialResponse.credential
                         );
@@ -354,17 +367,44 @@ const LoginRegister = ({ onLoginSuccess }) => {
                   )}
                 </div>
 
+                <div className="space-y-2 mt-6">
+                  <label className="flex items-center gap-2 text-sm text-gray-700">
+                    <input
+                      type="checkbox"
+                      checked={watch("agreeEntry") || false}
+                      onChange={(e) => setValue("agreeEntry", e.target.checked)}
+                    />
+                    <span>{t("I agree to the entry criteria")}</span>
+                  </label>
+
+                  <label className="flex items-center gap-2 text-sm text-gray-700">
+                    <input
+                      type="checkbox"
+                      checked={watch("agreeExit") || false}
+                      onChange={(e) => setValue("agreeExit", e.target.checked)}
+                    />
+                    <span>{t("I agree to the exit criteria")}</span>
+                  </label>
+
+                  {(!watch("agreeEntry") || !watch("agreeExit")) && (
+                    <p className="text-xs text-red-500">
+                      {t("You must agree to both criteria to continue.")}
+                    </p>
+                  )}
+                </div>
+
                 <button
                   type="submit"
                   className="w-full bg-[#1B1664FC] hover:bg-[#372E8B] text-white py-2 rounded-lg transition-all"
                 >
                   {t("Sign Up")}
                 </button>
-
+                {/* google */}
                 <div className="flex justify-center">
                   <GoogleLogin
                     onSuccess={async (credentialResponse) => {
                       try {
+                        // eslint-disable-next-line no-unused-vars
                         const decoded = jwtDecode(
                           credentialResponse.credential
                         );
@@ -408,6 +448,27 @@ const LoginRegister = ({ onLoginSuccess }) => {
                 {isLogin ? t("Sign Up") : t("Sign In")}
               </button>
             </p>
+
+            <div className="text-left mt-4 text-xs text-gray-400 space-y-1">
+              <p>
+                {t(
+                  "Lorem ipsum dolor sit amet consectetur. Aliquam nibh quam vivamus ultricies semper sed gravida dictumst nunc. Ut ac luctus facilisis"
+                )}{" "}
+                <a
+                  href="/acceptance-criteria"
+                  className="text-[#1B1664FC] font-medium hover:underline"
+                >
+                  {t("acceptance criteria")}
+                </a>
+                .
+              </p>
+              <br />
+              <p>
+                {t(
+                  "Lorem ipsum dolor sit amet consectetur. Aliquam nibh quam vivamus ultricies semper sed gravida dictumst nunc. Ut ac luctus facilisis"
+                )}
+              </p>
+            </div>
           </div>
         </div>
       </div>

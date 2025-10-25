@@ -20,7 +20,7 @@ const Home = () => {
     const fetchServices = async () => {
       try {
         const res = await ApiClient.get("service");
-        console.log("✅ Services:", res);
+        // console.log("✅ Services:", res);
         setServices(res.data || res);
       } catch (error) {
         console.error("❌ Error fetching services:", error);

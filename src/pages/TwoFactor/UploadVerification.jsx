@@ -23,7 +23,7 @@ export default function UploadVerification() {
     if (selectedFiles && selectedFiles.length > 0) {
       setFiles((prev) => ({ ...prev, [name]: selectedFiles[0] }));
       setMessage({ text: "", type: "" });
-      console.log("File selected:", name, selectedFiles[0]);
+      // console.log("File selected:", name, selectedFiles[0]);
     }
   };
 
@@ -73,9 +73,10 @@ export default function UploadVerification() {
       formData.append("back_id", files.back_id);
       formData.append("face", files.face);
 
+      // eslint-disable-next-line no-unused-vars
       const response = await ApiClient.post("kyc", formData);
 
-      console.log("✅ KYC Response:", response.data);
+      // console.log("✅ KYC Response:", response.data);
       setMessage({
         text: "Verification uploaded successfully!",
         type: "success",

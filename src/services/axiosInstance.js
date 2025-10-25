@@ -1,5 +1,6 @@
 // axiosInstance.js
 import axios from "axios";
+import { getToken } from "../store/userStore"; // path حسب مشروعك
 
 const axiosInstance = axios.create({
   baseURL: "https://back.zayamrock.com/api/v1/",
@@ -15,4 +16,16 @@ axiosInstance.interceptors.request.use((config) => {
   return config;
 });
 
+// Request interceptor: نقرأ التوكن ديناميكياً من الستور
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = getToken();
+    if (token) {
+      config.headers = config.headers || {};
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 export default axiosInstance;

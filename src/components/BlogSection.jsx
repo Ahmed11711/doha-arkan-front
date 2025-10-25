@@ -16,7 +16,7 @@ export default function HomeBlogs() {
     const fetchBlogs = async () => {
       try {
         const res = await ApiClient.get("blogs");
-        console.log("✅ Blogs:", res);
+        // console.log("✅ Blogs:", res);
         setBlogs(res.data || []);
       } catch (error) {
         console.error("❌ Error fetching blogs:", error);

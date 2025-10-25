@@ -8,45 +8,40 @@ import {
 } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState,useEffect } from "react";
 import { useSnackbar } from "notistack";
+import { useAuth } from "../../context/AuthContext";
+import ApiClient from "../../services/API";
 
 const Navbar = ({ toggleLanguage }) => {
   const { i18n } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
+  const { user, isAuthenticated, logout,updateUser } = useAuth();
 
   const [openDropdown, setOpenDropdown] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const isArabic = i18n.language === "ar";
-  const [userName, setUserName] = useState("");
-
-  useEffect(() => {
-    const token = localStorage.getItem("Auth_Token");
-    const name = localStorage.getItem("name");
-    setIsLoggedIn(!!token);
-    setUserName(name || "");
-  }, []);
+  const isLoggedIn = isAuthenticated;
+  const userName = user?.name || "";
 
   const handleLogout = () => {
-    localStorage.removeItem("Auth_Token");
-    localStorage.removeItem("user_id");
-    localStorage.removeItem("email");
-    localStorage.removeItem("isAuthenticated");
-    localStorage.removeItem("name");
-
-    setIsLoggedIn(false);
-    setOpenDropdown(false);
-
+    logout();
     enqueueSnackbar(
       isArabic ? "تم تسجيل الخروج بنجاح ✅" : "Logged out successfully ✅",
       { variant: "success" }
     );
-
     navigate("/auth");
   };
+  
+  useEffect(() => {
+    if (isAuthenticated) {
+      ApiClient.get("/me").then((res) => {
+        updateUser(res.data);
+      });
+    }
+  }, [isAuthenticated]);
 
   const navItems = [
     { path: "/home", label: isArabic ? "الرئيسية" : "Home" },
@@ -64,12 +59,18 @@ const Navbar = ({ toggleLanguage }) => {
       bg-gradient-to-r from-[#1B166430] via-[#ffffff40] to-[#1B166420]
       backdrop-blur-lg border-b border-white/10 `}
     >
-      {/* Logo */}
-      <Link to="/" className="text-2xl font-bold text-gray-900 ">
+      <Link
+        to="/"
+        className="text-3xl font-extrabold tracking-wide 
+    px-6 py-2 rounded-full 
+    bg-gradient-to-r from-[#1B1664]/90 to-[#322FA4]/90 
+    text-white shadow-lg border border-white/20 
+    backdrop-blur-md hover:shadow-xl hover:scale-105 hover:from-[#322FA4] hover:to-[#1B1664]
+    transition-all duration-300 ease-in-out"
+      >
         ARKAN
       </Link>
 
-      {/* Desktop Menu */}
       <ul
         className={`hidden md:flex items-center gap-6 px-8 py-3 rounded-full backdrop-blur-md bg-white/30 border border-white/40 shadow-md ${
           isArabic ? "flex-row-reverse" : "flex-row"
@@ -91,7 +92,6 @@ const Navbar = ({ toggleLanguage }) => {
         ))}
       </ul>
 
-      {/* Right side */}
       <div
         className={`flex items-center gap-4 ${
           isArabic ? "flex-row-reverse" : "flex-row"
@@ -106,13 +106,18 @@ const Navbar = ({ toggleLanguage }) => {
           </button>
         </div>
 
-        {/* Profile Dropdown */}
         <div className="relative hidden md:block">
           <button
             onClick={() => setOpenDropdown((prev) => !prev)}
-            className="flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md bg-white/30 border border-white/40 shadow-md text-gray-800 hover:bg-white/50 transition"
+            className="relative flex items-center gap-2 px-4 py-2 rounded-full backdrop-blur-md bg-white/30 border border-white/40 shadow-md text-gray-800 hover:bg-white/50 transition"
           >
-            <FaUser />
+            <div className="relative">
+              <FaUser className="text-lg" />
+              {user?.affiliate_code_active && (
+                <span className="absolute -top-3 right-3 w-3 h-3 bg-green-500 rounded-full border border-white"></span>
+              )}
+            </div>
+
             {isLoggedIn && userName && (
               <span className="text-sm font-medium truncate max-w-[120px]">
                 {userName}
@@ -131,21 +136,24 @@ const Navbar = ({ toggleLanguage }) => {
                   <Link
                     to="/auth"
                     className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 text-gray-700"
-                    onClick={() => setOpenDropdown(false)}
+                    onClick={() => setOpenDropdown(false)} // ← هنا بالفعل
                   >
                     <FaSignInAlt /> {isArabic ? "تسجيل الدخول" : "Sign In"}
                   </Link>
                   <Link
                     to="/auth"
                     className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 text-gray-700"
-                    onClick={() => setOpenDropdown(false)}
+                    onClick={() => setOpenDropdown(false)} // ← وأيضًا هنا
                   >
                     <FaUserPlus /> {isArabic ? "إنشاء حساب" : "Sign Up"}
                   </Link>
                 </>
               ) : (
                 <button
-                  onClick={handleLogout}
+                  onClick={() => {
+                    handleLogout();
+                    setOpenDropdown(false);
+                  }}
                   className="w-full flex items-center gap-2 px-4 py-2 text-left hover:bg-gray-100 text-gray-700"
                 >
                   <FaSignOutAlt /> {isArabic ? "تسجيل الخروج" : "Logout"}
@@ -155,7 +163,6 @@ const Navbar = ({ toggleLanguage }) => {
           )}
         </div>
 
-        {/* Mobile Menu Toggle */}
         <button
           className="md:hidden text-gray-800 text-2xl"
           onClick={() => setMenuOpen(!menuOpen)}
@@ -164,7 +171,6 @@ const Navbar = ({ toggleLanguage }) => {
         </button>
       </div>
 
-      {/* Mobile Menu */}
       {menuOpen && (
         <div
           className={`absolute top-full left-0 w-full bg-white/70 backdrop-blur-md border-t border-white/20 flex flex-col items-center py-6 space-y-4 md:hidden ${

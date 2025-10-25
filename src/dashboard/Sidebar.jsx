@@ -5,29 +5,27 @@ import {
   FaArrowUp,
   FaUsers,
   FaIdCard,
-  FaTimes,
+  FaLock,
+  FaBars,
+  FaUserCog,
+  FaTachometerAlt 
 } from "react-icons/fa";
 
 const menuItems = [
+  { name: "Dashboard", icon: <FaTachometerAlt />, path: "/dashboard" },
+  { name: "Deposit", icon: <FaArrowDown />, path: "/dashboard/deposit" },
+  { name: "Withdraw", icon: <FaArrowUp />, path: "/dashboard/withdraw" },
+  { name: "Affiliate", icon: <FaUsers />, path: "/dashboard/affiliate" },
+  { name: "KYC", icon: <FaIdCard />, path: "/dashboard/kyc" },
   {
-    name: "Deposit",
-    icon: <FaArrowDown />,
-    path: "/dashboard/deposit",
+    name: "My Portfolio",
+    icon: <FaUserCog />,
+    path: "/dashboard/my-portfolio",
   },
   {
-    name: "Withdraw",
-    icon: <FaArrowUp />,
-    path: "/dashboard/withdraw",
-  },
-  {
-    name: "Affiliate",
-    icon: <FaUsers />,
-    path: "/dashboard/affiliate",
-  },
-  {
-    name: "KYC",
-    icon: <FaIdCard />,
-    path: "/dashboard/kyc",
+    name: "Privacy policy",
+    icon: <FaLock />,
+    path: "/dashboard/privacy-policy",
   },
 ];
 
@@ -36,7 +34,6 @@ export default function Sidebar({ isOpen, setIsOpen }) {
 
   return (
     <>
-      {/* Overlay for mobile */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/40 z-30 lg:hidden"
@@ -44,29 +41,28 @@ export default function Sidebar({ isOpen, setIsOpen }) {
         ></div>
       )}
 
-      {/* Sidebar */}
-      <div
-        className={`fixed lg:static top-0 left-0 h-screen bg-white border-r border-gray-200 z-40 flex flex-col transform transition-all duration-300
-          ${isOpen ? "translate-x-0 w-64" : "-translate-x-full lg:translate-x-0 lg:w-20"}
-        `}
+      <aside
+        className={`fixed lg:fixed top-24 left-0 h-screen rounded
+    bg-gradient-to-b from-[#1B1664] to-[#322FA4] text-white z-40 
+    flex flex-col transform transition-all duration-300 ease-in-out
+    ${
+      isOpen
+        ? "translate-x-0 w-64"
+        : "-translate-x-full lg:translate-x-0 lg:w-20"
+    }
+    shadow-xl`}
       >
-        {/* Logo */}
-        <div className="h-16 flex items-center justify-between border-b border-gray-100 px-4 flex-shrink-0">
-          <h1 className="text-[#1B1664] font-bold text-xl">
-            {isOpen ? "Arkan" : "A"}
-          </h1>
-
-          {/* Close button (for mobile only) */}
-          <button
-            onClick={() => setIsOpen(false)}
-            className="text-[#1B1664] text-xl lg:hidden"
-          >
-            <FaTimes />
-          </button>
+        <div
+          onClick={() => setIsOpen(!isOpen)}
+          className="h-16 flex items-center justify-center border-b border-white/10 px-4 cursor-pointer select-none hover:bg-white/10 transition"
+        >
+          <div className="text-3xl font-extrabold tracking-wide bg-white/20 px-5 py-1 rounded-full text-white shadow-inner flex items-center gap-2">
+            <FaBars className="text-lg" />
+            {isOpen && <span className="text-base font-bold">ARKAN</span>}
+          </div>
         </div>
 
-        {/* Menu */}
-        <nav className="flex-1 px-3 py-4 overflow-y-auto">
+        <nav className="flex-1 px-3 py-4 overflow-y-auto space-y-1">
           {menuItems.map((item, index) => {
             const isActive = location.pathname === item.path;
             return (
@@ -74,23 +70,29 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                 key={index}
                 to={item.path}
                 onClick={() => setIsOpen(false)}
-                className={`flex items-center gap-3 px-4 py-3 mb-2 rounded-lg transition-all
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all
                   ${
                     isActive
-                      ? "bg-[#1B1664] text-white"
-                      : "text-[#1B1664] hover:bg-blue-50"
+                      ? "bg-white text-[#1B1664] font-semibold"
+                      : "text-white/80 hover:bg-white/10 hover:text-white"
                   }`}
               >
                 <span className="text-lg">{item.icon}</span>
-                {isOpen && (
-                  <span className="font-medium text-sm">{item.name}</span>
-                )}
+                {isOpen && <span className="text-sm">{item.name}</span>}
               </Link>
             );
           })}
         </nav>
+      </aside>
 
-      </div>
+      {!isOpen && (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="lg:hidden fixed bottom-6 left-6 bg-[#1B1664] text-white p-3 rounded-full shadow-lg hover:bg-[#322FA4] transition z-50"
+        >
+          <FaBars size={20} />
+        </button>
+      )}
     </>
   );
 }
