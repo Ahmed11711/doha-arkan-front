@@ -127,7 +127,7 @@ const Home = () => {
                   textAnchor="middle"
                   className="center-text text-2xl font-bold fill-[#1B1664FC]"
                 >
-                  arkan
+                  Zayamrock
                 </text>
 
                 <g className="inner-orbit">

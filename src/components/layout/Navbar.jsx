@@ -78,7 +78,7 @@ const Navbar = ({ toggleLanguage }) => {
     backdrop-blur-md hover:shadow-xl hover:scale-105 hover:from-[#322FA4] hover:to-[#1B1664]
     transition-all duration-300 ease-in-out"
       >
-        ARKAN
+        Zayamrock
       </Link>
 
       <ul
