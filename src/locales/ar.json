@@ -71,5 +71,121 @@
     "affiliate": "التسويق بالعمولة",
     "history": "سجل المعاملات",
     "noTransactions": "لا توجد معاملات بعد"
-  }
+  },
+  "hero": {
+    "subtitle": "استثمار ذكي. أداء حقيقي.",
+    "title": "نُدير أموالك باحترافية لنحقق لك عوائد شهرية متغيرة وفق الأداء الفعلي وبرؤية مالية مدروسة.",
+    "points": [
+      "استثمار بدون خبرة",
+      "إدارة احترافية لرأس المال",
+      "متابعة أرباحك بشفافية تامة"
+    ],
+    "cta_start": "ابدأ الاستثمار الآن",
+    "cta_how": "كيف نعمل؟",
+    "trust_line": "إدارة مخاطر صارمة لحماية رأس المال على المدى الطويل"
+  },
+  "whoWeAre": {
+    "whoWeAre":"من نحن",
+    "title": "نحن ZAYAM ROCK — شركة استثمارية متخصصة في إدارة المحافظ وتنمية رأس المال.",
+    "description": "نستثمر كما لو أن الأموال أموالنا… لأن نجاحك هو نجاحنا.",
+    "button": "اعرف المزيد"
+  },
+  "footer": {
+    "aboutTitle": "عن ZAYAM ROCK",
+    "aboutText": "شركة استثمارية متخصصة في إدارة المحافظ وتنمية رأس المال.",
+    "quickLinks": "روابط",
+    "links": ["الرئيسية", "من نحن", "خدماتنا", "المدونة", "كيف نعمل", "تواصل معنا"],
+    "support": "الدعم والسياسات",
+    "policies": ["الشروط والأحكام", "سياسة الخصوصية", "سياسة المخاطر", "سياسة السحب والإيداع"],
+    "contact": "تواصل",
+    "email": "Email: info@zayamrock.com",
+    "hq": "الدوحة — قطر",
+    "regional": "دبي — الإمارات",
+    "legal": "⚖️ العوائد متغيرة وتعتمد على الأداء الحقيقي.",
+    "copyright": "جميع الحقوق محفوظة"
+  },
+  "ourServices": {
+    "title": "خدماتنا",
+    "subtitle": "استكشف مجموعة خدماتنا الواسعة المصممة لتلبية احتياجاتك في عالم العملات الرقمية."
+  },
+  "sellWallets": {
+    "title": "محافظ البيع",
+    "subtitle": "أفضل المحافظ الموصى بها للبيع"
+  },
+  "latestBlogs": {
+    "title": "أحدث المقالات",
+    "subtitle": "استكشف أحدث الأخبار والرؤى في عالم العملات الرقمية.",
+    "button": "عرض جميع المقالات"
+  },
+  "appSection": {
+    "title": "رحلة التداول الخاصة بك تبدأ هنا!",
+    "usersInfo": "1000+ 💰📈 مستخدمين يتداولون وينمون يوميًا",
+    "description": "نعيد تعريف عالم تداول العملات الرقمية لمساعدتك على الاستثمار بذكاء والتداول بأمان. مهمتنا تمكين كل متداول من التفكير بلا حدود، استكشاف أسواق جديدة، وبناء الحرية المالية الطويلة الأمد من خلال الابتكار والبصيرة.",
+    "appStore": "APP STORE",
+    "playStore": "PLAY STORE"
+  },
+  "Contact Us": "تواصل معنا",
+  "Find the best crypto trading rates": "اكتشف أفضل أسعار تداول العملات المشفرة",
+  "Discover competitive rates and seamless transactions with Arkan. Buy and sell cryptocurrencies with ease, anywhere, anytime.": "استكشف أسعارًا تنافسية وتجارب تداول سلسة مع أركان. اشترِ وبع العملات المشفرة بسهولة في أي وقت وأي مكان.",
+  "Let’s Get In Touch": "هيا نتواصل",
+  "Or just reach out manually to": "أو تواصل معنا مباشرة على",
+  "First Name": "الاسم الأول",
+  "Last Name": "اسم العائلة",
+  "Email Address": "البريد الإلكتروني",
+  "Message": "الرسالة",
+  "Submit Form →": "إرسال النموذج →",
+  "About Us": "من نحن",
+  "We believe in empowering traders and investors worldwide by offering secure, innovative, and transparent crypto trading solutions. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem iusto possimus aut omnis illum sequi. Asperiores veritatis iusto fuga, incidunt recusandae modi cumque autem minus. Ad esse dolores officiis hic!": "نؤمن بتمكين المتداولين والمستثمرين حول العالم من خلال تقديم حلول تداول آمنة ومبتكرة وشفافة للعملات المشفرة. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem iusto possimus aut omnis illum sequi. Asperiores veritatis iusto fuga, incidunt recusandae modi cumque autem minus. Ad esse dolores officiis hic!",
+  "At Arkan, our mission is to make cryptocurrency trading simple, safe, and accessible to everyone. We bring together advanced tools, expert insights, and a strong community to empower users to trade confidently. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates dolorem repellat tempore corrupti molestias voluptatibus accusamus quam distinctio harum! Soluta minus asperiores deleniti dicta natus, corporis eveniet ut ipsam beatae.": "مهمتنا في أركان هي جعل تداول العملات المشفرة بسيطًا وآمنًا ومتاحة للجميع. نجمع الأدوات المتقدمة والرؤى الخبيرة ومجتمع قوي لتمكين المستخدمين من التداول بثقة. Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates dolorem repellat tempore corrupti molestias voluptatibus accusamus quam distinctio harum! Soluta minus asperiores deleniti dicta natus, corporis eveniet ut ipsam beatae.",
+  "Get in Touch": "تواصل معنا",
+  "Our Vision — Message from Founder": "رؤيتنا — رسالة من المؤسس",
+  "“At Arkan, we’re redefining digital trading through innovation, transparency, and education. Our goal is to help traders grow confidently in the evolving crypto world.”": "“في أركان، نحن نعيد تعريف التداول الرقمي من خلال الابتكار والشفافية والتعليم. هدفنا هو مساعدة المتداولين على النمو بثقة في عالم العملات المشفرة المتطور.”",
+  "— Ahmed Youssef": "— أحمد يوسف",
+  "Founder & CEO": "المؤسس والرئيس التنفيذي",
+  "Our Team": "فريقنا",
+  "Successful Trades": "صفقات ناجحة",
+  "Happy Clients": "عملاء سعداء",
+  "Years of Experience": "سنوات الخبرة",
+  "CEO & Founder": "الرئيس التنفيذي والمؤسس",
+  "Marketing Director": "مدير التسويق",
+  "Project Manager": "مدير المشروع",
+  "UI/UX Designer": "مصمم واجهة وتجربة المستخدم",
+  "Frontend Developer": "مبرمج الواجهة الأمامية",
+  "Backend Engineer": "مبرمج الباك إند",
+  "Who We Are": "من نحن",
+  "ZAYAM ROCK is an investment management company headquartered in Doha, Qatar with a regional presence in Dubai, UAE.": "زايام روك شركة استثمارية متخصصة في إدارة المحافظ وتنمية رأس المال، يقع مقرها الرئيسي في الدوحة – قطر، مع تواجد إقليمي في دبي – الإمارات.",
+  "We focus on real performance and sustainable capital growth, managing investments professionally with disciplined strategies.": "نركز على الأداء الحقيقي والنمو المستدام لرأس المال من خلال إدارة احترافية واستراتيجيات مدروسة.",
+  "Our approach is based on transparency, trust, and long‑term value.": "نهجنا قائم على الشفافية والثقة وتحقيق قيمة طويلة المدى.",
+  "We invest as if it’s our own capital — because your success is our success.": "نستثمر كما لو أن الأموال أموالنا… لأن نجاحك هو نجاحنا.",
+  "CTA": "ابدأ الاستثمار الآن",
+  "Mission": "رسالتنا",
+  "Our mission is to empower investors with professional, smart and performance‑driven investment solutions — without complexity.": "رسالتنا هي تمكين المستثمرين من حلول استثمارية ذكية ومحترفة قائمة على الأداء الحقيقي — دون تعقيد.",
+  "Values": "قيمنا",
+  "Integrity — We invest as if it’s our own capital.": "الصدق — نستثمر كأنها أموالنا.",
+  "Transparency — Clear reporting and open communication.": "الشفافية — تقارير واضحة وتواصل مباشر.",
+  "Growth — Long‑term wealth creation with smart strategies.": "النمو — بناء الثروة على المدى الطويل باستراتيجيات ذكية.",
+  "Flexibility — Portfolio access and adaptive risk management.": "المرونة — إمكانية الوصول لرأس المال وإدارة مخاطر متكيّفة.",
+  "Why Choose Us": "لماذا نحن؟",
+  "Professional capital management": "إدارة احترافية لرأس المال",
+  "Performance‑based monthly returns": "عوائد شهرية مبنية على الأداء",
+  "Smart risk management": "إدارة مخاطر ذكية",
+  "Opportunities for share ownership + referral income": "فرص لامتلاك الأسهم + دخل إضافي عبر الكود التسويقي",
+  "Founder": "المؤسس",
+  "Services": "الخدمات",
+  "Choose your right plan": "اختر خطتك المناسبة",
+  "Select from best plans tailored to each service. Customize your experience with flexibility and performance.": "اختر من أفضل الخطط المصممة لكل خدمة. قم بتخصيص تجربتك مع المرونة والأداء.",
+  "Loading services...": "جارٍ تحميل الخدمات...",
+  "No services available now": "لا توجد خدمات متاحة الآن",
+  "months": "شهور",
+  "Profit Rate": "نسبة الربح",
+  "Duration": "المدة",
+  "Capital Return": "عودة رأس المال",
+  "Yes": "نعم",
+  "No": "لا",
+  "Blogs": "المدونة",
+  "All": "الكل",
+  "Sort by": "ترتيب حسب",
+  "Newest First": "الأحدث أولاً",
+  "Oldest First": "الأقدم أولاً",
+  "No blogs found for this category.": "لا توجد مقالات في هذه الفئة."
 }

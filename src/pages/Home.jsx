@@ -15,6 +15,7 @@ const Home = () => {
   const isArabic = i18n.language === "ar";
   const [services, setServices] = useState([]);
   const navigate = useNavigate();
+  const points = t("hero.points", { returnObjects: true });
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -36,20 +37,34 @@ const Home = () => {
         style={{ backgroundImage: `url(${hero})` }}
       >
         <div
-          className={`relative z-10 text-white max-w-xl px-12 ${
+          className={`relative z-10 text-white max-w-4xl px-6 md:px-12 ${
             isArabic ? "ml-auto text-right" : "mr-auto text-left"
           }`}
         >
-          <p className="font-[Roboto]">
-            {t("Market to and from anywhere in the world")}
+          <p className="font-[Roboto] text-base md:text-lg mb-1">
+            {t("hero.subtitle")}
           </p>
-          <h1 className="text-4xl md:text-6xl font-bold mb-4 font-[Rubik]">
-            {t("Find the best crypto trading rates")}
+          <h1 className="text-3xl md:text-5xl font-bold mb-3 font-[Rubik] leading-snug">
+            {t("hero.title")}
           </h1>
-          <p className="text-lg mb-6 font-[Rubik]">
-            {t(
-              "Discover competitive rates and seamless transactions with Arkan. Buy and sell cryptocurrencies with ease, anywhere, anytime."
-            )}
+          <ul className="mb-4 space-y-1 md:space-y-2 text-sm md:text-base">
+            {points.map((point, idx) => (
+              <li key={idx} className="flex items-center gap-2">
+                {/* <span className="text-green-400">✅</span> */}
+                <span>{point}</span>
+              </li>
+            ))}
+          </ul>
+          <div className="flex flex-col sm:flex-row gap-3 mb-3">
+            <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded text-sm md:text-base w-full sm:w-auto">
+              {t("hero.cta_start")}
+            </button>
+            <button className="bg-white text-blue-600 hover:text-blue-700 py-2 px-4 rounded text-sm md:text-base w-full sm:w-auto">
+              {t("hero.cta_how")}
+            </button>
+          </div>
+          <p className="text-xs md:text-sm opacity-90">
+            {t("hero.trust_line")}
           </p>
         </div>
       </section>
@@ -65,32 +80,25 @@ const Home = () => {
           >
             <div className="relative mb-6">
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 relative z-10">
-                {t("Who We Are")}
+                {t("whoWeAre.whoWeAre")}
               </h2>
               <span className="absolute top-0 left-0 text-6xl sm:text-7xl md:text-8xl font-extrabold text-gray-300 opacity-20 select-none z-0">
-                {t("Who We Are")}
+                {t("whoWeAre.whoWeAre")}
               </span>
             </div>
 
             <p className="text-base sm:text-lg text-gray-600 mb-6 leading-relaxed">
-              Lorem ipsum dolor sit amet consectetur. Aliquam nibh quam vivamus
-              ultricies semper sed gravida dictumst nunc. Ut ac luctus facilisis
-              ipsum mauris volutpat elementum ut. Volutpat nullam tellus egestas
-              scelerisque tellus.
+              {t("whoWeAre.title")}
             </p>
             <p className="text-base sm:text-lg text-gray-600 mb-6 leading-relaxed">
-              Id pellentesque eget sollicitudin quis morbi arcu. Id etiam sed
-              dui tellus purus morbi aenean. Quis non non massa ut amet. Nec id
-              sed ullamcorper tincidunt egestas sit. Ac elementum in justo
-              feugiat netus suspendisse molestie. Tortor eget mattis aliquet at
-              nunc elementum ornare aliquet placerat.
+              {t("whoWeAre.description")}
             </p>
 
             <button
               onClick={() => navigate("/about")}
               className="px-6 py-3 bg-[#1B1664FC] hover:bg-[#372E8B] text-white font-semibold rounded shadow-md transition"
             >
-              {t("Learn More")}
+              {t("whoWeAre.button")}
             </button>
           </div>
 
@@ -175,21 +183,19 @@ const Home = () => {
 
       <section className="py-16 px-6 bg-white transition-colors duration-500">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16 relative">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 relative z-10 inline-block">
-              {t("Our Services")}
+          <div className="text-center mb-16 relative px-4 md:px-0">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 relative z-10 inline-block">
+              {t("ourServices.title")}
             </h2>
-            <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-7xl md:text-8xl font-extrabold text-gray-200 opacity-20 select-none z-0">
-              {t("Our Services")}
+            <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-6xl sm:text-7xl md:text-8xl font-extrabold text-gray-200 opacity-20 select-none z-0">
+              {t("ourServices.title")}
             </span>
-            <p className="text-lg text-gray-600 mt-6 max-w-2xl mx-auto">
-              {t(
-                "Explore our wide range of services designed to meet your crypto needs."
-              )}
+            <p className="text-base sm:text-lg md:text-lg text-gray-600 mt-4 sm:mt-6 max-w-2xl mx-auto leading-relaxed">
+              {t("ourServices.subtitle")}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {services.map((service, idx) => (
               <div
                 key={idx}
@@ -235,35 +241,50 @@ const Home = () => {
       <BlogSection />
 
       <section className="w-full py-20 px-6 bg-[#1B1664FC] transition-colors duration-500">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12">
-          <div className="flex-1 text-center md:text-left">
-            <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight mb-4">
-              YOUR TRADING JOURNEY BEGINS HERE!
+        <div
+          className={`max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-12
+      ${isArabic ? "md:flex-row-reverse" : "md:flex-row"}
+    `}
+        >
+          {/* النصوص */}
+          <div
+            className={`flex-1 text-center md:text-left ${
+              isArabic ? "md:text-right md:pr-8" : ""
+            }`}
+          >
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-4">
+              {t("appSection.title")}
             </h2>
-            <p className="text-lg text-gray-200 mb-2">
-              1000+ 💰📈 our users trade and grow daily
+            <p className="text-base sm:text-lg text-gray-200 mb-2">
+              {t("appSection.usersInfo")}
             </p>
-            <p className="text-gray-300 mb-8 max-w-xl mx-auto md:mx-0">
-              We’re redefining the world of crypto trading to help you invest
-              smarter and trade safer. Our mission is to empower every trader to
-              think beyond limits, explore new markets, and build long-term
-              financial freedom through innovation and insight.
+            <p className="text-sm sm:text-base md:text-lg text-gray-300 mb-8 max-w-xl mx-auto md:mx-0 leading-relaxed">
+              {t("appSection.description")}
             </p>
 
-            <div className="flex flex-wrap justify-center md:justify-start gap-4">
+            <div
+              className={`flex flex-wrap justify-center md:justify-start gap-4 ${
+                isArabic ? "md:justify-end md:gap-6" : ""
+              }`}
+            >
               <button className="px-6 py-3 rounded-full bg-white text-[#1B1664] font-semibold shadow-lg hover:bg-gray-200 transition">
-                APP STORE
+                {t("appSection.appStore")}
               </button>
               <button className="px-6 py-3 rounded-full border border-white/60 text-white font-semibold hover:bg-white/10 transition">
-                PLAY STORE
+                {t("appSection.playStore")}
               </button>
             </div>
           </div>
 
-          <div className="flex-1 flex justify-center md:justify-end">
+          {/* الصورة */}
+          <div
+            className={`flex-1 flex justify-center ${
+              isArabic ? "md:justify-start" : "md:justify-end"
+            }`}
+          >
             <img
               src={app}
-              alt="Crypto trading illustration"
+              alt={t("appSection.title")}
               className="w-full max-w-md rounded-2xl shadow-2xl"
             />
           </div>

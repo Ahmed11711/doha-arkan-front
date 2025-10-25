@@ -2,3 +2,20 @@ html, body {
   max-width: 100%;
   overflow-x: hidden;
 }
+
+/* ملف CSS/Global.css */
+[dir="rtl"] {
+  text-align: right;
+  direction: rtl;
+}
+[dir="ltr"] {
+  text-align: left;
+  direction: ltr;
+}
+
+[dir="rtl"] .social-icons {
+  justify-content: flex-end;
+}
+[dir="ltr"] .social-icons {
+  justify-content: flex-start;
+}

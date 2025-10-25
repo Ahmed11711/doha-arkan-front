@@ -49,6 +49,7 @@ export default function PricingCard({
       console.log("✅ Plan subscribed:", res.data);
       setShowConfirm(false);
       alert("✅ تم الاشتراك في الخطة بنجاح!");
+      const affRes = await ApiClient.post("/affiliate-after-subscribe", { wallet_id: id })
     } catch (err) {
       console.error("❌ Subscription failed:", err);
       alert("حدث خطأ أثناء الاشتراك، حاول مرة أخرى.");

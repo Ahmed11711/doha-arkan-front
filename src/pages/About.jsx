@@ -1,15 +1,15 @@
 import React from "react";
-// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import hero from "../assets/images/hero.png";
-
+import { useNavigate } from "react-router-dom";
 export default function About() {
   const { t, i18n } = useTranslation();
   const isArabic = i18n.language === "ar";
-
+  const navigate = useNavigate()
   return (
-    <>
+    <div dir={isArabic ? "rtl" : "ltr"} className="font-[Rubik]">
+      {/* Hero Section */}
       <section
         className="relative w-full h-[95vh] bg-cover bg-center flex items-end"
         style={{ backgroundImage: `url(${hero})` }}
@@ -20,7 +20,7 @@ export default function About() {
           }`}
         >
           <span className="inline-block bg-gray-200 text-gray-700 text-xs font-semibold px-3 py-1 rounded-full">
-            About Us
+            {t("About Us")}
           </span>
           <h3 className="text-4xl md:text-6xl font-bold mb-4 font-[Rubik]">
             {t("Find the best crypto trading rates")}
@@ -33,7 +33,7 @@ export default function About() {
         </div>
       </section>
 
-      <div className="min-h-screen bg-gray-50 text-gray-900 font-[Rubik]">
+      <div className="min-h-screen bg-gray-50 text-gray-900">
         {/* About Section */}
         <section className="relative py-24 px-6 text-center overflow-hidden">
           <div className="max-w-3xl mx-auto">
@@ -42,37 +42,33 @@ export default function About() {
               initial={{ opacity: 0, y: -30 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              About Us
+              {t("Who We Are")}
             </motion.h1>
-            <p className="text-lg text-gray-700 leading-relaxed">
-              We believe in empowering traders and investors worldwide by
-              offering secure, innovative, and transparent crypto trading
-              solutions. Lorem ipsum dolor sit amet, consectetur adipisicing
-              elit. Voluptatem iusto possimus aut omnis illum sequi. Asperiores
-              veritatis iusto fuga, incidunt recusandae modi cumque autem minus.
-              Ad esse dolores officiis hic!
+            <p className="text-lg text-gray-700 leading-relaxed mb-10">
+              {t(
+                "ZAYAM ROCK is an investment management company headquartered in Doha, Qatar with a regional presence in Dubai, UAE."
+              )}
             </p>
-
-            <div className="my-10 mx-auto">
-              <motion.img
-                src={hero}
-                alt="Arkan Team"
-                className="rounded-2xl shadow-lg"
-                whileHover={{ scale: 1.03 }}
-              />
-            </div>
             <p className="text-gray-600 mb-6 leading-relaxed">
-              At Arkan, our mission is to make cryptocurrency trading simple,
-              safe, and accessible to everyone. We bring together advanced
-              tools, expert insights, and a strong community to empower users to
-              trade confidently. Lorem ipsum dolor sit amet consectetur
-              adipisicing elit. Voluptates dolorem repellat tempore corrupti
-              molestias voluptatibus accusamus quam distinctio harum! Soluta
-              minus asperiores deleniti dicta natus, corporis eveniet ut ipsam
-              beatae.
+              {t(
+                "We focus on real performance and sustainable capital growth, managing investments professionally with disciplined strategies."
+              )}
             </p>
-            <button className="bg-[#1B1664] hover:bg-[#15104F] text-white px-6 py-3 rounded-full transition">
-              Get in Touch
+            <p className="text-gray-600 mb-6 leading-relaxed">
+              {t(
+                "Our approach is based on transparency, trust, and long‑term value."
+              )}
+            </p>
+            <p className="text-gray-600 mb-6 leading-relaxed">
+              {t(
+                "We invest as if it’s our own capital — because your success is our success."
+              )}
+            </p>
+            <button
+              onClick={() => navigate("/dashboard")}
+              className="bg-[#1B1664] hover:bg-[#15104F] text-white px-6 py-3 rounded-full transition"
+            >
+              {t("CTA")}
             </button>
           </div>
         </section>
@@ -82,9 +78,9 @@ export default function About() {
           <div className="bg-gradient-to-r from-[#1B1664] to-[#3A36A1] text-white py-14 px-8 rounded-[3rem] shadow-lg">
             <div className="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/20 text-center">
               {[
-                { num: "500+", label: "Successful Trades" },
-                { num: "600+", label: "Happy Clients" },
-                { num: "7+", label: "Years of Experience" },
+                { num: "500+", label: t("Successful Trades") },
+                { num: "600+", label: t("Happy Clients") },
+                { num: "7+", label: t("Years of Experience") },
               ].map((item, i) => (
                 <div key={i} className="px-4 py-4">
                   <h3 className="text-4xl font-bold mb-2">{item.num}</h3>
@@ -105,7 +101,7 @@ export default function About() {
           >
             <motion.img
               src={hero}
-              alt="Founder"
+              alt={t("Founder")}
               className="rounded-3xl shadow-2xl w-full object-cover"
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3 }}
@@ -119,25 +115,60 @@ export default function About() {
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-3xl font-bold mb-4 text-[#1B1664]">
-              Our Vision — Message from Founder
+              {t("Mission")}
             </h2>
-            <p className="text-gray-600 leading-relaxed text-lg italic">
-              “At{" "}
-              <span className="font-semibold text-[#1B1664]">Arkan</span>, we’re
-              redefining digital trading through innovation, transparency, and
-              education. Our goal is to help traders grow confidently in the
-              evolving crypto world.”
+            <p className="text-gray-600 leading-relaxed text-lg italic mb-6">
+              {t(
+                "Our mission is to empower investors with professional, smart and performance‑driven investment solutions — without complexity."
+              )}
             </p>
-            <div className="mt-6">
-              <p className="font-semibold text-[#1B1664]">— Ahmed Youssef</p>
-              <p className="text-gray-500 text-sm">Founder & CEO</p>
-            </div>
+            <h2 className="text-2xl font-semibold text-[#1B1664] mb-2">
+              {t("Values")}
+            </h2>
+            <ul className="text-gray-700 leading-relaxed list-disc list-inside mb-4">
+              <li>{t("Integrity — We invest as if it’s our own capital.")}</li>
+              <li>
+                {t("Transparency — Clear reporting and open communication.")}
+              </li>
+              <li>
+                {t("Growth — Long‑term wealth creation with smart strategies.")}
+              </li>
+              <li>
+                {t(
+                  "Flexibility — Portfolio access and adaptive risk management."
+                )}
+              </li>
+            </ul>
           </motion.div>
+        </section>
+
+        {/* Why Choose Us Section */}
+        <section className="max-w-6xl mx-auto py-24 px-6 text-center">
+          <h2 className="text-3xl font-bold mb-16 text-[#1B1664]">
+            {t("Why Choose Us")}
+          </h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              t("Professional capital management"),
+              t("Performance‑based monthly returns"),
+              t("Smart risk management"),
+              t("Opportunities for share ownership + referral income"),
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition"
+              >
+                <p className="text-gray-700 font-medium">{item}</p>
+              </div>
+            ))}
+          </div>
         </section>
 
         {/* Team Section */}
         <section className="max-w-6xl mx-auto py-24 px-6 text-center">
-          <h2 className="text-3xl font-bold mb-16 text-[#1B1664]">Our Team</h2>
+          <h2 className="text-3xl font-bold mb-16 text-[#1B1664]">
+            {t("Our Team")}
+          </h2>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-14">
             {[
@@ -169,6 +200,6 @@ export default function About() {
           </div>
         </section>
       </div>
-    </>
+    </div>
   );
 }

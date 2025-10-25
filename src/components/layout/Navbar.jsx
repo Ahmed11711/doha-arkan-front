@@ -8,7 +8,7 @@ import {
 } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useSnackbar } from "notistack";
 import { useAuth } from "../../context/AuthContext";
 import ApiClient from "../../services/API";
@@ -18,7 +18,7 @@ const Navbar = ({ toggleLanguage }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const { user, isAuthenticated, logout,updateUser } = useAuth();
+  const { user, isAuthenticated, logout, updateUser } = useAuth();
 
   const [openDropdown, setOpenDropdown] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -34,7 +34,7 @@ const Navbar = ({ toggleLanguage }) => {
     );
     navigate("/auth");
   };
-  
+
   useEffect(() => {
     if (isAuthenticated) {
       ApiClient.get("/me").then((res) => {
@@ -43,17 +43,27 @@ const Navbar = ({ toggleLanguage }) => {
     }
   }, [isAuthenticated]);
 
-  const navItems = [
-    { path: "/home", label: isArabic ? "الرئيسية" : "Home" },
-    { path: "/about", label: isArabic ? "من نحن" : "About Us" },
-    { path: "/services", label: isArabic ? "الخدمات" : "Services" },
-    { path: "/blogs", label: isArabic ? "المدونات" : "Blogs" },
-    { path: "/dashboard", label: isArabic ? "بيع المحافظ" : "Dashboard" },
-    { path: "/contact", label: isArabic ? "تواصل معنا" : "Contact Us" },
-  ];
+  const navItems = isArabic
+    ? [
+        { path: "/home", label: "الرئيسية" },
+        { path: "/about", label: "من نحن" },
+        { path: "/services", label: "الخدمات" },
+        { path: "/blogs", label: "المدونات" },
+        { path: "/dashboard", label: "لوحة التحكم" },
+        { path: "/contact", label: "تواصل معنا" },
+      ]
+    : [
+        { path: "/home", label: "Home" },
+        { path: "/about", label: "About Us" },
+        { path: "/services", label: "Services" },
+        { path: "/blogs", label: "Blogs" },
+        { path: "/dashboard", label: "Dashboard" },
+        { path: "/contact", label: "Contact Us" },
+      ];
 
   return (
     <nav
+      dir={isArabic ? "rtl" : "ltr"}
       className={`fixed top-0 left-0 w-full z-50 flex justify-between items-center 
       py-3 px-4 md:py-4 md:px-6 transition-all
       bg-gradient-to-r from-[#1B166430] via-[#ffffff40] to-[#1B166420]
@@ -72,9 +82,8 @@ const Navbar = ({ toggleLanguage }) => {
       </Link>
 
       <ul
-        className={`hidden md:flex items-center gap-6 px-8 py-3 rounded-full backdrop-blur-md bg-white/30 border border-white/40 shadow-md ${
-          isArabic ? "flex-row-reverse" : "flex-row"
-        }`}
+        dir={isArabic ? "rtl" : "ltr"}
+        className={`hidden md:flex items-center gap-6 px-8 py-3 rounded-full backdrop-blur-md bg-white/30 border border-white/40 shadow-md         }`}
       >
         {navItems.map((item) => (
           <li key={item.path}>
@@ -136,14 +145,14 @@ const Navbar = ({ toggleLanguage }) => {
                   <Link
                     to="/auth"
                     className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 text-gray-700"
-                    onClick={() => setOpenDropdown(false)} // ← هنا بالفعل
+                    onClick={() => setOpenDropdown(false)}
                   >
                     <FaSignInAlt /> {isArabic ? "تسجيل الدخول" : "Sign In"}
                   </Link>
                   <Link
                     to="/auth"
                     className="flex items-center gap-2 px-4 py-2 hover:bg-gray-100 text-gray-700"
-                    onClick={() => setOpenDropdown(false)} // ← وأيضًا هنا
+                    onClick={() => setOpenDropdown(false)} 
                   >
                     <FaUserPlus /> {isArabic ? "إنشاء حساب" : "Sign Up"}
                   </Link>

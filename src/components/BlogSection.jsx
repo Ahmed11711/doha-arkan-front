@@ -56,12 +56,8 @@ export default function HomeBlogs() {
         <p className="text-sm text-gray-500">
           {new Date(blog.created_at).toLocaleDateString()}
         </p>
-        <h3 className="text-3xl font-bold text-gray-900 ">
-          {blog.title}
-        </h3>
-        <p className="text-gray-600 leading-relaxed">
-          {blog.text}
-        </p>
+        <h3 className="text-3xl font-bold text-gray-900 ">{blog.title}</h3>
+        <p className="text-gray-600 leading-relaxed">{blog.text}</p>
 
         <div className="flex items-center gap-3 mt-4">
           <img
@@ -69,9 +65,7 @@ export default function HomeBlogs() {
             alt={blog.userName}
             className="w-10 h-10 rounded-full object-cover"
           />
-          <span className="text-sm text-gray-700">
-            {blog.userName}
-          </span>
+          <span className="text-sm text-gray-700">{blog.userName}</span>
         </div>
 
         <button
@@ -94,15 +88,15 @@ export default function HomeBlogs() {
 
   return (
     <section className="py-20 px-6 bg-gray-100 transition-colors duration-500">
-      <div className="text-center mb-16 relative">
-        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 relative z-10 inline-block">
-          {t("Latest Blogs")}
+      <div className="text-center mb-16 relative px-4 md:px-0">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 relative z-10 inline-block">
+          {t("latestBlogs.title")}
         </h2>
-        <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-7xl md:text-8xl font-extrabold text-gray-200 opacity-20 select-none z-0">
-          {t("Latest Blogs")}
+        <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-6xl sm:text-7xl md:text-8xl font-extrabold text-gray-200 opacity-20 select-none z-0">
+          {t("latestBlogs.title")}
         </span>
-        <p className="text-lg text-gray-600 mt-6 max-w-2xl mx-auto">
-          {t("Explore our latest updates and crypto insights.")}
+        <p className="text-base sm:text-lg md:text-lg text-gray-600 mt-4 sm:mt-6 max-w-2xl mx-auto leading-relaxed">
+          {t("latestBlogs.subtitle")}
         </p>
       </div>
 
@@ -130,18 +124,14 @@ export default function HomeBlogs() {
                 <h4 className="text-xl font-semibold mb-3 text-gray-900">
                   {blog.title}
                 </h4>
-                <p className="text-gray-600 flex-grow">
-                  {blog.text}
-                </p>
+                <p className="text-gray-600 flex-grow">{blog.text}</p>
                 <div className="flex items-center gap-3 mt-4">
                   <img
                     src={blog.userImg}
                     alt={blog.userName}
                     className="w-9 h-9 rounded-full object-cover"
                   />
-                  <span className="text-sm text-gray-700">
-                    {blog.userName}
-                  </span>
+                  <span className="text-sm text-gray-700">{blog.userName}</span>
                 </div>
               </div>
             </motion.div>
@@ -152,12 +142,12 @@ export default function HomeBlogs() {
       {/* ✅ Last featured (if more than one blog) */}
       {lastBlog && blogs.length > 1 && renderFeatured(lastBlog, "last")}
 
-      <div className="text-left mt-12 flex justify-center">
+      <div className="text-left mt-8 flex justify-center">
         <button
           onClick={() => navigate("/blogs")}
           className="px-8 py-3 rounded-full bg-[#1B1664FC] text-white font-medium hover:bg-[#15104F] transition flex items-center gap-2"
         >
-          {t("View All Blogs")}
+          {t("latestBlogs.button")}
           {isArabic ? <FaArrowLeft /> : <FaArrowRight />}
         </button>
       </div>

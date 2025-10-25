@@ -44,9 +44,7 @@ export default function Blogs() {
       {/* Hero Section */}
       <section
         className="relative w-full mb-10 h-[95vh] bg-cover bg-center flex items-end"
-        style={{
-          backgroundImage: `url(${heroImg})`,
-        }}
+        style={{ backgroundImage: `url(${heroImg})` }}
       >
         <div
           className={`relative z-10 text-white max-w-xl  ${
@@ -54,7 +52,7 @@ export default function Blogs() {
           }`}
         >
           <span className="inline-block bg-gray-200 text-gray-700 text-xs font-semibold px-3 py-1 rounded-full ">
-            Blogs
+            {t("Blogs")}
           </span>
           <h3 className="text-4xl md:text-6xl font-bold mb-4 font-[Rubik]">
             {t("Find the best crypto trading rates")}
@@ -94,6 +92,7 @@ export default function Blogs() {
                   : "bg-gray-200  text-gray-700  hover:bg-gray-300"
               }`}
             >
+              {/* {isArabic ? service.title : service.title_en || service.title} */}
               {service.title}
             </button>
           ))}
@@ -101,7 +100,7 @@ export default function Blogs() {
 
         {/* Sort Dropdown */}
         <div className="flex items-center gap-2">
-          Sort by:
+          {t("Sort by")}:
           <select
             value={sortOrder}
             onChange={(e) => setSortOrder(e.target.value)}
@@ -133,10 +132,12 @@ export default function Blogs() {
                   {new Date(blog.created_at).toDateString()}
                 </p>
                 <h3 className="text-xl font-semibold text-gray-900  mb-3">
+                  {/* {isArabic ? blog.title_ar : blog.title} */}
                   {blog.title}
                 </h3>
                 <p className="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-3">
-                  {blog.text}
+                  {/* {isArabic ? blog.text_ar : blog.text} */}
+                  { blog.text}
                 </p>
 
                 <div className="flex items-center gap-3">

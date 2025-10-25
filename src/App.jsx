@@ -20,9 +20,9 @@ import ScrollToTop from "./components/ScrollToTop";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import WalletPage from "./pages/WalletPage";
-import Deposit from "./pages/Deposit";
-import Withdraw from "./pages/Withdraw";
-import Affiliate from "./pages/Affiliate";
+// import Deposit from "./pages/Deposit";
+// import Withdraw from "./pages/Withdraw";
+// import Affiliate from "./pages/Affiliate";
 import DoneToHome from "./pages/TwoFactor/DoneToHome";
 
 import DashboardLayout from "./dashboard/DashboardLayout";
@@ -92,9 +92,9 @@ function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/services" element={<Services />} />
           <Route path="/sell-wallets" element={<WalletPage />} />
-          <Route path="/deposit" element={<Deposit />} />
+          {/* <Route path="/deposit" element={<Deposit />} />
           <Route path="/withdraw" element={<Withdraw />} />
-          <Route path="/affiliate" element={<Affiliate />} />
+          <Route path="/affiliate" element={<Affiliate />} /> */}
           <Route path="/blogs" element={<Blogs />} />
           <Route path="/blogs/:id" element={<BlogDetails />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />

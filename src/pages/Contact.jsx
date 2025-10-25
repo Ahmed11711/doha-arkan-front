@@ -10,7 +10,6 @@ export default function Contact() {
 
   return (
     <>
-      {/* Hero Section */}
       <section
         className="relative w-full h-[95vh] bg-cover bg-center flex items-end"
         style={{ backgroundImage: `url(${contactImg})` }}
@@ -21,14 +20,18 @@ export default function Contact() {
           }`}
         >
           <span className="inline-block bg-gray-200 text-gray-700 text-xs font-semibold px-3 py-1 rounded-full">
-            Contact Us
+            {t("Contact Us", "تواصل معنا")}
           </span>
           <h3 className="text-4xl md:text-6xl font-bold mb-4 font-[Rubik]">
-            {t("Find the best crypto trading rates")}
+            {t(
+              "Find the best crypto trading rates",
+              "اكتشف أفضل أسعار تداول العملات المشفرة"
+            )}
           </h3>
           <p className="text-lg mb-6 font-[Rubik]">
             {t(
-              "Discover competitive rates and seamless transactions with Arkan. Buy and sell cryptocurrencies with ease, anywhere, anytime."
+              "Discover competitive rates and seamless transactions with Arkan. Buy and sell cryptocurrencies with ease, anywhere, anytime.",
+              "استكشف أسعارًا تنافسية وتجارب تداول سلسة مع أركان. اشترِ وبع العملات المشفرة بسهولة في أي وقت وأي مكان."
             )}
           </p>
         </div>
@@ -48,15 +51,15 @@ export default function Contact() {
 
           <div className="p-10 md:p-14 flex flex-col justify-center">
             <h2 className="text-3xl md:text-4xl font-bold text-[#1B1664] mb-4">
-              Let’s Get In Touch
+              {t("Let’s Get In Touch", "هيا نتواصل")}
             </h2>
             <p className="text-gray-600 mb-8">
-              Or just reach out manually to{" "}
+              {t("Or just reach out manually to", "أو تواصل معنا مباشرة على")}{" "}
               <a
-                href="mailto:hello@arkan.com"
+                href="mailto:info@zayamrock.com"
                 className="text-[#1B1664] font-medium hover:underline"
               >
-                hello@arkan.com
+                info@zayamrock.com
               </a>
             </p>
 
@@ -64,31 +67,31 @@ export default function Contact() {
               <div className="grid md:grid-cols-2 gap-5">
                 <input
                   type="text"
-                  placeholder="First Name"
+                  placeholder={t("First Name", "الاسم الأول")}
                   className="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#1B1664] bg-transparent"
                 />
                 <input
                   type="text"
-                  placeholder="Last Name"
+                  placeholder={t("Last Name", "اسم العائلة")}
                   className="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#1B1664] bg-transparent"
                 />
               </div>
 
               <input
                 type="email"
-                placeholder="Email Address"
+                placeholder={t("Email Address", "البريد الإلكتروني")}
                 className="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#1B1664] bg-transparent"
               />
 
               <input
                 type="tel"
-                placeholder="Phone Number"
+                placeholder={t("Phone Number", "رقم الهاتف")}
                 className="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#1B1664] bg-transparent"
               />
 
               <textarea
                 rows="4"
-                placeholder="Message"
+                placeholder={t("Message", "الرسالة")}
                 className="w-full p-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-[#1B1664] bg-transparent"
               ></textarea>
 
@@ -96,7 +99,7 @@ export default function Contact() {
                 whileHover={{ scale: 1.05 }}
                 className="w-full py-3 rounded-xl bg-[#1B1664] text-white font-medium hover:bg-[#15104F] transition"
               >
-                Submit Form →
+                {t("Submit Form →", "إرسال النموذج →")}
               </motion.button>
             </form>
           </div>

@@ -14,7 +14,7 @@ export default function PackagesCoverflow({ services }) {
   useEffect(() => {
     if (services?.length) {
       const firstPlans = services
-        .map((s) => s.plans?.[0]) 
+        .map((s) => s.plans?.[0])
         .filter(Boolean)
 
         .map((p) => ({
@@ -58,15 +58,15 @@ export default function PackagesCoverflow({ services }) {
 
   return (
     <section className="relative z-10 py-16 px-4 sm:px-6 bg-gray-100 overflow-hidden">
-      <div className="text-center mb-12 relative">
-        <h2 className="text-4xl md:text-5xl font-bold text-gray-900 relative z-10 inline-block">
-          {t("Sell Wallets")}
+      <div className="text-center mb-12 relative px-4 md:px-0">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 relative z-10 inline-block">
+          {t("sellWallets.title")}
         </h2>
-        <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-7xl md:text-8xl font-extrabold text-gray-200 opacity-20 select-none z-0">
-          {t("Sell Wallets")}
+        <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-6xl sm:text-7xl md:text-8xl font-extrabold text-gray-200 opacity-20 select-none z-0">
+          {t("sellWallets.title")}
         </span>
-        <p className="text-lg text-gray-600 mt-2 max-w-2xl mx-auto">
-          {t("Recommended Sell Wallets")}
+        <p className="text-base sm:text-lg md:text-lg text-gray-600 mt-2 sm:mt-4 max-w-2xl mx-auto leading-relaxed">
+          {t("sellWallets.subtitle")}
         </p>
       </div>
 
