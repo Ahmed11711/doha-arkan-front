@@ -57,7 +57,10 @@ export default function HomeBlogs() {
           {new Date(blog.created_at).toLocaleDateString()}
         </p>
         <h3 className="text-3xl font-bold text-gray-900 ">{blog.title}</h3>
-        <p className="text-gray-600 leading-relaxed">{blog.text}</p>
+        <p className="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-3">
+          {/* {isArabic ? blog.text_ar : blog.text} */}
+          {blog.text}
+        </p>
 
         <div className="flex items-center gap-3 mt-4">
           <img
@@ -124,7 +127,10 @@ export default function HomeBlogs() {
                 <h4 className="text-xl font-semibold mb-3 text-gray-900">
                   {blog.title}
                 </h4>
-                <p className="text-gray-600 flex-grow">{blog.text}</p>
+                <p className="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-3">
+                  {/* {isArabic ? blog.text_ar : blog.text} */}
+                  {blog.text}
+                </p>
                 <div className="flex items-center gap-3 mt-4">
                   <img
                     src={blog.userImg}
@@ -132,6 +138,17 @@ export default function HomeBlogs() {
                     className="w-9 h-9 rounded-full object-cover"
                   />
                   <span className="text-sm text-gray-700">{blog.userName}</span>
+                </div>
+                <div className="flex items-center justify-end">
+                  <button
+                    onClick={() =>
+                      navigate(`/blogs/${blog.id}`, { state: blog })
+                    }
+                    className="mt-4 px-6 py-2 rounded-full bg-[#1B1664FC] text-white font-medium hover:bg-[#15104F] transition flex items-center gap-2"
+                  >
+                    {t("Read More")}
+                    {isArabic ? <FaArrowLeft /> : <FaArrowRight />}
+                  </button>
                 </div>
               </div>
             </motion.div>

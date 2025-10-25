@@ -16,7 +16,8 @@ import { useAuth } from "../../context/AuthContext";
 export default function DepositDashboard() {
   const { t } = useTranslation();
   const { user, isAuthenticated } = useAuth();
-
+  const { i18n } = useTranslation();
+  const isArabic = i18n.language === "ar";
   const [showSteps, setShowSteps] = useState(false);
   const [deposits, setDeposits] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -141,24 +142,43 @@ export default function DepositDashboard() {
               </div>
             ) : (
               <>
-                {/* ✅ Modern table for large screens */}
                 <div className="hidden md:block overflow-x-auto rounded-2xl border border-gray-100 shadow-sm">
                   <table className="min-w-[700px] w-full text-sm text-gray-800">
                     <thead className="bg-gradient-to-r from-[#1B1664] to-[#2C218E] text-white">
                       <tr>
-                        <th className="px-5 py-3 text-left font-medium tracking-wide">
+                        <th
+                          className={`px-5 py-3 ${
+                            isArabic ? "text-right" : "text-left"
+                          } font-medium tracking-wide`}
+                        >
                           {t("Date")}
                         </th>
-                        <th className="px-5 py-3 text-left font-medium tracking-wide">
+                        <th
+                          className={`px-5 py-3 ${
+                            isArabic ? "text-right" : "text-left"
+                          } font-medium tracking-wide`}
+                        >
                           {t("Transaction ID")}
                         </th>
-                        <th className="px-5 py-3 text-left font-medium tracking-wide">
+                        <th
+                          className={`px-5 py-3 ${
+                            isArabic ? "text-right" : "text-left"
+                          } font-medium tracking-wide`}
+                        >
                           {t("Address")}
                         </th>
-                        <th className="px-5 py-3 text-left font-medium tracking-wide">
+                        <th
+                          className={`px-5 py-3 ${
+                            isArabic ? "text-right" : "text-left"
+                          } font-medium tracking-wide`}
+                        >
                           {t("Amount")}
                         </th>
-                        <th className="px-5 py-3 text-left font-medium tracking-wide">
+                        <th
+                          className={`px-5 py-3 ${
+                            isArabic ? "text-right" : "text-left"
+                          } font-medium tracking-wide`}
+                        >
                           {t("Status")}
                         </th>
                       </tr>
@@ -175,7 +195,6 @@ export default function DepositDashboard() {
                               "en-GB"
                             )}
                           </td>
-
                           <td className="px-5 py-3 font-mono text-xs text-[#1B1664]">
                             {item.transaction_id?.length > 12
                               ? `${item.transaction_id.slice(
@@ -184,7 +203,6 @@ export default function DepositDashboard() {
                                 )}...${item.transaction_id.slice(-4)}`
                               : item.transaction_id}
                           </td>
-
                           <td className="px-5 py-3 font-mono text-xs text-gray-600">
                             {item.address?.length > 12
                               ? `${item.address.slice(
@@ -193,11 +211,9 @@ export default function DepositDashboard() {
                                 )}...${item.address.slice(-4)}`
                               : item.address}
                           </td>
-
                           <td className="px-5 py-3 font-semibold text-[#1B1664]">
                             {item.amount}
                           </td>
-
                           <td className="px-5 py-3">
                             <span
                               className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold capitalize ${
@@ -217,7 +233,7 @@ export default function DepositDashboard() {
                                     : "text-gray-400"
                                 }`}
                               />
-                              {item.status}
+                              {t(item.status)}
                             </span>
                           </td>
                         </tr>
@@ -226,7 +242,6 @@ export default function DepositDashboard() {
                   </table>
                 </div>
 
-                {/* ✅ Cards for mobile (unchanged, just polished) */}
                 <div className="grid md:hidden gap-4">
                   {deposits.map((item, i) => (
                     <div
@@ -282,7 +297,7 @@ export default function DepositDashboard() {
                               : "bg-gray-100 text-gray-600"
                           }`}
                         >
-                          {item.status}
+                          {t(item.status)}
                         </span>
                       </div>
                     </div>
@@ -303,7 +318,6 @@ export default function DepositDashboard() {
             </button>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-              {/* Steps */}
               <div className="space-y-4">
                 {steps.map((step, index) => (
                   <div
@@ -325,15 +339,13 @@ export default function DepositDashboard() {
                 ))}
               </div>
 
-              {/* Action box */}
               <div className="bg-gray-100 rounded-2xl p-5 sm:p-7 flex flex-col justify-between">
                 <div>
                   <h3 className="text-lg font-semibold mb-5 text-[#1B1664] flex items-center gap-2">
-                    <FaCheckCircle className="text-[#1B1664]" />
+                    <FaCheckCircle className="text-[#1B1664]" />{" "}
                     {t("Complete Your Action")}
                   </h3>
 
-                  {/* Copy box */}
                   <div className="flex flex-col sm:flex-row items-center gap-3 bg-white border border-gray-200 rounded-2xl p-4 mb-5">
                     <span
                       className="flex-1 truncate font-semibold text-[#1B1664] text-sm sm:text-base"
@@ -350,7 +362,6 @@ export default function DepositDashboard() {
                     </button>
                   </div>
 
-                  {/* QR */}
                   {userAddress && (
                     <div className="flex justify-center">
                       <img
@@ -362,7 +373,6 @@ export default function DepositDashboard() {
                   )}
                 </div>
 
-                {/* Confirm */}
                 <div className="flex flex-col items-center mt-6">
                   {loadingCheck ? (
                     <div className="flex items-center gap-2 text-[#1B1664] text-sm">
@@ -390,7 +400,6 @@ export default function DepositDashboard() {
           </div>
         )}
 
-        {/* Popup */}
         {showPopup && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
             <div className="bg-white rounded-2xl shadow-xl p-6 sm:p-8 w-full max-w-sm text-center relative">

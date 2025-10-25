@@ -11,6 +11,8 @@ import { FaCopy } from "react-icons/fa";
 
 export default function AffiliateDashboard() {
   const { t } = useTranslation();
+  const { i18n } = useTranslation();
+  const isArabic = i18n.language === "ar";
   const { user, isAuthenticated } = useAuth();
   // console.log("user", user.affiliate_code_active);
 
@@ -217,7 +219,12 @@ export default function AffiliateDashboard() {
                       t("Active"),
                       t("Generation"),
                     ].map((th, i) => (
-                      <th key={i} className="px-4 py-3 font-medium">
+                      <th
+                        key={i}
+                        className={`px-5 py-3 ${
+                          isArabic ? "text-center" : "text-left"
+                        } font-medium tracking-wide`}
+                      >
                         {th}
                       </th>
                     ))}

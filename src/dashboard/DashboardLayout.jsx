@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import { motion } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 import EcommerceMetrics from "../components/components/ecommerce/EcommerceMetrics";
 import MonthlySalesChart from "../components/components/ecommerce/MonthlySalesChart";
@@ -14,7 +15,8 @@ import PageMeta from "../components/components/common/PageMeta";
 export default function DashboardLayout() {
   const [isOpen, setIsOpen] = useState(true);
   const location = useLocation();
-
+  const { i18n } = useTranslation();
+  const isArabic = i18n.language === "ar";
   const isDashboardHome = location.pathname === "/dashboard";
 
   return (
@@ -24,9 +26,16 @@ export default function DashboardLayout() {
 
       {/* Main Content */}
       <main
-        className={`flex-1 overflow-y-auto p-6 transition-all duration-300 
-          ${isOpen ? "lg:ml-64" : "lg:ml-20"}  // ✅ يزاح المحتوى على حسب حالة السايدبار
-        `}
+        className={`flex-1 overflow-y-auto p-6 transition-all duration-300
+          ${
+            isOpen
+              ? isArabic
+                ? "lg:mr-64"
+                : "lg:ml-64"
+              : isArabic
+              ? "lg:mr-20"
+              : "lg:ml-20"
+          }`}
       >
         {isDashboardHome ? (
           <motion.div

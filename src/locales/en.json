@@ -187,6 +187,30 @@
   "Sort by": "Sort by",
   "Newest First": "Newest First",
   "Oldest First": "Oldest First",
-  "No blogs found for this category.": "No blogs found for this category."
+  "No blogs found for this category.": "No blogs found for this category.",
+  "Read More":"Read More",
+  "My Balance": "My Balance",
+  "My Affiliate Link": "My Affiliate Link",
+  "Copy": "Copy",
+  "Monthly Sales": "Monthly Sales",
+  "View More": "View More",
+  "Delete": "Delete",
+  "Monthly Target": "Monthly Target",
+  "Target you’ve set for each month": "Target you’ve set for each month",
+  "Target": "Target",
+  "Revenue": "Revenue",
+  "Today": "Today",
+  "You earn more this month. Keep up your good work!": "You earn more this month. Keep up your good work!",
+  "Statistics": "Statistics",
+  "privacy_policy": "سياسة الخصوصية",
+  "view": "عرض",
+  "privacy": {
+    "introduction": "مقدمة",
+    "data_we_collect": "البيانات التي نجمعها",
+    "how_we_use_data": "كيفية استخدام بياناتك",
+    "how_we_share_info": "كيفية مشاركة المعلومات",
+    "your_choices": "خياراتك والتزاماتك",
+    "other_info": "معلومات هامة أخرى"
+  }
 
 }

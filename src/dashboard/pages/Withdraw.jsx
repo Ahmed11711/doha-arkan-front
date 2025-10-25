@@ -7,6 +7,8 @@ import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 export default function WithdrawDashboard() {
   const { t } = useTranslation();
+  const { i18n } = useTranslation();
+  const isArabic = i18n.language === "ar";
   const [showSteps, setShowSteps] = useState(false);
   const [withdraws, setWithdraws] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -146,19 +148,39 @@ export default function WithdrawDashboard() {
                   <table className="min-w-[650px] w-full text-sm">
                     <thead className="bg-gradient-to-r from-[#1B1664] to-[#2e2791] text-white rounded-t-2xl">
                       <tr>
-                        <th className="px-4 py-3 text-left font-medium">
+                        <th
+                          className={`px-5 py-3 ${
+                            isArabic ? "text-right" : "text-left"
+                          } font-medium tracking-wide`}
+                        >
                           {t("Date")}
                         </th>
-                        <th className="px-4 py-3 text-left font-medium">
+                        <th
+                          className={`px-5 py-3 ${
+                            isArabic ? "text-right" : "text-left"
+                          } font-medium tracking-wide`}
+                        >
                           {t("Transaction ID")}
                         </th>
-                        <th className="px-4 py-3 text-left font-medium">
+                        <th
+                          className={`px-5 py-3 ${
+                            isArabic ? "text-right" : "text-left"
+                          } font-medium tracking-wide`}
+                        >
                           {t("Address")}
                         </th>
-                        <th className="px-4 py-3 text-left font-medium">
+                        <th
+                          className={`px-5 py-3 ${
+                            isArabic ? "text-right" : "text-left"
+                          } font-medium tracking-wide`}
+                        >
                           {t("Amount")}
                         </th>
-                        <th className="px-4 py-3 text-left font-medium">
+                        <th
+                          className={`px-5 py-3 ${
+                            isArabic ? "text-right" : "text-left"
+                          } font-medium tracking-wide`}
+                        >
                           {t("Status")}
                         </th>
                       </tr>

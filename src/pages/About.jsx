@@ -1,4 +1,5 @@
 import React from "react";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import hero from "../assets/images/hero.png";
@@ -9,7 +10,6 @@ export default function About() {
   const navigate = useNavigate()
   return (
     <div dir={isArabic ? "rtl" : "ltr"} className="font-[Rubik]">
-      {/* Hero Section */}
       <section
         className="relative w-full h-[95vh] bg-cover bg-center flex items-end"
         style={{ backgroundImage: `url(${hero})` }}

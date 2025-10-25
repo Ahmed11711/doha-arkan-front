@@ -15,7 +15,8 @@ import { Snackbar, Alert } from "@mui/material";
 import { GoogleLogin } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../context/AuthContext";
-import { useUserStore } from "../store/userStore";
+// import { useUserStore } from "../store/userStore";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const LoginRegister = ({ onLoginSuccess }) => {
   const { t } = useTranslation();
@@ -25,6 +26,7 @@ const LoginRegister = ({ onLoginSuccess }) => {
   const [isLogin, setIsLogin] = useState(true);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [apiErrors, setApiErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
 
   const schemaLogin = yup.object().shape({
     email: yup.string().email(t("invalid_email")).required(t("required")),
@@ -59,8 +61,8 @@ const LoginRegister = ({ onLoginSuccess }) => {
 
   useEffect(() => {
     // console.log("Data changed:", localStorage.getItem("Auth_Token"));
-    if(localStorage.getItem("Auth_Token")){
-      navigate("/")
+    if (localStorage.getItem("Auth_Token")) {
+      navigate("/");
     }
   }, []); // كل ما data تتغير هيتنادى الـ useEffect
 
@@ -76,7 +78,7 @@ const LoginRegister = ({ onLoginSuccess }) => {
           const { token, user } = res.data;
 
           login(user, token);
-          useUserStore.getState().login(res.data.user, res.data.token);
+          // useUserStore.getState().login(res.data.user, res.data.token);
 
           enqueueSnackbar(t("تم تسجيل الدخول بنجاح ✅"), {
             variant: "success",
@@ -106,7 +108,7 @@ const LoginRegister = ({ onLoginSuccess }) => {
           enqueueSnackbar(t("You must agree to both criteria to continue."), {
             variant: "error",
           });
-          return; // ❌ منع الـ submit
+          return;
         }
 
         if (signupRes?.data?.id) {
@@ -115,6 +117,9 @@ const LoginRegister = ({ onLoginSuccess }) => {
           enqueueSnackbar(t("تم إنشاء الحساب بنجاح ✅"), {
             variant: "success",
           });
+
+          localStorage.setItem("user_id", signupRes.data.id);
+
           navigate("/twofactor");
         } else {
           enqueueSnackbar(t("فشل إنشاء الحساب ⚠️"), { variant: "error" });
@@ -189,16 +194,22 @@ const LoginRegister = ({ onLoginSuccess }) => {
                   )}
                 </div>
 
-                <div>
+                <div className="relative">
                   <label className="block text-sm text-gray-700 mb-1">
                     {t("Password")}
                   </label>
                   <input
                     {...register("password")}
-                    type="password"
+                    type={showPassword ? "text" : "password"}
                     placeholder="********"
-                    className="w-full border-b border-gray-400 bg-transparent focus:border-[#1B1664FC] outline-none py-2"
+                    className="w-full border-b border-gray-400 bg-transparent focus:border-[#1B1664FC] outline-none py-2 pr-10"
                   />
+                  <div
+                    className="absolute bottom-1 right-0 transform -translate-y-1/2 pr-2 cursor-pointer text-gray-500"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </div>
                   {(errors.password || apiErrors.password) && (
                     <p className="text-red-500 text-xs mt-1">
                       {errors.password?.message || apiErrors.password?.[0]}
@@ -319,7 +330,7 @@ const LoginRegister = ({ onLoginSuccess }) => {
                   )}
                 </div>
 
-                <div>
+                <div className="relative">
                   <label className="block text-sm mb-1">{t("Password")}</label>
                   <input
                     {...register("password")}
@@ -327,6 +338,12 @@ const LoginRegister = ({ onLoginSuccess }) => {
                     placeholder="********"
                     className="w-full border-b border-gray-400 bg-transparent focus:border-[#1B1664FC] outline-none py-2"
                   />
+                  <div
+                    className="absolute bottom-1 right-0 transform -translate-y-1/2 pr-2 cursor-pointer text-gray-500"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </div>
                   {(errors.password || apiErrors.password) && (
                     <p className="text-red-500 text-xs mt-1">
                       {errors.password?.message || apiErrors.password?.[0]}
@@ -334,7 +351,7 @@ const LoginRegister = ({ onLoginSuccess }) => {
                   )}
                 </div>
 
-                <div>
+                <div className="relative">
                   <label className="block text-sm mb-1">
                     {t("Confirm Password")}
                   </label>
@@ -344,6 +361,12 @@ const LoginRegister = ({ onLoginSuccess }) => {
                     placeholder="********"
                     className="w-full border-b border-gray-400 bg-transparent focus:border-[#1B1664FC] outline-none py-2"
                   />
+                  <div
+                    className="absolute bottom-1 right-0 transform -translate-y-1/2 pr-2 cursor-pointer text-gray-500"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </div>
                   {(errors.confirmPassword || apiErrors.confirmPassword) && (
                     <p className="text-red-500 text-xs mt-1">
                       {errors.confirmPassword?.message ||

@@ -1,32 +1,18 @@
 import React from "react";
 import { FaLock, FaExternalLinkAlt } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 const PrivacyPolicy = () => {
+  const { t } = useTranslation();
+
+  // 📝 قائمة الروابط حسب i18n key
   const links = [
-    {
-      title: "Introduction",
-      url: "https://drive.google.com/file/d/EXAMPLE_1/view",
-    },
-    {
-      title: "Data We Collect",
-      url: "https://drive.google.com/file/d/EXAMPLE_2/view",
-    },
-    {
-      title: "How We Use Your Data",
-      url: "https://drive.google.com/file/d/EXAMPLE_3/view",
-    },
-    {
-      title: "How We Share Information",
-      url: "https://drive.google.com/file/d/EXAMPLE_4/view",
-    },
-    {
-      title: "Your Choices & Obligations",
-      url: "https://drive.google.com/file/d/EXAMPLE_5/view",
-    },
-    {
-      title: "Other Important Information",
-      url: "https://drive.google.com/file/d/EXAMPLE_6/view",
-    },
+    { key: "introduction", url: "https://drive.google.com/file/d/EXAMPLE_1/view" },
+    { key: "data_we_collect", url: "https://drive.google.com/file/d/EXAMPLE_2/view" },
+    { key: "how_we_use_data", url: "https://drive.google.com/file/d/EXAMPLE_3/view" },
+    { key: "how_we_share_info", url: "https://drive.google.com/file/d/EXAMPLE_4/view" },
+    { key: "your_choices", url: "https://drive.google.com/file/d/EXAMPLE_5/view" },
+    { key: "other_info", url: "https://drive.google.com/file/d/EXAMPLE_6/view" },
   ];
 
   return (
@@ -36,7 +22,7 @@ const PrivacyPolicy = () => {
         <div className="flex flex-wrap items-center justify-between gap-3 mb-8">
           <h1 className="text-xl sm:text-2xl font-bold text-[#1B1664] flex items-center gap-2 sm:gap-3">
             <FaLock className="text-[#1B1664]" />
-            Privacy Policy
+            {t("privacy_policy")}
           </h1>
         </div>
 
@@ -48,7 +34,7 @@ const PrivacyPolicy = () => {
               className="flex justify-between items-center border-b border-gray-200 pb-3 hover:bg-gray-50 transition rounded-xl px-2"
             >
               <span className="font-medium text-[#1B1664]">
-                {item.title}
+                {t(`privacy.${item.key}`)}
               </span>
               <a
                 href={item.url}
@@ -56,7 +42,7 @@ const PrivacyPolicy = () => {
                 rel="noopener noreferrer"
                 className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1"
               >
-                View <FaExternalLinkAlt className="text-xs" />
+                {t("view")} <FaExternalLinkAlt className="text-xs" />
               </a>
             </li>
           ))}

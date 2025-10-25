@@ -5,12 +5,12 @@ import { FaSms } from "react-icons/fa";
 import { MdAppShortcut } from "react-icons/md";
 import ApiClient from "../../services/API";
 import { useSnackbar } from "notistack";
-
+import { useAuth } from "../../context/AuthContext";
 export default function TwoFactor() {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const [loading, setLoading] = useState(false);
-
+  const { user } = useAuth();
   const methods = [
     {
       title: "Verify via Email",
@@ -40,28 +40,35 @@ export default function TwoFactor() {
 
   const handleSelectMethod = async (m) => {
     const user_id = localStorage.getItem("user_id");
+
     if (!user_id) {
-      enqueueSnackbar("User ID not found. Please sign up again.", { variant: "error" });
+      enqueueSnackbar("User ID not found. Please sign up again.", {
+        variant: "error",
+      });
       navigate("/auth");
       return;
     }
 
     try {
       setLoading(true);
-
-      // eslint-disable-next-line no-unused-vars
+      // إرسال الطلب واستلام الـ response
       const res = await ApiClient.post("Auth/send-otp", {
         user_id,
         method: m.method,
       });
 
-      enqueueSnackbar("Verification code sent successfully ✅", { variant: "success" });
-      // console.log(res.data);
-
+      const otp = res?.data;
+      console.log("Received OTP:", otp);
+      enqueueSnackbar("Verification code sent successfully ✅", {
+        variant: "success",
+      });
       navigate(m.path);
     } catch (err) {
       console.error(err);
-      enqueueSnackbar("Failed to send verification code ❌", { variant: "error" });
+      enqueueSnackbar("Failed to send verification code ❌", {
+        variant: "error",
+      });
+      return null;
     } finally {
       setLoading(false);
     }

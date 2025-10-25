@@ -133,7 +133,7 @@ export default function MyPortfolio() {
 
           {/* ===== Mobile Cards ===== */}
           <div className="md:hidden space-y-4">
-            {subscriptions.map((item, i) => (
+            {subscriptions.map((item) => (
               <div
                 key={item.id}
                 className="p-4 rounded-xl border border-gray-200 shadow-sm bg-white hover:shadow-md transition"

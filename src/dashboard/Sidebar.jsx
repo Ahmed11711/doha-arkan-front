@@ -1,5 +1,7 @@
+// Sidebar.jsx
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   FaArrowDown,
   FaArrowUp,
@@ -8,29 +10,23 @@ import {
   FaLock,
   FaBars,
   FaUserCog,
-  FaTachometerAlt 
+  FaTachometerAlt,
 } from "react-icons/fa";
-
-const menuItems = [
-  { name: "Dashboard", icon: <FaTachometerAlt />, path: "/dashboard" },
-  { name: "Deposit", icon: <FaArrowDown />, path: "/dashboard/deposit" },
-  { name: "Withdraw", icon: <FaArrowUp />, path: "/dashboard/withdraw" },
-  { name: "Affiliate", icon: <FaUsers />, path: "/dashboard/affiliate" },
-  { name: "KYC", icon: <FaIdCard />, path: "/dashboard/kyc" },
-  {
-    name: "My Portfolio",
-    icon: <FaUserCog />,
-    path: "/dashboard/my-portfolio",
-  },
-  {
-    name: "Privacy policy",
-    icon: <FaLock />,
-    path: "/dashboard/privacy-policy",
-  },
-];
 
 export default function Sidebar({ isOpen, setIsOpen }) {
   const location = useLocation();
+  const { i18n } = useTranslation();
+  const isArabic = i18n.language === "ar";
+
+  const menuItems = [
+    { name: isArabic ? "لوحة التحكم" : "Dashboard", icon: <FaTachometerAlt />, path: "/dashboard" },
+    { name: isArabic ? "إيداع" : "Deposit", icon: <FaArrowDown />, path: "/dashboard/deposit" },
+    { name: isArabic ? "سحب" : "Withdraw", icon: <FaArrowUp />, path: "/dashboard/withdraw" },
+    { name: isArabic ? "التابعين" : "Affiliate", icon: <FaUsers />, path: "/dashboard/affiliate" },
+    { name: isArabic ? "التحقق من الهوية" : "KYC", icon: <FaIdCard />, path: "/dashboard/kyc" },
+    { name: isArabic ? "محفظتي" : "My Portfolio", icon: <FaUserCog />, path: "/dashboard/my-portfolio" },
+    { name: isArabic ? "سياسة الخصوصية" : "Privacy policy", icon: <FaLock />, path: "/dashboard/privacy-policy" },
+  ];
 
   return (
     <>
@@ -42,15 +38,14 @@ export default function Sidebar({ isOpen, setIsOpen }) {
       )}
 
       <aside
-        className={`fixed lg:fixed top-24 left-0 h-screen rounded
-    bg-gradient-to-b from-[#1B1664] to-[#322FA4] text-white z-40 
-    flex flex-col transform transition-all duration-300 ease-in-out
-    ${
-      isOpen
-        ? "translate-x-0 w-64"
-        : "-translate-x-full lg:translate-x-0 lg:w-20"
-    }
-    shadow-xl`}
+        dir={isArabic ? "rtl" : "ltr"}
+        className={`fixed top-24 ${isArabic ? "right-0" : "left-0"} h-screen rounded
+          bg-gradient-to-b from-[#1B1664] to-[#322FA4] text-white z-40
+          flex flex-col transform transition-all duration-300 ease-in-out
+          ${isOpen
+            ? "translate-x-0 w-64"
+            : `${isArabic ? "translate-x-full" : "-translate-x-full"} lg:translate-x-0 lg:w-20`}
+          shadow-xl`}
       >
         <div
           onClick={() => setIsOpen(!isOpen)}
@@ -71,11 +66,9 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                 to={item.path}
                 onClick={() => setIsOpen(false)}
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all
-                  ${
-                    isActive
-                      ? "bg-white text-[#1B1664] font-semibold"
-                      : "text-white/80 hover:bg-white/10 hover:text-white"
-                  }`}
+                  ${isActive
+                    ? "bg-white text-[#1B1664] font-semibold"
+                    : "text-white/80 hover:bg-white/10 hover:text-white"}`}
               >
                 <span className="text-lg">{item.icon}</span>
                 {isOpen && <span className="text-sm">{item.name}</span>}
@@ -88,7 +81,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="lg:hidden fixed bottom-6 left-6 bg-[#1B1664] text-white p-3 rounded-full shadow-lg hover:bg-[#322FA4] transition z-50"
+          className={`lg:hidden fixed bottom-6 ${isArabic ? "right-6" : "left-6"} bg-[#1B1664] text-white p-3 rounded-full shadow-lg hover:bg-[#322FA4] transition z-50`}
         >
           <FaBars size={20} />
         </button>

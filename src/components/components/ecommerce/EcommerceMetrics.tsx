@@ -1,18 +1,22 @@
-import {FaWallet} from "react-icons/fa";
+import { FaWallet } from "react-icons/fa";
 import { useAuth } from "../../../context/AuthContext";
+import { useTranslation } from "react-i18next";
+
 export default function EcommerceMetrics() {
   const { user } = useAuth();
+  const { t } = useTranslation();
+
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6">
+      {/* رصيد المحفظة */}
       <div className="rounded-2xl border border-gray-200 bg-white p-5 md:p-6">
         <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl">
-          {/* أيقونة المحفظة */}
           <FaWallet className="text-[#1B1664]" />
         </div>
 
         <div className="flex items-end justify-between mt-5">
           <div>
-            <span className="text-sm text-gray-500">My Balance</span>
+            <span className="text-sm text-gray-500">{t("My Balance")}</span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm">
               {user.user_balance}
             </h4>
@@ -20,10 +24,9 @@ export default function EcommerceMetrics() {
         </div>
       </div>
 
-      {/* My Affiliate Link */}
+      {/* رابط التسويق بالعمولة */}
       <div className="rounded-2xl border border-gray-200 bg-white p-5 md:p-6">
         <div className="flex items-center justify-center w-12 h-12 bg-gray-100 rounded-xl">
-          {/* أيقونة اللينك */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-6 w-6 text-green-600"
@@ -43,7 +46,7 @@ export default function EcommerceMetrics() {
         <div className="mt-6">
           <div className="flex items-center justify-between mb-2">
             <span className="text-sm font-medium text-gray-500">
-              My Affiliate Link
+              {t("My Affiliate Link")}
             </span>
           </div>
 
@@ -63,7 +66,7 @@ export default function EcommerceMetrics() {
               }
               className="text-sm text-white bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded-lg transition-all"
             >
-              Copy
+              {t("Copy")}
             </button>
           </div>
         </div>
