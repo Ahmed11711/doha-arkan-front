@@ -1,5 +1,4 @@
-// Sidebar.jsx
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
@@ -17,6 +16,8 @@ export default function Sidebar({ isOpen, setIsOpen }) {
   const location = useLocation();
   const { i18n } = useTranslation();
   const isArabic = i18n.language === "ar";
+
+  const [isHovered, setIsHovered] = useState(false);
 
   const menuItems = [
     { name: isArabic ? "لوحة التحكم" : "Dashboard", icon: <FaTachometerAlt />, path: "/dashboard" },
@@ -39,12 +40,16 @@ export default function Sidebar({ isOpen, setIsOpen }) {
 
       <aside
         dir={isArabic ? "rtl" : "ltr"}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
         className={`fixed top-24 ${isArabic ? "right-0" : "left-0"} h-screen rounded
           bg-gradient-to-b from-[#1B1664] to-[#322FA4] text-white z-40
           flex flex-col transform transition-all duration-300 ease-in-out
-          ${isOpen
-            ? "translate-x-0 w-64"
-            : `${isArabic ? "translate-x-full" : "-translate-x-full"} lg:translate-x-0 lg:w-20`}
+          ${
+            isOpen || isHovered
+              ? "translate-x-0 w-64"
+              : `${isArabic ? "translate-x-full" : "-translate-x-full"} lg:translate-x-0 lg:w-20`
+          }
           shadow-xl`}
       >
         <div
@@ -53,7 +58,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
         >
           <div className="text-3xl font-extrabold tracking-wide bg-white/20 px-5 py-1 rounded-full text-white shadow-inner flex items-center gap-2">
             <FaBars className="text-lg" />
-            {isOpen && <span className="text-base font-bold">ARKAN</span>}
+            {(isOpen || isHovered) && <span className="text-base font-bold">ARKAN</span>}
           </div>
         </div>
 
@@ -71,14 +76,14 @@ export default function Sidebar({ isOpen, setIsOpen }) {
                     : "text-white/80 hover:bg-white/10 hover:text-white"}`}
               >
                 <span className="text-lg">{item.icon}</span>
-                {isOpen && <span className="text-sm">{item.name}</span>}
+                {(isOpen || isHovered) && <span className="text-sm">{item.name}</span>}
               </Link>
             );
           })}
         </nav>
       </aside>
 
-      {!isOpen && (
+      {!isOpen && !isHovered && (
         <button
           onClick={() => setIsOpen(true)}
           className={`lg:hidden fixed bottom-6 ${isArabic ? "right-6" : "left-6"} bg-[#1B1664] text-white p-3 rounded-full shadow-lg hover:bg-[#322FA4] transition z-50`}

@@ -51,15 +51,7 @@ export default function EcommerceMetrics() {
           </div>
 
           <div className="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 shadow-sm">
-            <a
-              href={user.your_affiliate_link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="font-semibold text-blue-600 truncate hover:underline max-w-[80%]"
-            >
               {user.your_affiliate_link}
-            </a>
-
             <button
               onClick={() =>
                 navigator.clipboard.writeText(user.your_affiliate_link)

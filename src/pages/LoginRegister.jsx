@@ -17,7 +17,7 @@ import { jwtDecode } from "jwt-decode";
 import { useAuth } from "../context/AuthContext";
 // import { useUserStore } from "../store/userStore";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-
+import { useSearchParams } from "react-router-dom";
 const LoginRegister = ({ onLoginSuccess }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -27,7 +27,11 @@ const LoginRegister = ({ onLoginSuccess }) => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [apiErrors, setApiErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
+  const [searchParams] = useSearchParams();
 
+  // Check if the URL has a param called "id"
+  const hasId = searchParams.has("affiliate_code");
+  const idValue = searchParams.get("affiliate_code");
   const schemaLogin = yup.object().shape({
     email: yup.string().email(t("invalid_email")).required(t("required")),
     password: yup.string().required(t("required")),
@@ -59,13 +63,23 @@ const LoginRegister = ({ onLoginSuccess }) => {
     resolver: yupResolver(isLogin ? schemaLogin : schemaRegister),
   });
 
+  const agreeEntry = watch("agreeEntry") || false;
+  const agreeExit = watch("agreeExit") || false;
+
   useEffect(() => {
     // console.log("Data changed:", localStorage.getItem("Auth_Token"));
     if (localStorage.getItem("Auth_Token")) {
       navigate("/");
     }
+    console.log(window.location.href);
+    console.log("hasId", hasId);
+    console.log("idValue", idValue);
   }, []); // كل ما data تتغير هيتنادى الـ useEffect
-
+  useEffect(() => {
+    if (searchParams.has("affiliate_code")) {
+      setIsLogin(false); // يروح على Sign Up
+    }
+  }, [searchParams]);
   const onSubmit = async (data) => {
     try {
       if (isLogin) {
@@ -104,8 +118,8 @@ const LoginRegister = ({ onLoginSuccess }) => {
           type: "user",
         });
         // ✅ تحقق من الموافقة على الشروط قبل الإرسال
-        if (!watch("agreeEntry") || !watch("agreeExit")) {
-          enqueueSnackbar(t("You must agree to both criteria to continue."), {
+        if (!agreeEntry || !agreeExit) {
+          enqueueSnackbar("You must agree to both criteria to continue.", {
             variant: "error",
           });
           return;
@@ -380,6 +394,7 @@ const LoginRegister = ({ onLoginSuccess }) => {
                   <input
                     {...register("affiliate")}
                     type="text"
+                    defaultValue={hasId ? idValue : ""}
                     placeholder={t("Affiliate code or name")}
                     className="w-full border-b border-gray-400 bg-transparent focus:border-[#1B1664FC] outline-none py-2"
                   />
@@ -394,30 +409,31 @@ const LoginRegister = ({ onLoginSuccess }) => {
                   <label className="flex items-center gap-2 text-sm text-gray-700">
                     <input
                       type="checkbox"
-                      checked={watch("agreeEntry") || false}
+                      checked={agreeEntry}
                       onChange={(e) => setValue("agreeEntry", e.target.checked)}
                     />
-                    <span>{t("I agree to the entry criteria")}</span>
+                    <span>I agree to the entry criteria</span>
                   </label>
 
                   <label className="flex items-center gap-2 text-sm text-gray-700">
                     <input
                       type="checkbox"
-                      checked={watch("agreeExit") || false}
+                      checked={agreeExit}
                       onChange={(e) => setValue("agreeExit", e.target.checked)}
                     />
-                    <span>{t("I agree to the exit criteria")}</span>
+                    <span>I agree to the exit criteria</span>
                   </label>
 
-                  {(!watch("agreeEntry") || !watch("agreeExit")) && (
+                  {(!agreeEntry || !agreeExit) && (
                     <p className="text-xs text-red-500">
-                      {t("You must agree to both criteria to continue.")}
+                      You must agree to both criteria to continue.
                     </p>
                   )}
                 </div>
 
                 <button
                   type="submit"
+                  disabled={!agreeEntry || !agreeExit}
                   className="w-full bg-[#1B1664FC] hover:bg-[#372E8B] text-white py-2 rounded-lg transition-all"
                 >
                   {t("Sign Up")}
