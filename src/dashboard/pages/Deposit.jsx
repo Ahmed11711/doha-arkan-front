@@ -12,6 +12,7 @@ import {
 import { useTranslation } from "react-i18next";
 import ApiClient from "../../services/API";
 import { useAuth } from "../../context/AuthContext";
+import { useSnackbar } from "notistack";
 
 export default function DepositDashboard() {
   const { t } = useTranslation();
@@ -26,6 +27,8 @@ export default function DepositDashboard() {
   const [userAddress, setUserAddress] = useState("");
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");
+  const { enqueueSnackbar } = useSnackbar();
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     if (user?.address) setUserAddress(user.address);
@@ -47,7 +50,13 @@ export default function DepositDashboard() {
   }, [isAuthenticated]);
 
   const handleCopy = () => {
-    if (userAddress) navigator.clipboard.writeText(userAddress);
+    if (userAddress) {
+      navigator.clipboard.writeText(userAddress);
+      setCopied(true);
+      enqueueSnackbar("تم نسخ العنوان ✅", { variant: "success" });
+
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
 
   const handleCheckDeposit = async () => {
@@ -358,7 +367,7 @@ export default function DepositDashboard() {
                       disabled={!userAddress}
                       className="flex items-center gap-2 bg-[#1B1664] hover:bg-[#2C218E] text-white px-4 py-2 rounded-xl text-sm sm:text-base disabled:opacity-50"
                     >
-                      <FaCopy /> {t("Copy Link")}
+                      <FaCopy /> {copied ? t("Copied!") : t("Copy")}
                     </button>
                   </div>
 
