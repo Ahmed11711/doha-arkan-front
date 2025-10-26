@@ -139,7 +139,7 @@ export default function AffiliateDashboard() {
             </div>
           </div>
 
-          {!user?.affiliate_code_active && (
+          {!user?.affiliate_code_active ? (
             <div className="bg-gray-50 border border-gray-200 shadow-sm rounded-xl p-4 md:p-6 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
               <p className="text-sm text-gray-700">
                 {t(
@@ -153,6 +153,10 @@ export default function AffiliateDashboard() {
                 {t("Activate Affiliate Code")}
               </button>
             </div>
+          ) : (
+            <span className="px-3 py-1 text-sm font-medium rounded-full bg-green-100 text-green-700 border border-green-300">
+              {t("Active")}
+            </span>
           )}
         </div>
       </div>
