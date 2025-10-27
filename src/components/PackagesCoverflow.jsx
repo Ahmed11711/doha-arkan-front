@@ -6,7 +6,8 @@ import { useTranslation } from "react-i18next";
 import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 
 export default function PackagesCoverflow({ services }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isArabic = i18n.language === "ar";
   const [plans, setPlans] = useState([]);
   const [index, setIndex] = useState(0);
   const autoplayRef = useRef(null);
@@ -14,26 +15,42 @@ export default function PackagesCoverflow({ services }) {
   useEffect(() => {
     if (services?.length) {
       const firstPlans = services
-        .map((s) => s.plans?.[0])
-        .filter(Boolean)
-
+        .map((s) => s.plans?.[0]) // أول plan من كل service
+        .filter(Boolean) // نتأكد إن الخطة موجودة
         .map((p) => ({
           id: p.id,
-          plan: p.name,
+          plan: isArabic ? p.name : p.name_en, // ✅ الاسم حسب اللغة
           price: parseFloat(p.amount),
-          period: `${p.duration_months || 1} month(s)`,
+          period: isArabic
+            ? `${p.duration_months || 1} شهر`
+            : `${p.duration_months || 1} month(s)`,
           featured: false,
           features: [
-            { label: p.desc, enabled: true },
-            { label: `Profit Rate: ${p.profit_rate}%`, enabled: true },
-            { label: `Cycle: ${p.profit_cycle} days`, enabled: true },
+            {
+              label: isArabic
+                ? p.desc
+                : p.desc_en || t("No description available"),
+              enabled: true,
+            },
+            {
+              label: isArabic
+                ? `معدل الأرباح: ${p.profit_rate}%`
+                : `Profit Rate: ${p.profit_rate}%`,
+              enabled: true,
+            },
+            {
+              label: isArabic
+                ? `الدورة: ${p.profit_cycle} يوم`
+                : `Cycle: ${p.profit_cycle} days`,
+              enabled: true,
+            },
           ],
           serviceImg: p.img,
         }));
 
       setPlans(firstPlans);
     }
-  }, [services]);
+  }, [services, isArabic]);
 
   const len = plans.length;
   const prev = () => setIndex((i) => (i - 1 + len) % len);
@@ -119,7 +136,16 @@ export default function PackagesCoverflow({ services }) {
                     className="cursor-pointer"
                   >
                     <div className="mx-auto">
-                      <PricingCard {...p} />
+                      <PricingCard
+                        id={p.id}
+                        plan={p.plan}
+                        price={p.price}
+                        period={p.period}
+                        featured={p.featured}
+                        features={p.features}
+                        tabIndex={i}
+                        minimum_count={p.minimum_count}
+                      />
                     </div>
                   </motion.div>
                 </motion.div>

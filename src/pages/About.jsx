@@ -2,33 +2,43 @@ import React from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import hero from "../assets/images/hero.png";
+import about from "../assets/images/about.webp";
+import m1 from "../assets/images/m1.webp";
+import m2 from "../assets/images/m2.jpg";
+import m3 from "../assets/images/m3.jpg";
+import m4 from "../assets/images/m4.jpg";
+import m5 from "../assets/images/m5.jpg";
+import m6 from "../assets/images/m6.webp";
 import { useNavigate } from "react-router-dom";
 export default function About() {
   const { t, i18n } = useTranslation();
   const isArabic = i18n.language === "ar";
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <div dir={isArabic ? "rtl" : "ltr"} className="font-[Rubik]">
       <section
         className="relative w-full h-[95vh] bg-cover bg-center flex items-end"
-        style={{ backgroundImage: `url(${hero})` }}
+        style={{ backgroundImage: `url(${about})` }}
       >
         <div
-          className={`relative z-10 text-white max-w-xl ${
+          className={`relative z-10 text-white max-w-2xl ${
             isArabic ? "ms-5 text-right" : "ms-5 text-left"
           }`}
         >
           <span className="inline-block bg-gray-200 text-gray-700 text-xs font-semibold px-3 py-1 rounded-full">
-            {t("About Us")}
+            {isArabic ? "من نحن" : "Who We Are"}
           </span>
+
           <h3 className="text-4xl md:text-6xl font-bold mb-4 font-[Rubik]">
-            {t("Find the best crypto trading rates")}
+            {isArabic
+              ? "ZAYAM ROCK شركة استثمارية"
+              : "ZAYAM ROCK is an investment management company"}
           </h3>
-          <p className="text-lg mb-6 font-[Rubik]">
-            {t(
-              "Discover competitive rates and seamless transactions with Arkan. Buy and sell cryptocurrencies with ease, anywhere, anytime."
-            )}
+
+          <p className="text-lg mb-4 font-[Rubik] leading-relaxed">
+            {isArabic
+              ? "ZAYAM ROCK شركة استثمارية متخصصة في إدارة المحافظ وتنمية رأس المال، يقع مقرها الرئيسي في الدوحة – قطر، مع تواجد إقليمي في دبي – الإمارات."
+              : "ZAYAM ROCK is an investment management company headquartered in Doha, Qatar with a regional presence in Dubai, UAE."}
           </p>
         </div>
       </section>
@@ -100,7 +110,7 @@ export default function About() {
             transition={{ duration: 0.6 }}
           >
             <motion.img
-              src={hero}
+              src={about}
               alt={t("Founder")}
               className="rounded-3xl shadow-2xl w-full object-cover"
               whileHover={{ scale: 1.05 }}
@@ -142,43 +152,49 @@ export default function About() {
           </motion.div>
         </section>
 
-        {/* Why Choose Us Section */}
+        {/* Partners Section */}
         <section className="max-w-6xl mx-auto py-24 px-6 text-center">
           <h2 className="text-3xl font-bold mb-16 text-[#1B1664]">
-            {t("Why Choose Us")}
-          </h2>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              t("Professional capital management"),
-              t("Performance‑based monthly returns"),
-              t("Smart risk management"),
-              t("Opportunities for share ownership + referral income"),
-            ].map((item, i) => (
-              <div
-                key={i}
-                className="p-6 bg-white rounded-2xl shadow-md hover:shadow-xl transition"
-              >
-                <p className="text-gray-700 font-medium">{item}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Team Section */}
-        <section className="max-w-6xl mx-auto py-24 px-6 text-center">
-          <h2 className="text-3xl font-bold mb-16 text-[#1B1664]">
-            {t("Our Team")}
+            {isArabic ? "شركاؤنا" : "Our Partners"}
           </h2>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-14">
             {[
-              { name: "Ali Ahmed", role: "CEO & Founder", img: hero },
-              { name: "Sara Mahmoud", role: "Marketing Director", img: hero },
-              { name: "Omar Khaled", role: "Project Manager", img: hero },
-              { name: "Laila Hassan", role: "UI/UX Designer", img: hero },
-              { name: "Youssef Amr", role: "Frontend Developer", img: hero },
-              { name: "Nour Adel", role: "Backend Engineer", img: hero },
-            ].map((member, i) => (
+              {
+                name: "Qatar Investment Group",
+                role: isArabic ? "الاستثمار والتمويل" : "Investment & Finance",
+                img: m1,
+              },
+              {
+                name: "Dubai Capital",
+                role: isArabic ? "الشريك المالي" : "Financial Partner",
+                img: m2,
+              },
+              {
+                name: "Smart Vision",
+                role: isArabic ? "الاستشارات التقنية" : "Technology Consulting",
+                img: m3,
+              },
+              {
+                name: "Elite Marketing",
+                role: isArabic
+                  ? "التسويق والعلامة التجارية"
+                  : "Marketing & Branding",
+                img: m4,
+              },
+              {
+                name: "Global Trade Co.",
+                role: isArabic ? "التجارة الدولية" : "International Trading",
+                img: m5,
+              },
+              {
+                name: "SecurePay",
+                role: isArabic
+                  ? "حلول الدفع الآمن"
+                  : "Secure Payment Solutions",
+                img: m6,
+              },
+            ].map((partner, i) => (
               <motion.div
                 key={i}
                 className="flex flex-col items-center text-center bg-gradient-to-b from-[#ffffff] to-[#f5f5ff] rounded-3xl shadow-md p-8 hover:shadow-xl transition"
@@ -186,15 +202,15 @@ export default function About() {
               >
                 <div className="w-40 h-40 mb-6">
                   <img
-                    src={member.img}
-                    alt={member.name}
+                    src={partner.img}
+                    alt={partner.name}
                     className="w-full h-full rounded-full object-cover border-4 border-[#1B1664]"
                   />
                 </div>
                 <h4 className="text-xl font-semibold text-[#1B1664]">
-                  {member.name}
+                  {partner.name}
                 </h4>
-                <p className="text-sm text-gray-600 mt-1">{member.role}</p>
+                <p className="text-sm text-gray-600 mt-1">{partner.role}</p>
               </motion.div>
             ))}
           </div>

@@ -3,10 +3,12 @@ import { FaIdCard, FaUserCircle } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import ApiClient from "../../services/API";
 import { useAuth } from "../../context/AuthContext";
+import { useSnackbar } from "notistack";
 
 export default function KYCDashboard() {
   const { t } = useTranslation();
   const { user } = useAuth();
+  const { enqueueSnackbar } = useSnackbar();
 
   const [kycData, setKycData] = useState(null);
   const [selectedFiles, setSelectedFiles] = useState({
@@ -51,7 +53,9 @@ export default function KYCDashboard() {
       !selectedFiles.back_id ||
       !selectedFiles.face
     ) {
-      alert("Please select all 3 images before submitting.");
+      enqueueSnackbar("Please select all 3 images before submitting.", {
+        variant: "warning",
+      });
       return;
     }
 
@@ -65,22 +69,26 @@ export default function KYCDashboard() {
       formData.append("back_id", selectedFiles.back_id);
       formData.append("face", selectedFiles.face);
 
-      // eslint-disable-next-line no-unused-vars
-      const response = await ApiClient.post("/kyc", formData, {
+      await ApiClient.post("/kyc", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      // console.log("✅ Upload Success:", response.data);
-      setUploadMessage({ text: "KYC uploaded successfully!", type: "success" });
+      setUploadMessage({
+        text: "✅ KYC uploaded successfully!",
+        type: "success",
+      });
+      enqueueSnackbar("✅ KYC uploaded successfully!", { variant: "success" });
 
-      // 🔁 بعد النجاح.. نجيب الداتا الجديدة فورًا بدون refresh
       await fetchKycData();
       setSelectedFiles({ front_id: null, back_id: null, face: null });
     } catch (error) {
       console.error("❌ Upload Error:", error.response?.data || error.message);
       setUploadMessage({
-        text: "Failed to upload KYC. Please try again.",
+        text: "❌ Failed to upload KYC. Please try again.",
         type: "error",
+      });
+      enqueueSnackbar("❌ Failed to upload KYC. Please try again.", {
+        variant: "error",
       });
     } finally {
       setIsUploading(false);

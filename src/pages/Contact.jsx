@@ -2,6 +2,7 @@ import React from "react";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import contactImg from "../assets/images/hero3.png";
+import contact from "../assets/images/contact.jpg";
 import { useTranslation } from "react-i18next";
 
 export default function Contact() {
@@ -20,19 +21,19 @@ export default function Contact() {
           }`}
         >
           <span className="inline-block bg-gray-200 text-gray-700 text-xs font-semibold px-3 py-1 rounded-full">
-            {t("Contact Us", "تواصل معنا")}
+            {isArabic ? "تواصل معنا" : "Contact Us"}
           </span>
+
           <h3 className="text-4xl md:text-6xl font-bold mb-4 font-[Rubik]">
-            {t(
-              "Find the best crypto trading rates",
-              "اكتشف أفضل أسعار تداول العملات المشفرة"
-            )}
+            {isArabic
+              ? "نحن هنا لمساعدتك في كل خطوة"
+              : "We’re Here to Help You at Every Step"}
           </h3>
-          <p className="text-lg mb-6 font-[Rubik]">
-            {t(
-              "Discover competitive rates and seamless transactions with Arkan. Buy and sell cryptocurrencies with ease, anywhere, anytime.",
-              "استكشف أسعارًا تنافسية وتجارب تداول سلسة مع أركان. اشترِ وبع العملات المشفرة بسهولة في أي وقت وأي مكان."
-            )}
+
+          <p className="text-lg mb-6 font-[Rubik] leading-relaxed">
+            {isArabic
+              ? "تواصل مع فريق ZAYAM ROCK لأي استفسار أو دعم — يسعدنا أن نسمع منك دائمًا."
+              : "Reach out to the ZAYAM ROCK team for any inquiries or support — we’re always happy to hear from you."}
           </p>
         </div>
       </section>
@@ -42,7 +43,7 @@ export default function Contact() {
         <div className="bg-white rounded-3xl shadow-2xl overflow-hidden max-w-6xl w-full grid md:grid-cols-2">
           <div className="hidden md:block relative">
             <img
-              src={contactImg}
+              src={contact}
               alt="Office building"
               className="w-full h-full object-cover"
             />

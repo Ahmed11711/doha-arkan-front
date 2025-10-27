@@ -70,10 +70,11 @@ export default function MyPortfolio() {
                     t("Start Date"),
                     t("End Date"),
                     t("Transaction ID"),
+                    t("Count Unite"),
                     t("Price"),
                     t("Status"),
                     t("Created At"),
-                    t("Actions"), // ✅ العمود الجديد
+                    t("Actions"),
                   ].map((th, i) => (
                     <th key={i} className="px-4 py-3 font-medium">
                       {th}
@@ -99,6 +100,9 @@ export default function MyPortfolio() {
                     </td>
                     <td className="px-4 py-3 text-gray-600 truncate max-w-[180px]">
                       {item.transaction_id || "-"}
+                    </td>
+                    <td className="px-4 py-3 text-gray-600 truncate max-w-[180px]">
+                      {item.count_unite || "-"}
                     </td>
                     <td className="px-4 py-3 font-semibold text-green-600 text-center">
                       ${item.price}

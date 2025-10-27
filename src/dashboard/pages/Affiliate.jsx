@@ -102,31 +102,82 @@ export default function AffiliateDashboard() {
   return (
     <div className="w-full space-y-8 p-4 md:p-6 bg-gray-50 min-h-screen">
       {/* Header */}
-      <div className="bg-white shadow-md border border-gray-100 rounded-2xl p-6 md:p-8 w-full mx-auto">
-        <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 md:gap-6 mb-6">
-          <h2 className="text-2xl md:text-3xl font-bold text-[#1B1664] flex items-center gap-2">
-            <FaUserFriends className="text-[#1B1664]" />
-            {t("Affiliate Dashboard")}
-          </h2>
+      {selectedUser?.id === user?.id && (
+        <div className="bg-white shadow-md border border-gray-100 rounded-2xl p-6 md:p-8 w-full mx-auto">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 md:gap-6 mb-6">
+            <h2 className="text-2xl md:text-3xl font-bold text-[#1B1664] flex items-center gap-2">
+              <FaUserFriends className="text-[#1B1664]" />
+              {t("Affiliate Dashboard")}
+            </h2>
+            {user?.affiliate_code_active && (
+              <span className="px-3 py-1 text-sm font-medium rounded-full bg-green-100 text-green-700 border border-green-300">
+                {t("Active")}
+              </span>
+            )}
+          </div>
 
-          {breadcrumb.length > 1 && (
-            <button
-              onClick={handleGoBack}
-              className="flex items-center gap-2 text-sm bg-[#1B1664] text-white px-3 py-1.5 rounded-lg hover:bg-[#2b2490] transition"
-            >
-              <FaArrowLeft /> {t("Back")}
-            </button>
-          )}
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center">
+            <div className="mb-6">
+              <p className="text-gray-500 mb-2">{t("Your Affiliate Link")}</p>
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                <input
+                  type="text"
+                  readOnly
+                  value={user.your_affiliate_link}
+                  className="flex px-8 py-2 bg-gray-100 text-gray-700 text-sm md:text-base rounded-lg border border-gray-200 focus:outline-none"
+                />
+                <button
+                  onClick={handleCopy}
+                  className={`px-4 py-2 bg-[#1B1664] text-white hover:bg-[#15104F] transition flex items-center gap-2 rounded-lg whitespace-nowrap`}
+                >
+                  <FaCopy />
+                  {copied ? t("Copied!") : t("Copy")}
+                </button>
+              </div>
+            </div>
+
+            {!user?.affiliate_code_active && (
+              <div className="bg-gray-50 border border-gray-200 shadow-sm rounded-xl p-4 md:p-6 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
+                <p className="text-sm text-gray-700">
+                  {t(
+                    "Unlock your earning potential today — activate your affiliate code for only $100!"
+                  )}
+                </p>
+                <button
+                  onClick={() => setShowConfirm(true)}
+                  className="bg-[#1B1664] text-white px-4 py-2 rounded-lg hover:bg-[#2b2490] transition text-sm whitespace-nowrap"
+                >
+                  {t("Activate Affiliate Code")}
+                </button>
+              </div>
+            )}
+          </div>
         </div>
+      )}
 
-        <div className="flex flex-col md:flex-row md:justify-between md:items-center">
+      {selectedUser && (
+        <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-6">
+          <div className="flex items-center justify-between">
+            <h3 className="text-lg font-semibold text-[#1B1664] mb-4">
+              {t("User Information")}
+            </h3>
+            {breadcrumb.length > 1 && (
+              <button
+                onClick={handleGoBack}
+                className="flex items-center gap-2 text-sm bg-[#1B1664] text-white px-3 py-1.5 rounded-lg hover:bg-[#2b2490] transition"
+              >
+                <FaArrowLeft /> {t("Back")}
+              </button>
+            )}
+          </div>
+
           <div className="mb-6">
-            <p className="text-gray-500 mb-2">{t("Your Affiliate Link")}</p>
+            <p className="text-gray-500 mb-2">{selectedUser.name}{"'s "}{t("Affiliate Link")}</p>
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
               <input
                 type="text"
                 readOnly
-                value={user.your_affiliate_link}
+                value={selectedUser.your_affiliate_link}
                 className="flex px-8 py-2 bg-gray-100 text-gray-700 text-sm md:text-base rounded-lg border border-gray-200 focus:outline-none"
               />
               <button
@@ -138,34 +189,6 @@ export default function AffiliateDashboard() {
               </button>
             </div>
           </div>
-
-          {!user?.affiliate_code_active ? (
-            <div className="bg-gray-50 border border-gray-200 shadow-sm rounded-xl p-4 md:p-6 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
-              <p className="text-sm text-gray-700">
-                {t(
-                  "Unlock your earning potential today — activate your affiliate code for only $100!"
-                )}
-              </p>
-              <button
-                onClick={() => setShowConfirm(true)}
-                className="bg-[#1B1664] text-white px-4 py-2 rounded-lg hover:bg-[#2b2490] transition text-sm whitespace-nowrap"
-              >
-                {t("Activate Affiliate Code")}
-              </button>
-            </div>
-          ) : (
-            <span className="px-3 py-1 text-sm font-medium rounded-full bg-green-100 text-green-700 border border-green-300">
-              {t("Active")}
-            </span>
-          )}
-        </div>
-      </div>
-
-      {selectedUser && (
-        <div className="bg-white rounded-2xl shadow-md border border-gray-100 p-6">
-          <h3 className="text-lg font-semibold text-[#1B1664] mb-4">
-            {t("User Information")}
-          </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-gray-700 text-sm">
             <InfoItem label={t("Name")} value={selectedUser.name || "-"} />
             <InfoItem label={t("Email")} value={selectedUser.email || "-"} />

@@ -6,6 +6,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true); // ✅ حالة تحميل
 
   // 🟢 تحميل البيانات من localStorage لما التطبيق يفتح
   useEffect(() => {
@@ -22,13 +23,15 @@ export const AuthProvider = ({ children }) => {
         console.error("Error parsing userData:", error);
       }
     }
+
+    setLoading(false); // ✅ خلصنا تحميل البيانات
   }, []);
 
   // 🟡 تسجيل الدخول
   const login = (userData, userToken) => {
     localStorage.setItem("Auth_Token", userToken);
     localStorage.setItem("userData", JSON.stringify(userData));
-    localStorage.setItem("user_id", userData.id); // أو userData.user_id
+    localStorage.setItem("user_id", userData.id); 
 
     setUser(userData);
     setToken(userToken);
@@ -39,18 +42,15 @@ export const AuthProvider = ({ children }) => {
     setUser((prev) => {
       if (!prev) return newUserData;
 
-      // نحافظ على البيانات القديمة اللي في localStorage
       const updated = { ...prev, ...newUserData };
-
-      // ❌ ما نحفظش الرصيد في localStorage
+      // eslint-disable-next-line no-unused-vars
       const { user_balance, ...userWithoutBalance } = updated;
       localStorage.setItem("userData", JSON.stringify(userWithoutBalance));
 
-      return updated; // نرجع كل الداتا بما فيها الرصيد في الـ state فقط
+      return updated;
     });
   };
 
-  // 🔴 تسجيل الخروج
   const logout = () => {
     localStorage.removeItem("Auth_Token");
     localStorage.removeItem("userData");
@@ -59,6 +59,15 @@ export const AuthProvider = ({ children }) => {
     setToken(null);
     setIsAuthenticated(false);
   };
+
+  // ✅ لو لسه بيحمّل البيانات من localStorage
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen text-gray-500">
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <AuthContext.Provider

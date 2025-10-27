@@ -3,8 +3,25 @@ import { useAuth } from "../../../context/AuthContext";
 import { useTranslation } from "react-i18next";
 
 export default function EcommerceMetrics() {
-  const { user } = useAuth();
+  const { user, isAuthenticated, loading } = useAuth(); // تأكد أن عندك loading في الـ context
   const { t } = useTranslation();
+
+  // ✅ لو لسه بيحمّل أو مفيش يوزر
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center py-10 text-gray-500">
+        {t("Loading...")}
+      </div>
+    );
+  }
+
+  if (!isAuthenticated || !user) {
+    return (
+      <div className="flex justify-center items-center py-10 text-gray-500">
+        {t("No user data found")}
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6">
@@ -51,7 +68,15 @@ export default function EcommerceMetrics() {
           </div>
 
           <div className="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 shadow-sm">
+            <a
+              href={user.your_affiliate_link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-blue-600 truncate hover:underline max-w-[80%]"
+            >
               {user.your_affiliate_link}
+            </a>
+
             <button
               onClick={() =>
                 navigator.clipboard.writeText(user.your_affiliate_link)

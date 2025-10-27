@@ -1,58 +1,98 @@
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
 import ApiClient from "../services/API";
 // eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import ReactDOM from "react-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useSnackbar } from "notistack";
+import { useTranslation } from "react-i18next";
 
 export default function PricingCard({
   plan,
   price,
-  period,
   featured,
   features,
   id,
+  tabIndex,
+  minimum_count, // الحد الأدنى لعدد الأسهم
 }) {
   const { user, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const { enqueueSnackbar } = useSnackbar();
+  const { i18n } = useTranslation();
+  const isArabic = i18n.language === "ar";
+
   const [showInstructions, setShowInstructions] = useState(false);
+  const [showSharesPopup, setShowSharesPopup] = useState(false);
+  const [shareCount, setShareCount] = useState(minimum_count);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [showInsufficient, setShowInsufficient] = useState(false); // ⚠️ للرصيد غير الكافي
+  const [showInsufficient, setShowInsufficient] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showAgree, setShowAgree] = useState(false);
+
+  const isSharesPlan = id === 3 || plan.toLowerCase().includes("shares");
+  const totalPrice = isSharesPlan ? price * shareCount : price;
 
   const handleChoosePlan = () => {
     if (!isAuthenticated) {
       navigate("/auth");
-    } else {
-      setShowInstructions(true);
+      return;
     }
+
+    if (location.pathname !== "/services") {
+      navigate(`/services?tab=${tabIndex}#plans`);
+      return;
+    }
+
+    // ابدأ بالشروط
+    setShowInstructions(true);
   };
 
   const handleAgreeInstructions = () => {
     setShowInstructions(false);
+    // لو باقة أسهم، افتح بوباب الأسهم
+    if (isSharesPlan) {
+      setShareCount(minimum_count);
+      setShowSharesPopup(true);
+    } else {
+      setShowConfirm(true);
+    }
+  };
+
+  const handleConfirmShares = () => {
+    setShowSharesPopup(false);
     setShowConfirm(true);
   };
 
   const handleConfirmPlan = async () => {
-    // ✅ تحقق من الرصيد أولاً
-    if (!user || user.user_balance < price) {
+    if (!user || user.user_balance < totalPrice) {
       setShowConfirm(false);
-      setShowInsufficient(true); // أظهر نافذة الرصيد غير الكافي
+      setShowInsufficient(true);
       return;
     }
 
     try {
       setLoading(true);
-      const res = await ApiClient.post("/userSubscribe", { wallet_id: id });
+      const payload = isSharesPlan
+        ? { wallet_id: id, count_unite: shareCount }
+        : { wallet_id: id, count_unite: 1 };
+
+      const res = await ApiClient.post("/userSubscribe", payload);
       console.log("✅ Plan subscribed:", res.data);
+
       setShowConfirm(false);
-      alert("✅ تم الاشتراك في الخطة بنجاح!");
-      const affRes = await ApiClient.post("/affiliate-after-subscribe", { wallet_id: id })
+      enqueueSnackbar("✅ تم الاشتراك في الخطة بنجاح!", {
+        variant: "success",
+      });
+
+      await ApiClient.post("/affiliate-after-subscribe", { wallet_id: id, count_unite: 1 });
     } catch (err) {
       console.error("❌ Subscription failed:", err);
-      alert("حدث خطأ أثناء الاشتراك، حاول مرة أخرى.");
+      enqueueSnackbar("حدث خطأ أثناء الاشتراك، حاول مرة أخرى.", {
+        variant: "error",
+      });
     } finally {
       setLoading(false);
     }
@@ -79,25 +119,26 @@ export default function PricingCard({
           </div>
         )}
 
-        <h4 className="text-gray-600 text-center font-semibold mb-1">{plan}</h4>
+        <h4
+          className={`text-center font-semibold mb-1 ${
+            isArabic ? "text-gray-800" : "text-gray-600"
+          }`}
+        >
+          {plan}
+        </h4>
 
         <div className="text-center my-5">
           <div className="flex items-end justify-center gap-2">
-            <span className="text-sm line-through text-gray-400">
-              ${(price * 1.3).toFixed(0)}
-            </span>
             <span className="text-4xl font-extrabold text-[#1B1664] ">
-              ${price}
+              ${price.toFixed(2)}
             </span>
-            <span className="text-sm text-gray-500">/{period}</span>
-          </div>
-          <div className="text-xs text-gray-400 mt-1">
-            ${(price * 12).toFixed(0)} billed yearly
           </div>
         </div>
 
         <p className="text-xs text-gray-500 mb-5 text-center">
-          {`A comprehensive ${plan.toLowerCase()} solution to fit your needs.`}
+          {isArabic
+            ? `حل شامل لخطة ${plan} لتلبية احتياجاتك.`
+            : `A comprehensive ${plan} solution to fit your needs.`}
         </p>
 
         <hr className="border-dashed border-gray-200 mb-5" />
@@ -128,7 +169,7 @@ export default function PricingCard({
             onClick={handleChoosePlan}
             className="px-6 py-3 rounded-full bg-[#1B1664] text-white font-medium hover:bg-[#15104F] transition"
           >
-            Choose Plan
+            {isArabic ? "اختر باقة" : "Choose plan"}
           </button>
         </div>
       </div>
@@ -233,6 +274,62 @@ export default function PricingCard({
           document.body
         )}
 
+      {/* ===== نافذة الأسهم ===== */}
+      {showSharesPopup &&
+        ReactDOM.createPortal(
+          <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-[1000] p-4">
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="relative bg-white w-full max-w-md rounded-lg shadow-lg flex flex-col p-6"
+            >
+              <h3 className="text-lg font-semibold mb-4">
+                {isArabic ? "اختر عدد الأسهم" : "Select number of shares"}
+              </h3>
+
+              <div className="flex items-center justify-center gap-4 mb-4">
+                <button
+                  onClick={() =>
+                    setShareCount((c) => Math.max(c - 1, minimum_count))
+                  }
+                  className="px-4 py-2 bg-gray-200 rounded-full hover:bg-gray-300"
+                >
+                  -
+                </button>
+                <span className="text-xl font-bold">{shareCount}</span>
+                <button
+                  onClick={() => setShareCount((c) => c + 1)}
+                  className="px-4 py-2 bg-gray-200 rounded-full hover:bg-gray-300"
+                >
+                  +
+                </button>
+              </div>
+
+              <p className="mb-4 text-gray-700">
+                {isArabic
+                  ? `السعر الإجمالي: $${totalPrice.toFixed(2)}`
+                  : `Total Price: $${totalPrice.toFixed(2)}`}
+              </p>
+
+              <div className="flex justify-end gap-4">
+                <button
+                  onClick={() => setShowSharesPopup(false)}
+                  className="px-6 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition"
+                >
+                  {isArabic ? "إلغاء" : "Cancel"}
+                </button>
+                <button
+                  onClick={handleConfirmShares}
+                  className="px-8 py-2 rounded-full bg-[#1B1664] text-white hover:bg-[#15104F] transition"
+                >
+                  {isArabic ? "تأكيد" : "Confirm"}
+                </button>
+              </div>
+            </motion.div>
+          </div>,
+          document.body
+        )}
+
       {/* ===== نافذة التأكيد ===== */}
       {showConfirm &&
         ReactDOM.createPortal(
@@ -243,22 +340,29 @@ export default function PricingCard({
               className="bg-white w-[90%] md:w-[500px] rounded-3xl shadow-2xl p-8 text-center"
             >
               <h3 className="text-xl font-bold text-gray-800 mb-6">
-                هل أنت متأكد أنك تريد الاشتراك في خطة{" "}
-                <span className="text-[#1B1664]">{plan}</span>؟
+                {isArabic
+                  ? `هل أنت متأكد أنك تريد الاشتراك في خطة ${plan}?`
+                  : `Are you sure you want to subscribe to the ${plan} plan?`}
               </h3>
               <div className="flex justify-center gap-4">
                 <button
                   onClick={() => setShowConfirm(false)}
                   className="px-6 py-2 rounded-full border border-gray-300 text-gray-600 hover:bg-gray-100 transition"
                 >
-                  إلغاء
+                  {isArabic ? "إلغاء" : "Cancel"}
                 </button>
                 <button
                   onClick={handleConfirmPlan}
                   disabled={loading}
                   className="px-8 py-2 rounded-full bg-[#1B1664] text-white font-medium hover:bg-[#15104F] transition"
                 >
-                  {loading ? "جارٍ الاشتراك..." : "تأكيد الاشتراك"}
+                  {loading
+                    ? isArabic
+                      ? "جارٍ الاشتراك..."
+                      : "Subscribing..."
+                    : isArabic
+                    ? "تأكيد الاشتراك"
+                    : "Confirm Subscription"}
                 </button>
               </div>
             </motion.div>
@@ -276,25 +380,25 @@ export default function PricingCard({
               className="bg-white w-[90%] md:w-[450px] rounded-3xl shadow-2xl p-8 text-center"
             >
               <h3 className="text-xl font-bold text-[#1B1664] mb-4">
-                الرصيد غير كافٍ 💰
+                {isArabic ? "الرصيد غير كافٍ 💰" : "Insufficient Balance 💰"}
               </h3>
               <p className="text-gray-600 mb-6">
-                لا يمكنك الاشتراك في هذه الخطة لأن رصيدك الحالي لا يغطي ثمنها.
-                <br />
-                يرجى الإيداع أولاً من صفحة <strong>المحفظة</strong>.
+                {isArabic
+                  ? "لا يمكنك الاشتراك في هذه الخطة لأن رصيدك الحالي لا يغطي ثمنها.\nيرجى الإيداع أولاً من صفحة المحفظة."
+                  : "You cannot subscribe to this plan because your current balance does not cover the price.\nPlease deposit first from the wallet page."}
               </p>
               <div className="flex justify-center gap-4">
                 <button
                   onClick={() => setShowInsufficient(false)}
                   className="px-6 py-2 rounded-full bg-gray-200 text-gray-700 hover:bg-gray-300 transition"
                 >
-                  إغلاق
+                  {isArabic ? "إغلاق" : "Close"}
                 </button>
                 <button
                   onClick={() => navigate("/dashboard/deposit")}
                   className="px-8 py-2 rounded-full bg-[#1B1664] text-white font-medium hover:bg-[#15104F] transition"
                 >
-                  الذهاب للإيداع
+                  {isArabic ? "الذهاب للإيداع" : "Go to Deposit"}
                 </button>
               </div>
             </motion.div>

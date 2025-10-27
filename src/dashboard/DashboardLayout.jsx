@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 import Sidebar from "./Sidebar";
+// eslint-disable-next-line no-unused-vars
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
@@ -44,8 +45,8 @@ export default function DashboardLayout() {
             className="space-y-8"
           >
             <PageMeta
-              title="Arkan Dashboard"
-              description="This is Arkan Dashboard"
+              title="Zayamrock Dashboard"
+              description="This is Zayamrock Dashboard"
             />
 
             <div className="grid grid-cols-12 gap-4 md:gap-6">

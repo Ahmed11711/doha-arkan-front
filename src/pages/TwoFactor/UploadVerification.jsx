@@ -23,7 +23,6 @@ export default function UploadVerification() {
     if (selectedFiles && selectedFiles.length > 0) {
       setFiles((prev) => ({ ...prev, [name]: selectedFiles[0] }));
       setMessage({ text: "", type: "" });
-      // console.log("File selected:", name, selectedFiles[0]);
     }
   };
 
@@ -54,6 +53,10 @@ export default function UploadVerification() {
     if (step > 1) setStep(step - 1);
   };
 
+  const handleSkip = () => {
+    navigate("/"); // 👈 يوديه على الصفحة الرئيسية
+  };
+
   const handleSubmitKYC = async () => {
     if (!user_id) {
       setMessage({
@@ -73,10 +76,8 @@ export default function UploadVerification() {
       formData.append("back_id", files.back_id);
       formData.append("face", files.face);
 
-      // eslint-disable-next-line no-unused-vars
       const response = await ApiClient.post("kyc", formData);
 
-      // console.log("✅ KYC Response:", response.data);
       setMessage({
         text: "Verification uploaded successfully!",
         type: "success",
@@ -203,8 +204,18 @@ export default function UploadVerification() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4 sm:p-8">
-      <div className="w-full max-w-md sm:max-w-2xl md:max-w-3xl bg-white rounded-2xl sm:rounded-3xl shadow-2xl p-6 sm:p-10 md:p-12 flex flex-col items-center transition-all">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4  sm:p-8">
+      <div className="w-full max-w-md sm:max-w-2xl md:max-w-3xl bg-white rounded-2xl sm:rounded-3xl shadow-2xl p-6 sm:p-10 md:p-12 mt-24 flex flex-col items-center transition-all">
+        {/* 👇 زرار Skip فوق */}
+        <div className="w-full flex justify-end mb-4">
+          <button
+            onClick={handleSkip}
+            className="bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 hover:border-gray-400 px-5 py-2 rounded-xl font-semibold transition-all text-sm sm:text-base shadow-sm"
+          >
+            Skip for now
+          </button>
+        </div>
+
         <Stepper />
         {renderStepContent()}
 
@@ -222,7 +233,7 @@ export default function UploadVerification() {
           </div>
         )}
 
-        <div className="flex flex-col sm:flex-row justify-between gap-4 sm:gap-0 w-full mt-8 sm:mt-10">
+        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-3 w-full mt-8 sm:mt-10">
           {step > 1 ? (
             <button
               type="button"

@@ -31,9 +31,10 @@ export default function Sidebar({ isOpen, setIsOpen }) {
 
   return (
     <>
+      {/* خلفية شفافة تغلق السايد بار عند الضغط خارجها */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/40 z-30 lg:hidden"
+          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
           onClick={() => setIsOpen(false)}
         ></div>
       )}
@@ -52,16 +53,18 @@ export default function Sidebar({ isOpen, setIsOpen }) {
           }
           shadow-xl`}
       >
+        {/* شعار وزر إغلاق */}
         <div
           onClick={() => setIsOpen(!isOpen)}
           className="h-16 flex items-center justify-center border-b border-white/10 px-4 cursor-pointer select-none hover:bg-white/10 transition"
         >
           <div className="text-3xl font-extrabold tracking-wide bg-white/20 px-5 py-1 rounded-full text-white shadow-inner flex items-center gap-2">
             <FaBars className="text-lg" />
-            {(isOpen || isHovered) && <span className="text-base font-bold">ARKAN</span>}
+            {(isOpen || isHovered) && <span className="text-base font-bold">Zayamrock</span>}
           </div>
         </div>
 
+        {/* الروابط */}
         <nav className="flex-1 px-3 py-4 overflow-y-auto space-y-1">
           {menuItems.map((item, index) => {
             const isActive = location.pathname === item.path;
@@ -69,11 +72,15 @@ export default function Sidebar({ isOpen, setIsOpen }) {
               <Link
                 key={index}
                 to={item.path}
-                onClick={() => setIsOpen(false)}
+                onClick={() => {
+                  setIsOpen(false); // ⛔ يقفل بعد الضغط
+                }}
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all
-                  ${isActive
-                    ? "bg-white text-[#1B1664] font-semibold"
-                    : "text-white/80 hover:bg-white/10 hover:text-white"}`}
+                  ${
+                    isActive
+                      ? "bg-white text-[#1B1664] font-semibold"
+                      : "text-white/80 hover:bg-white/10 hover:text-white"
+                  }`}
               >
                 <span className="text-lg">{item.icon}</span>
                 {(isOpen || isHovered) && <span className="text-sm">{item.name}</span>}
@@ -83,6 +90,7 @@ export default function Sidebar({ isOpen, setIsOpen }) {
         </nav>
       </aside>
 
+      {/* زر الفتح في الموبايل */}
       {!isOpen && !isHovered && (
         <button
           onClick={() => setIsOpen(true)}

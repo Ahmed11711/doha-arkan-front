@@ -124,7 +124,7 @@ export default function GoogleAuth() {
           ) : (
             <>
               <img
-                src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=otpauth://totp/Arkan:${data.secret}?secret=${data.secret}&issuer=Arkan`}
+                src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=otpauth://totp/Zayamrock:${data.secret}?secret=${data.secret}&issuer=Zayamrock`}
                 alt="QR Code"
                 className="w-48 h-48 rounded-lg mt-6"
               />

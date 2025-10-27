@@ -41,7 +41,7 @@ export default function BlogDetails() {
           </h3>
           <p className="text-lg mb-6 font-[Rubik]">
             {t(
-              "Discover competitive rates and seamless transactions with Arkan. Buy and sell cryptocurrencies with ease, anywhere, anytime."
+              "Discover competitive rates and seamless transactions with Zayamrock. Buy and sell cryptocurrencies with ease, anywhere, anytime."
             )}
           </p>
         </div>

@@ -47,20 +47,24 @@ export default function Blogs() {
         style={{ backgroundImage: `url(${heroImg})` }}
       >
         <div
-          className={`relative z-10 text-white max-w-xl  ${
+          className={`relative z-10 text-white max-w-xl ${
             isArabic ? "ms-5 text-right" : "ms-5 text-left"
           }`}
         >
-          <span className="inline-block bg-gray-200 text-gray-700 text-xs font-semibold px-3 py-1 rounded-full ">
-            {t("Blogs")}
+          <span className="inline-block bg-gray-200 text-gray-700 text-xs font-semibold px-3 py-1 rounded-full">
+            {isArabic ? "المدونة" : "Blogs"}
           </span>
+
           <h3 className="text-4xl md:text-6xl font-bold mb-4 font-[Rubik]">
-            {t("Find the best crypto trading rates")}
+            {isArabic
+              ? "اكتشف رؤى واستراتيجيات استثمارية من خبرائنا"
+              : "Discover Investment Insights & Strategies from Our Experts"}
           </h3>
-          <p className="text-lg mb-6 font-[Rubik]">
-            {t(
-              "Discover competitive rates and seamless transactions with Arkan. Buy and sell cryptocurrencies with ease, anywhere, anytime."
-            )}
+
+          <p className="text-lg mb-6 font-[Rubik] leading-relaxed">
+            {isArabic
+              ? "تابع أحدث المقالات حول إدارة رأس المال، الأسواق، وفرص الاستثمار مع ZAYAM ROCK."
+              : "Stay updated with the latest articles on capital management, markets, and investment opportunities with ZAYAM ROCK."}
           </p>
         </div>
       </section>
@@ -137,7 +141,7 @@ export default function Blogs() {
                 </h3>
                 <p className="text-gray-600 mb-4 text-sm leading-relaxed line-clamp-3">
                   {/* {isArabic ? blog.text_ar : blog.text} */}
-                  { blog.text}
+                  {blog.text}
                 </p>
 
                 <div className="flex items-center gap-3">
@@ -146,9 +150,7 @@ export default function Blogs() {
                     alt={blog.userName}
                     className="w-10 h-10 rounded-full object-cover"
                   />
-                  <span className="text-gray-700 text-sm">
-                    {blog.userName}
-                  </span>
+                  <span className="text-gray-700 text-sm">{blog.userName}</span>
                 </div>
               </div>
             </motion.div>
