@@ -90,9 +90,9 @@ export default function PricingCard({
       await ApiClient.post("/affiliate-after-subscribe", { wallet_id: id, count_unite: 1 });
     } catch (err) {
       console.error("❌ Subscription failed:", err);
-      enqueueSnackbar("حدث خطأ أثناء الاشتراك، حاول مرة أخرى.", {
-        variant: "error",
-      });
+      // enqueueSnackbar("حدث خطأ أثناء الاشتراك، حاول مرة أخرى.", {
+      //   variant: "error",
+      // });
     } finally {
       setLoading(false);
     }
