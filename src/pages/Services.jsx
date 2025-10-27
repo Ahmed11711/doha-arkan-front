@@ -160,24 +160,30 @@ export default function Services() {
                 id={plan.id}
                 plan={isArabic ? plan.name : plan.name_en}
                 price={parseFloat(plan.amount)}
-                period={`${plan.duration_months} ${t("months")}`}
+                period={
+                  isArabic
+                    ? `${plan.duration_months || 1} شهر`
+                    : `${plan.duration_months || 1} month(s)`
+                }
                 featured={plan.featured}
                 features={[
                   {
-                    label: `${t("Profit Rate")}: ${plan.profit_rate}%`,
+                    label: isArabic
+                      ? plan.desc
+                      : plan.desc_en || t("No description available"),
                     enabled: true,
                   },
                   {
-                    label: `${t("Duration")}: ${plan.duration_months} ${t(
-                      "months"
-                    )}`,
+                    label: isArabic
+                      ? `المعدل الكلي: ${plan.profit_rate}%`
+                      : `Total Rate: ${plan.profit_rate}%`,
                     enabled: true,
                   },
                   {
-                    label: `${t("Capital Return")}: ${
-                      plan.capital_return ? t("Yes") : t("No")
-                    }`,
-                    enabled: plan.capital_return === 1,
+                    label: isArabic
+                      ? `الدورة: ${plan.profit_cycle} شهر`
+                      : `Cycle: ${plan.profit_cycle} months`,
+                    enabled: true,
                   },
                 ]}
                 tabIndex={activeTab}

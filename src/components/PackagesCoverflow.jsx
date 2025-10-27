@@ -15,11 +15,11 @@ export default function PackagesCoverflow({ services }) {
   useEffect(() => {
     if (services?.length) {
       const firstPlans = services
-        .map((s) => s.plans?.[0]) // أول plan من كل service
-        .filter(Boolean) // نتأكد إن الخطة موجودة
+        .map((s) => s.plans?.[0])
+        .filter(Boolean)
         .map((p) => ({
           id: p.id,
-          plan: isArabic ? p.name : p.name_en, // ✅ الاسم حسب اللغة
+          plan: isArabic ? p.name : p.name_en,
           price: parseFloat(p.amount),
           period: isArabic
             ? `${p.duration_months || 1} شهر`
@@ -34,14 +34,14 @@ export default function PackagesCoverflow({ services }) {
             },
             {
               label: isArabic
-                ? `معدل الأرباح: ${p.profit_rate}%`
-                : `Profit Rate: ${p.profit_rate}%`,
+                ? `المعدل الكلي: ${p.profit_rate}%`
+                : `Total Rate: ${p.profit_rate}%`,
               enabled: true,
             },
             {
               label: isArabic
-                ? `الدورة: ${p.profit_cycle} يوم`
-                : `Cycle: ${p.profit_cycle} days`,
+                ? `الدورة: ${p.profit_cycle} شهر`
+                : `Cycle: ${p.profit_cycle} months`,
               enabled: true,
             },
           ],

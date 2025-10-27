@@ -32,7 +32,10 @@ export default function PricingCard({
   const [loading, setLoading] = useState(false);
   const [showAgree, setShowAgree] = useState(false);
 
-  const isSharesPlan = id === 3 || plan.toLowerCase().includes("shares");
+  const isSharesPlan =
+    id === 3 ||
+    plan.toLowerCase().includes("shares") ||
+    plan.includes("الاسهم");
   const totalPrice = isSharesPlan ? price * shareCount : price;
 
   const handleChoosePlan = () => {
@@ -46,13 +49,11 @@ export default function PricingCard({
       return;
     }
 
-    // ابدأ بالشروط
     setShowInstructions(true);
   };
 
   const handleAgreeInstructions = () => {
     setShowInstructions(false);
-    // لو باقة أسهم، افتح بوباب الأسهم
     if (isSharesPlan) {
       setShareCount(minimum_count);
       setShowSharesPopup(true);
@@ -87,7 +88,10 @@ export default function PricingCard({
         variant: "success",
       });
 
-      await ApiClient.post("/affiliate-after-subscribe", { wallet_id: id, count_unite: 1 });
+      await ApiClient.post("/affiliate-after-subscribe", {
+        wallet_id: id,
+        count_unite: 1,
+      });
     } catch (err) {
       console.error("❌ Subscription failed:", err);
       // enqueueSnackbar("حدث خطأ أثناء الاشتراك، حاول مرة أخرى.", {
@@ -181,11 +185,11 @@ export default function PricingCard({
             <motion.div
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              className="relative bg-white w-full max-w-lg max-h-[80vh] rounded-lg shadow-lg overflow-hidden flex flex-col"
+              className="relative bg-white w-full max-w-lg max-h-[45vh] rounded-lg shadow-lg overflow-hidden flex flex-col"
             >
               <div className="px-6 py-4 border-b border-gray-200">
-                <h2 className="text-xl font-semibold text-gray-800">
-                  Terms & Conditions
+                <h2 className="text-2xl font-semibold text-gray-800">
+                  {isArabic ? "الشروط والأحكام" : "Terms & Conditions"}
                 </h2>
               </div>
 
@@ -198,64 +202,90 @@ export default function PricingCard({
                   }
                 }}
               >
-                <h3 className="font-semibold text-gray-800 mb-2">
-                  {" "}
-                  Your Agreement{" "}
-                </h3>{" "}
-                <p className="mb-3">
-                  {" "}
-                  By using this Site, you agree to be bound by, and to comply
-                  with, these Terms and Conditions. If you do not agree to these
-                  Terms and Conditions, please do not use this site.{" "}
-                </p>{" "}
-                <p className="mb-3">
-                  {" "}
-                  PLEASE NOTE: We reserve the right, at our sole discretion, to
-                  change, modify or otherwise alter these Terms and Conditions
-                  at any time. Unless otherwise indicated, amendments will
-                  become effective immediately. Please review these Terms and
-                  Conditions periodically.{" "}
-                </p>{" "}
-                <p className="mb-3">
-                  {" "}
-                  Your continued use of the Site following the posting of
-                  changes and/or modifications will constitute your acceptance
-                  of the revised Terms and Conditions. For your information,
-                  this page was last updated as of the date at the top of these
-                  terms and conditions.{" "}
-                </p>{" "}
-                <p className="mb-3">
-                  {" "}
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-                  ac leo eget sapien aliquet malesuada. Vivamus ultrices quam
-                  sit amet sem tincidunt, ut blandit lectus sagittis.{" "}
-                </p>{" "}
-                <p>
-                  {" "}
-                  Nulla facilisi. Integer sed arcu sed elit blandit imperdiet.
-                  Morbi porttitor metus sit amet metus condimentum, sed dictum
-                  lacus facilisis.{" "}
-                </p>{" "}
-                <p className="mb-3">
-                  {" "}
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec
-                  ac leo eget sapien aliquet malesuada. Vivamus ultrices quam
-                  sit amet sem tincidunt, ut blandit lectus sagittis.{" "}
-                </p>{" "}
-                <p>
-                  {" "}
-                  Nulla facilisi. Integer sed arcu sed elit blandit imperdiet.
-                  Morbi porttitor metus sit amet metus condimentum, sed dictum
-                  lacus facilisis.{" "}
-                </p>{" "}
+                {isArabic ? (
+                  <>
+                    <p className="mb-3 text-xl font-semibold">
+                      اتفاقية الاستثمار الإلكتروني – ZAYAM ROCK LLC
+                    </p>
+                    <p className="mb-3">
+                      بالضغط على "موافق"، فإنك تؤكد وتوافق على ما يلي:
+                    </p>
+                    <ol className="list-decimal list-inside space-y-2 text-gray-700">
+                      <li>
+                        العوائد الشهرية متغيرة وليست مضمونة، وتعتمد فقط على
+                        الأداء الفعلي.
+                      </li>
+                      <li>
+                        أنت توافق على سياسة السحب وتقر بأن رسوم 14٪ تُطبق فقط في
+                        حالة السحب الكامل قبل 12 شهرًا.
+                      </li>
+                      <li>
+                        تتحمل المسؤولية الكاملة عن قرار استثمارك وتقبل أن الشركة
+                        غير مسؤولة عن أي خسائر مباشرة أو غير مباشرة ناجمة عن
+                        تقلبات السوق أو الاقتصاد.
+                      </li>
+                      <li>
+                        تؤكد أنك قرأت وقبلت جميع سياسات المنصة والملاحق بما في
+                        ذلك (سياسة السحب + إفصاح المخاطر).
+                      </li>
+                      <li>
+                        الضغط على "موافق" يعتبر توقيعًا رقميًا ملزمًا قانونيًا
+                        وفقًا للأنظمة الدولية المتعلقة بالاستثمار الإلكتروني.
+                      </li>
+                      <li>
+                        إذا لم توافق، يجب عليك التوقف عن استخدام المنصة فورًا.
+                      </li>
+                    </ol>
+                  </>
+                ) : (
+                  <>
+                    <p className="mb-3 font-semibold text-xl">
+                      Electronic Investment Agreement – ZAYAM ROCK LLC
+                    </p>
+                    <p className="mb-3">
+                      By clicking “AGREE”, you confirm and accept the following:
+                    </p>
+                    <ol className="list-decimal list-inside space-y-2 text-gray-700">
+                      <li>
+                        Monthly returns are variable and not guaranteed,
+                        depending solely on actual performance.
+                      </li>
+                      <li>
+                        You agree to the Withdrawal Policy and acknowledge that
+                        a 14% fee applies only in case of a full withdrawal
+                        before 12 months.
+                      </li>
+                      <li>
+                        You take full responsibility for your investment
+                        decision and accept that the Company is not liable for
+                        any direct or indirect losses caused by market or
+                        economic fluctuations.
+                      </li>
+                      <li>
+                        You confirm that you have read and accepted all platform
+                        policies and appendices including (Withdrawal Policy +
+                        Risk Disclosure).
+                      </li>
+                      <li>
+                        Clicking “AGREE” is considered a legally binding digital
+                        signature in accordance with international regulations
+                        governing electronic investment.
+                      </li>
+                      <li>
+                        If you do not agree, you must stop using the platform
+                        immediately.
+                      </li>
+                    </ol>
+                  </>
+                )}
               </div>
 
               <div className="border-t border-gray-200 px-6 py-4 flex justify-end space-x-4">
                 <button
                   onClick={() => setShowInstructions(false)}
-                  className="text-gray-500 hover:text-gray-700 transition"
+                  className="text-gray-500 mx-4 hover:text-gray-700 transition"
                 >
-                  Cancel
+                  {isArabic ? "إلغاء" : "Cancel"}
                 </button>
                 <button
                   onClick={handleAgreeInstructions}
@@ -266,7 +296,7 @@ export default function PricingCard({
                       : "bg-blue-300 cursor-not-allowed"
                   }`}
                 >
-                  Agree
+                  {isArabic ? "موافق" : "Agree"}
                 </button>
               </div>
             </motion.div>
@@ -370,7 +400,7 @@ export default function PricingCard({
           document.body
         )}
 
-      {/* ===== 💰 نافذة الرصيد غير الكافي ===== */}
+      {/* ===== نافذة الرصيد غير الكافي ===== */}
       {showInsufficient &&
         ReactDOM.createPortal(
           <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[1000]">

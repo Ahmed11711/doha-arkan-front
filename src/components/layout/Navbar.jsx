@@ -176,13 +176,13 @@ const Navbar = ({ toggleLanguage }) => {
           className="md:hidden text-gray-800 text-2xl"
           onClick={() => setMenuOpen(!menuOpen)}
         >
-          {menuOpen ? <FaTimes /> : <FaBars />}
+          {menuOpen ? <FaTimes color="white"/> : <FaBars color="white"/>}
         </button>
       </div>
 
       {menuOpen && (
         <div
-          className={`absolute top-full left-0 w-full bg-white/70 backdrop-blur-md border-t border-white/20 flex flex-col items-center py-6 space-y-4 md:hidden ${
+          className={`absolute top-full left-0 w-full bg-gray-300 backdrop-blur-md border-t border-white/20 flex flex-col items-center py-6 space-y-4 md:hidden ${
             isArabic ? "text-right" : "text-left"
           }`}
         >
