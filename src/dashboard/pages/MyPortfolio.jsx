@@ -96,8 +96,11 @@ export default function MyPortfolio() {
                       {new Date(item.start_date).toLocaleDateString()}
                     </td>
                     <td className="px-4 py-3 text-gray-700">
-                      {new Date(item.end_date).toLocaleDateString()}
+                      {item.wallet_name === "الاسهم"
+                        ? t("Unlimited")
+                        : new Date(item.end_date).toLocaleDateString()}
                     </td>
+
                     <td className="px-4 py-3 text-gray-600 truncate max-w-[180px]">
                       {item.transaction_id || "-"}
                     </td>
@@ -166,10 +169,13 @@ export default function MyPortfolio() {
                     <strong>{t("Start Date")}:</strong>{" "}
                     {new Date(item.start_date).toLocaleDateString()}
                   </p>
-                  <p>
-                    <strong>{t("End Date")}:</strong>{" "}
-                    {new Date(item.end_date).toLocaleDateString()}
-                  </p>
+                  {item.wallet_name !== "الاسهم" && (
+                    <p>
+                      <strong>{t("End Date")}:</strong>{" "}
+                      {new Date(item.end_date).toLocaleDateString()}
+                    </p>
+                  )}
+
                   <p>
                     <strong>{t("Price")}:</strong>{" "}
                     <span className="font-semibold text-green-600">
