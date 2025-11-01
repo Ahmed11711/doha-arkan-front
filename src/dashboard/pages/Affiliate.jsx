@@ -407,6 +407,7 @@ export default function AffiliateDashboard() {
                         enqueueSnackbar(t("تم تفعيل كود التسويق بنجاح ✅"), {
                           variant: "success",
                         });
+                        await ApiClient.post("/affiliate-after-subscribe-Affiliate");
                       } else {
                         enqueueSnackbar(
                           response.message || t("حدث خطأ أثناء التفعيل"),
