@@ -62,7 +62,7 @@ function App() {
   };
   useEffect(() => {
     const auth = localStorage.getItem("isAuthenticated") === "true";
-    if (auth !== isAuthenticated) {
+     if (auth !== isAuthenticated) {
       setIsAuthenticated(auth);
     }
   }, [isAuthenticated]);

@@ -31,7 +31,10 @@ const Navbar = ({ toggleLanguage }) => {
     enqueueSnackbar(
       isArabic ? "تم تسجيل الخروج بنجاح ✅" : "Logged out successfully ✅",
       { variant: "success" }
+
+
     );
+ 
     navigate("/auth");
   };
 
@@ -238,6 +241,9 @@ const Navbar = ({ toggleLanguage }) => {
               >
                 <FaSignOutAlt /> {isArabic ? "تسجيل الخروج" : "Logout"}
               </button>
+              
+
+              
             )}
           </div>
         </div>

@@ -13,6 +13,7 @@ import { useTranslation } from "react-i18next";
 import ApiClient from "../../services/API";
 import { useAuth } from "../../context/AuthContext";
 import { useSnackbar } from "notistack";
+import { Navigate } from "react-router-dom";
 
 export default function DepositDashboard() {
   const { t } = useTranslation();
@@ -40,13 +41,18 @@ export default function DepositDashboard() {
         const res = await ApiClient.get("/deposit");
         setDeposits(res.data || []);
       } catch (err) {
+
         console.error("Error fetching deposits:", err);
       } finally {
         setLoading(false);
       }
     };
 
-    if (isAuthenticated) fetchDeposits();
+    if (isAuthenticated){
+      fetchDeposits();
+    }else{      
+  window.location.href = "/auth";
+    }
   }, [isAuthenticated]);
 
   const handleCopy = () => {

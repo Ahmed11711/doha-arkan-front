@@ -123,6 +123,11 @@ class ApiClient {
       console.log("✅ GET Success:", res.data);
       return res.data;
     } catch (error) {
+     if (error.response?.data?.message === "Token not provided") {
+  window.location.href = "/auth";
+}
+
+      
       console.error("❌ GET Error:", error.response || error);
       throw error;
     }

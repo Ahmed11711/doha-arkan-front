@@ -72,8 +72,7 @@ const LoginRegister = ({ onLoginSuccess }) => {
       navigate("/");
     }
     console.log(window.location.href);
-    console.log("hasId", hasId);
-    console.log("idValue", idValue);
+    
   }, []); // كل ما data تتغير هيتنادى الـ useEffect
   useEffect(() => {
     if (searchParams.has("affiliate_code")) {
@@ -254,15 +253,24 @@ const LoginRegister = ({ onLoginSuccess }) => {
                         // eslint-disable-next-line no-unused-vars
                         const decoded = jwtDecode(
                           credentialResponse.credential
+                           
+                          
                         );
+// console.log(credentialResponse);
 
                         const res = await ApiClient.post("Auth/login-google", {
                           id_token: credentialResponse,
                         });
 
-                        localStorage.setItem("Auth_Token", res.data.token);
-                        localStorage.setItem("user_id", res.data.user.id);
-                        localStorage.setItem("email", res.data.user.email);
+                        // console.log(res);
+                        // check have affiliate code 
+                        // if not make model to insert token
+                        
+
+
+                        // localStorage.setItem("Auth_Token", res.data.token);
+                        // localStorage.setItem("user_id", res.data.user.id);
+                        // localStorage.setItem("email", res.data.user.email);
 
                         enqueueSnackbar("تم تسجيل الدخول بواسطة Google ✅", {
                           variant: "success",
